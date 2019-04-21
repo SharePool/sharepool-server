@@ -3,8 +3,8 @@
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Eclipse" />
     <bytecodeTargetLevel>
-      <module name="server.main" target="11" />
-      <module name="server.test" target="11" />
+      <module name="server.main" target="1.8" />
+      <module name="server.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
