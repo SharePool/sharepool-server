@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/server.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/server.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-server.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-server.test.iml" />
     </modules>
   </component>
 </project>
