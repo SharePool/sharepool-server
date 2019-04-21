@@ -12,7 +12,7 @@ cache:
     - .gradle/wrapper
     - .gradle/caches
 
-package:
+build:
   stage: build
   script:
     - ./gradlew build
