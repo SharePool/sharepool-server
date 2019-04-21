@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SharePoolServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="server.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.sharepool.server.SharePoolServerApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
