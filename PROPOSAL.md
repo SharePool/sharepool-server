@@ -1,2 +1,5 @@
 # Proposal
 
+Im Zuge des Themas "Smart-City" stellen wir hier eine Anwendung vor, die das Gründen bzw. das Verwalten einer Fahrgemeinschaft vereinfachen soll. Die Idee für diese Anwendung ist im Grunde aus einem Problem entstanden: Wie können wir intuitiv und konsistent unsere Pendel-Fahrten zwischen Hagenberg und Linz dokumentieren und im weiteren Sinne verrechnen?
+
+Oft, oder eigentlich fast immer ist es üblich in einer Fahrgemeinschaft, dass der Fahrer von seinen Passagieren einen kleinen Geldbetrag pro Strecke verrechnet. Da es hier aufwendig wäre von jedem Passagier nach jeder Fahrt diesen Betrag einzusammeln lässt man diese Beträge oftmals zusammenkommen, um dann einen größeren Betrag einzukassieren. Hier verliert man schnell den Überblick wenn man keine anständige Lösung für das Merken der Schuld-Beträge hat.
