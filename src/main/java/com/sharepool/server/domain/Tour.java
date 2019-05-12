@@ -30,6 +30,22 @@ public class Tour {
 	public Tour() {
 	}
 
+	public Tour(
+			String fromLocation,
+			String toLocation,
+			double kilometers,
+			Currency currency,
+			double tourCost,
+			AppUser owner) {
+
+		this.fromLocation = fromLocation;
+		this.toLocation = toLocation;
+		this.kilometers = kilometers;
+		this.currency = currency;
+		this.tourCost = tourCost;
+		this.owner = owner;
+	}
+
 	public Long getId() {
 		return id;
 	}

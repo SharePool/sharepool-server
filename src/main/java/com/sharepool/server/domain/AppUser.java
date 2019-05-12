@@ -33,6 +33,20 @@ public class AppUser {
 	public AppUser() {
 	}
 
+	public AppUser(
+			@NotNull String userName,
+			@NotNull String firstName,
+			@NotNull String lastName,
+			@NotNull String passwordHash,
+			Set<AppUser> friends) {
+
+		this.userName = userName;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.passwordHash = passwordHash;
+		this.friends = friends;
+	}
+
 	public Long getId() {
 		return id;
 	}
