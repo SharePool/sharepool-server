@@ -38,8 +38,8 @@ public class AppUser {
 			@NotNull String firstName,
 			@NotNull String lastName,
 			@NotNull String passwordHash,
-			Set<AppUser> friends) {
-
+			Set<AppUser> friends
+	) {
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;

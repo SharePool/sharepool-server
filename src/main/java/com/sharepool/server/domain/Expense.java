@@ -43,8 +43,8 @@ public class Expense {
 			double amount,
 			AppUser payer,
 			AppUser receiver,
-			Tour tour) {
-
+			Tour tour
+	) {
 		this.description = description;
 		this.creationDate = creationDate;
 		this.currency = currency;

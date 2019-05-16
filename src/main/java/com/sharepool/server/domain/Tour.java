@@ -36,8 +36,8 @@ public class Tour {
 			double kilometers,
 			Currency currency,
 			double tourCost,
-			AppUser owner) {
-
+			AppUser owner
+	) {
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 		this.kilometers = kilometers;
