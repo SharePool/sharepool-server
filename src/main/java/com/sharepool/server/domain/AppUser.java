@@ -1,8 +1,11 @@
 package com.sharepool.server.domain;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -22,16 +25,26 @@ public class AppUser {
 	private String lastName;
 
 	@NotNull
-	private String password;
+	private String passwordHash;
+
+	@ManyToMany
+	private Set<AppUser> friends;
 
 	public AppUser() {
 	}
 
-	public AppUser(String userName, String firstName, String lastName, String password) {
+	public AppUser(
+			@NotNull String userName,
+			@NotNull String firstName,
+			@NotNull String lastName,
+			@NotNull String passwordHash,
+			Set<AppUser> friends
+	) {
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.password = password;
+		this.passwordHash = passwordHash;
+		this.friends = friends;
 	}
 
 	public Long getId() {
@@ -66,11 +79,19 @@ public class AppUser {
 		this.lastName = lastName;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPasswordHash() {
+		return passwordHash;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	public Set<AppUser> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(Set<AppUser> friends) {
+		this.friends = friends;
 	}
 }
