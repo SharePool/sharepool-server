@@ -70,6 +70,14 @@ public class Tour {
 		this.toLocation = toLocation;
 	}
 
+	public double getKilometers() {
+		return kilometers;
+	}
+
+	public void setKilometers(double kilometers) {
+		this.kilometers = kilometers;
+	}
+
 	public Currency getCurrency() {
 		return currency;
 	}
