@@ -1,8 +1,10 @@
 package com.sharepool.server.rest.tours.dto;
 
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.sharepool.server.rest.tours.dto.validation.IsValidCurrency;
 import com.sharepool.server.rest.tours.dto.validation.LocationsNotEqual;
 
 @LocationsNotEqual
@@ -15,11 +17,13 @@ public class TourCreationDto {
 	private String to;
 
 	@NotNull
+	@IsValidCurrency
 	private String currency;
 
 	@DecimalMin("0.1")
 	private double cost;
 
+	@Min(0)
 	private double kilometers;
 
 	@NotNull
