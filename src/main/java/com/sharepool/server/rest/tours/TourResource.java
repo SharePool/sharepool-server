@@ -69,7 +69,9 @@ public class TourResource {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noUserFound(tourCreationDto.getOwnerId()));
 		}
 
-		tourRepository.save(tourMapper.tourCreationDtoToTour(tourCreationDto));
+		Tour tour = tourMapper.tourCreationDtoToTour(tourCreationDto);
+		tour.setOwner(owner.get());
+		tourRepository.save(tour);
 
 		return ResponseEntity.created(null).build();
 	}
