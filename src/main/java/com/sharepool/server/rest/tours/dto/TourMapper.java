@@ -10,7 +10,13 @@ import com.sharepool.server.domain.Tour;
 public class TourMapper {
 
 	public Tour tourCreationDtoToTour(TourCreationDto tourCreationDto) {
-		Tour tour = new Tour();
+		return updateTourFromDto(null, tourCreationDto);
+	}
+
+	public Tour updateTourFromDto(Tour tour, TourCreationDto tourCreationDto) {
+		if (tour == null) {
+			tour = new Tour();
+		}
 
 		tour.setFromLocation(tourCreationDto.getFrom());
 		tour.setToLocation(tourCreationDto.getTo());

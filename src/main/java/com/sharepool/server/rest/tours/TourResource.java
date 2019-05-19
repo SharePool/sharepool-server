@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sharepool.server.dal.AppUserRepository;
 import com.sharepool.server.dal.TourRepository;
@@ -47,7 +49,7 @@ public class TourResource {
 	) {
 		Optional<AppUser> user = userRepository.findById(userId);
 		if (!user.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noUserFound(userId));
 		}
 
 		List<Tour> userTours = tourRepository.findAllByOwner(user.get());
@@ -60,30 +62,42 @@ public class TourResource {
 			@RequestBody
 			@NotNull
 			@Valid
-					TourCreationDto dto
+					TourCreationDto tourCreationDto
 	) {
-		tourRepository.save(tourMapper.tourCreationDtoToTour(dto));
+		Optional<AppUser> owner = userRepository.findById(tourCreationDto.getOwnerId());
+		if (!owner.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noUserFound(tourCreationDto.getOwnerId()));
+		}
+
+		tourRepository.save(tourMapper.tourCreationDtoToTour(tourCreationDto));
 
 		return ResponseEntity.created(null).build();
 	}
 
-	@PostMapping("/{id}")
+	@PostMapping("/{tourId}")
 	public ResponseEntity updateTour(
-			@PathVariable("id")
+			@PathVariable("tourId")
 			@NotNull
-					Long id,
+					Long tourId,
 
 			@RequestBody
-			@NotNull
 			@Valid
-					TourCreationDto dto
+			@NotNull
+					TourCreationDto tourCreationDto
 	) {
-		Optional<Tour> tour = tourRepository.findById(id);
-		if (!tour.isPresent()) {
-			return ResponseEntity.notFound().build();
+		Optional<Tour> optionalTour = tourRepository.findById(tourId);
+		if (!optionalTour.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noTourFound(tourId));
 		}
 
-		tourRepository.save(tour.get());
+		Optional<AppUser> owner = userRepository.findById(tourCreationDto.getOwnerId());
+		if (!owner.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noUserFound(tourCreationDto.getOwnerId()));
+		}
+
+		Tour tour = optionalTour.get();
+		tourMapper.updateTourFromDto(tour, tourCreationDto);
+		tourRepository.save(tour);
 
 		return ResponseEntity.ok().build();
 	}
