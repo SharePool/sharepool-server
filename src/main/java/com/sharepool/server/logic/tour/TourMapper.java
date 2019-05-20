@@ -1,10 +1,11 @@
-package com.sharepool.server.rest.tours.dto;
+package com.sharepool.server.logic.tour;
 
 import java.util.Currency;
 
 import org.springframework.stereotype.Component;
 
 import com.sharepool.server.domain.Tour;
+import com.sharepool.server.rest.tour.dto.TourCreationDto;
 
 @Component
 public class TourMapper {

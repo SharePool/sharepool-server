@@ -1,11 +1,11 @@
-package com.sharepool.server.rest.tours.dto;
+package com.sharepool.server.rest.tour.dto;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.sharepool.server.rest.tours.dto.validation.IsValidCurrency;
-import com.sharepool.server.rest.tours.dto.validation.LocationsNotEqual;
+import com.sharepool.server.rest.tour.validation.IsValidCurrency;
+import com.sharepool.server.rest.tour.validation.LocationsNotEqual;
 
 @LocationsNotEqual
 public class TourCreationDto {

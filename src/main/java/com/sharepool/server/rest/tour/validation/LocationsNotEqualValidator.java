@@ -1,9 +1,9 @@
-package com.sharepool.server.rest.tours.dto.validation;
+package com.sharepool.server.rest.tour.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.sharepool.server.rest.tours.dto.TourCreationDto;
+import com.sharepool.server.rest.tour.dto.TourCreationDto;
 
 public class LocationsNotEqualValidator implements ConstraintValidator<LocationsNotEqual, TourCreationDto> {
 	public void initialize(LocationsNotEqual constraint) {

@@ -1,4 +1,4 @@
-package com.sharepool.server.rest.tours;
+package com.sharepool.server.rest.tour;
 
 public class TourRestErrorMessages {
 

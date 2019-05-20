@@ -1,4 +1,4 @@
-package com.sharepool.server.rest.tours.dto.validation;
+package com.sharepool.server.rest.tour.validation;
 
 import java.util.Currency;
 
