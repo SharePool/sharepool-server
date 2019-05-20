@@ -6,7 +6,11 @@ import javax.validation.ConstraintValidatorContext;
 import com.sharepool.server.rest.tour.dto.TourCreationDto;
 
 public class LocationsNotEqualValidator implements ConstraintValidator<LocationsNotEqual, TourCreationDto> {
+
+	private LocationsNotEqual constraint;
+
 	public void initialize(LocationsNotEqual constraint) {
+		this.constraint = constraint;
 	}
 
 	public boolean isValid(TourCreationDto tourCreationDto, ConstraintValidatorContext context) {
@@ -18,6 +22,12 @@ public class LocationsNotEqualValidator implements ConstraintValidator<Locations
 		}
 
 		if (tourCreationDto.getFrom().equals(tourCreationDto.getTo())) {
+			context.disableDefaultConstraintViolation();
+
+			context.buildConstraintViolationWithTemplate(constraint.message())
+					.addPropertyNode("from")
+					.addConstraintViolation();
+
 			return false;
 		}
 
