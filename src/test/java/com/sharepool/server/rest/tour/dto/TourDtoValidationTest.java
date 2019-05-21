@@ -1,8 +1,7 @@
 package com.sharepool.server.rest.tour.dto;
 
-import org.junit.Test;
-
 import com.sharepool.server.common.dto.BaseDtoValidationTest;
+import org.junit.Test;
 
 public class TourCreationDtoValidationTest extends BaseDtoValidationTest {
 

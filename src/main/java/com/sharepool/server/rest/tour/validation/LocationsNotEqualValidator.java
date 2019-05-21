@@ -1,11 +1,11 @@
 package com.sharepool.server.rest.tour.validation;
 
+import com.sharepool.server.rest.tour.dto.TourDto;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.sharepool.server.rest.tour.dto.TourCreationDto;
-
-public class LocationsNotEqualValidator implements ConstraintValidator<LocationsNotEqual, TourCreationDto> {
+public class LocationsNotEqualValidator implements ConstraintValidator<LocationsNotEqual, TourDto> {
 
 	private LocationsNotEqual constraint;
 
@@ -13,15 +13,15 @@ public class LocationsNotEqualValidator implements ConstraintValidator<Locations
 		this.constraint = constraint;
 	}
 
-	public boolean isValid(TourCreationDto tourCreationDto, ConstraintValidatorContext context) {
-		if (tourCreationDto == null
-				|| tourCreationDto.getFrom() == null
-				|| tourCreationDto.getTo() == null) {
+    public boolean isValid(TourDto tourDto, ConstraintValidatorContext context) {
+        if (tourDto == null
+                || tourDto.getFrom() == null
+                || tourDto.getTo() == null) {
 
 			return true;
 		}
 
-		if (tourCreationDto.getFrom().equals(tourCreationDto.getTo())) {
+        if (tourDto.getFrom().equals(tourDto.getTo())) {
 			context.disableDefaultConstraintViolation();
 
 			context.buildConstraintViolationWithTemplate(constraint.message())
