@@ -3,46 +3,46 @@ package com.sharepool.server.rest.tour.dto;
 import com.sharepool.server.common.dto.BaseDtoValidationTest;
 import org.junit.Test;
 
-public class TourCreationDtoValidationTest extends BaseDtoValidationTest {
+public class TourDtoValidationTest extends BaseDtoValidationTest {
 
 	@Test
 	public void testNullFields() {
-		TourCreationDto tourCreationDto = new TourCreationDto();
-		tourCreationDto.setCost(1);
+		TourDto TourDto = new TourDto();
+		TourDto.setCost(1);
 
-		assertContainsViolation(tourCreationDto, "from", 4);
-		assertContainsViolation(tourCreationDto, "to");
-		assertContainsViolation(tourCreationDto, "currency");
-		assertContainsViolation(tourCreationDto, "ownerId");
+		assertContainsViolation(TourDto, "from", 4);
+		assertContainsViolation(TourDto, "to");
+		assertContainsViolation(TourDto, "currency");
+		assertContainsViolation(TourDto, "ownerId");
 	}
 
 	@Test
 	public void testCurrencyValidation() {
-		TourCreationDto tourCreationDto = createValidDto();
-		tourCreationDto.setCurrency("X");
+		TourDto TourDto = createValidDto();
+		TourDto.setCurrency("X");
 
-		assertContainsViolation(tourCreationDto, "currency", 1);
+		assertContainsViolation(TourDto, "currency", 1);
 	}
 
-	private TourCreationDto createValidDto() {
-		TourCreationDto tourCreationDto = new TourCreationDto();
+	private TourDto createValidDto() {
+		TourDto TourDto = new TourDto();
 
-		tourCreationDto.setFrom("Linz");
-		tourCreationDto.setTo("Hagenberg");
-		tourCreationDto.setCurrency("EUR");
-		tourCreationDto.setCost(1);
-		tourCreationDto.setKilometers(30);
-		tourCreationDto.setOwnerId(1L);
+		TourDto.setFrom("Linz");
+		TourDto.setTo("Hagenberg");
+		TourDto.setCurrency("EUR");
+		TourDto.setCost(1);
+		TourDto.setKilometers(30);
+		TourDto.setOwnerId(1L);
 
-		return tourCreationDto;
+		return TourDto;
 	}
 
 	@Test
 	public void testLocationsNotEqualValidation() {
-		TourCreationDto tourCreationDto = createValidDto();
-		tourCreationDto.setFrom("Linz");
-		tourCreationDto.setTo("Linz");
+		TourDto TourDto = createValidDto();
+		TourDto.setFrom("Linz");
+		TourDto.setTo("Linz");
 
-		assertContainsViolation(tourCreationDto, "from", 1);
+		assertContainsViolation(TourDto, "from", 1);
 	}
 }

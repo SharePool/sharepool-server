@@ -38,10 +38,10 @@ public class TourRestRequestHandlerTest {
 
         tourRestRequestHandler.createTour(validTourDto);
 
-        List<Tour> allToursForUser = tourRestRequestHandler.getAllToursForUser(user.getId());
+        List<TourDto> allToursForUser = tourRestRequestHandler.getAllToursForUser(user.getId());
 
         Assert.assertEquals(1, allToursForUser.size());
-        Assert.assertEquals(validTourDto.getFrom(), allToursForUser.get(0).getFromLocation());
+        Assert.assertEquals(validTourDto.getFrom(), allToursForUser.get(0).getFrom());
     }
 
     private TourDto createValidTourCreationDto() {
