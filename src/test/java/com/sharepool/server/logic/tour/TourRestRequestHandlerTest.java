@@ -80,6 +80,20 @@ public class TourRestRequestHandlerTest {
         Assert.assertEquals(30, optionalTour.get().getTourCost(), 0);
     }
 
+    @Test
+    public void deleteTour() {
+        AppUser user = appUserRepository.save(createUser());
+        Tour tour = tourRepository.save(createTour(user));
+
+        Optional<Tour> optionalTour = tourRepository.findById(tour.getId());
+        Assert.assertTrue(optionalTour.isPresent());
+
+        tourRestRequestHandler.deleteTour(tour.getId());
+
+        optionalTour = tourRepository.findById(tour.getId());
+        Assert.assertFalse(optionalTour.isPresent());
+    }
+
     private Tour createTour(AppUser savedUser) {
         Tour tour = new Tour();
         tour.setFromLocation("Linz");

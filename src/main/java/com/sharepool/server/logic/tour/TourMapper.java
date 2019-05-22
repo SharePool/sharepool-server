@@ -15,6 +15,7 @@ public interface TourMapper {
     @Mapping(source = "cost", target = "tourCost")
     Tour tourDtoToTour(TourDto tourDto);
 
+    @Mapping(source = "id", target = "tourId")
     @Mapping(source = "fromLocation", target = "from")
     @Mapping(source = "toLocation", target = "to")
     @Mapping(source = "tourCost", target = "cost")

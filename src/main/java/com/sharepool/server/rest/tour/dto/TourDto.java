@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 @LocationsNotEqual
 public class TourDto {
 
+	private Long tourId;
+
 	@NotNull
 	private String from;
 
@@ -26,6 +28,14 @@ public class TourDto {
 
 	@NotNull
 	private Long ownerId;
+
+	public Long getTourId() {
+		return tourId;
+	}
+
+	public void setTourId(Long tourId) {
+		this.tourId = tourId;
+	}
 
 	public String getFrom() {
 		return from;

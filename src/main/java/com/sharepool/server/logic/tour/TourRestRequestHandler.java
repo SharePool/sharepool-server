@@ -76,4 +76,10 @@ public class TourRestRequestHandler {
 
         return optionalTour.get();
     }
+
+    public void deleteTour(Long tourId) {
+        Tour tour = checkTourExists(tourId);
+
+        tourRepository.delete(tour);
+    }
 }

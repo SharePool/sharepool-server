@@ -55,4 +55,15 @@ public class TourResource {
 
 		return ResponseEntity.ok().build();
 	}
+
+    @DeleteMapping("/{tourId}")
+    public ResponseEntity deleteTour(
+            @PathVariable("tourId")
+            @NotNull
+                    Long tourId
+    ) {
+        requestHandler.deleteTour(tourId);
+
+        return ResponseEntity.ok().build();
+    }
 }
