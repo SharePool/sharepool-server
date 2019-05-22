@@ -40,7 +40,7 @@ public class TourResource {
 		return ResponseEntity.created(null).build();
 	}
 
-	@PostMapping("/{tourId}")
+    @PutMapping("/{tourId}")
 	public ResponseEntity updateTour(
 			@PathVariable("tourId")
 			@NotNull
