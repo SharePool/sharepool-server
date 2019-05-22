@@ -60,10 +60,8 @@ public class TourRestRequestHandler {
 
     public void updateTour(Long tourId, TourDto tourDto) {
         Tour tour = checkTourExists(tourId);
-        AppUser owner = checkUserExists(tourDto.getOwnerId());
 
         tourMapper.updateTourFromDto(tour, tourDto);
-        tour.setOwner(owner);
 
         tourRepository.save(tour);
     }
