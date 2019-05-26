@@ -1,4 +1,4 @@
-package com.sharepool.server.rest;
+package com.sharepool.server.rest.users;
 
 import javax.validation.Valid;
 
