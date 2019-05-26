@@ -11,87 +11,100 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class AppUser {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@NotNull
-	private String userName;
+    @NotNull
+    private String username;
 
-	@NotNull
-	private String firstName;
+    @NotNull
+    private String firstName;
 
-	@NotNull
-	private String lastName;
+    @NotNull
+    private String lastName;
 
-	@NotNull
-	private String passwordHash;
+    @NotNull
+    private String email;
 
-	@ManyToMany
-	private Set<AppUser> friends;
+    @NotNull
+    private String passwordHash;
 
-	public AppUser() {
-	}
+    @ManyToMany
+    private Set<AppUser> friends;
 
-	public AppUser(
-			@NotNull String userName,
-			@NotNull String firstName,
-			@NotNull String lastName,
-			@NotNull String passwordHash,
-			Set<AppUser> friends
-	) {
-		this.userName = userName;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.passwordHash = passwordHash;
-		this.friends = friends;
-	}
+    public AppUser() {
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public AppUser(
+            @NotNull String username,
+            @NotNull String firstName,
+            @NotNull String lastName,
+            @NotNull String email,
+            @NotNull String passwordHash,
+            Set<AppUser> friends
+    ) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.friends = friends;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getUserName() {
-		return userName;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Set<AppUser> getFriends() {
-		return friends;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setFriends(Set<AppUser> friends) {
-		this.friends = friends;
-	}
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public Set<AppUser> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<AppUser> friends) {
+        this.friends = friends;
+    }
 }

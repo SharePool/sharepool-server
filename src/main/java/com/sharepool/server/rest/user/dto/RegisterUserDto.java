@@ -1,20 +1,21 @@
-package com.sharepool.server.rest.users.dto;
+package com.sharepool.server.rest.user.dto;
+
+import javax.validation.constraints.NotNull;
 
 public class RegisterUserDto {
 
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @NotNull
+    private String username;
+    @NotNull
     private String email;
+    @NotNull
     private String password;
 
     public RegisterUserDto() {
-    }
-
-    public RegisterUserDto(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -31,6 +32,14 @@ public class RegisterUserDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

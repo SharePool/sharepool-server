@@ -30,8 +30,8 @@ public class ExpenseRepositoryTest {
 				LocalDate.of(2012, 12, 12),
 				Currency.getInstance(Locale.GERMANY),
 				1,
-				new AppUser("user1", "Tobias", "Kaderle", "somehash", Collections.emptySet()),
-				new AppUser("user2", "Jan", "Wiesbauer", "somehash", Collections.emptySet()),
+				new AppUser("user1", "Tobias", "Kaderle", "tobias.k@mail.at", "somehash", Collections.emptySet()),
+				new AppUser("user2", "Jan", "Wiesbauer", "jan.w@mail.com", "somehash", Collections.emptySet()),
 				new Tour()
 		);
 

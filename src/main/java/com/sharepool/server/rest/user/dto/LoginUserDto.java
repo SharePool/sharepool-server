@@ -1,4 +1,4 @@
-package com.sharepool.server.rest.users.dto;
+package com.sharepool.server.rest.user.dto;
 
 public class LoginUserDto {
 
