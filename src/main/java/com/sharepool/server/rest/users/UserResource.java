@@ -2,12 +2,10 @@ package com.sharepool.server.rest.users;
 
 import javax.validation.Valid;
 
+import com.sharepool.server.rest.users.dto.LoginUserDto;
+import com.sharepool.server.rest.users.dto.RegisterUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sharepool.server.dal.AppUserRepository;
 import com.sharepool.server.domain.AppUser;
@@ -23,13 +21,17 @@ public class UserResource {
 		this.appUserRepository = appUserRepository;
 	}
 
-	@GetMapping
-	public Iterable<AppUser> getAllUsers() {
-		return appUserRepository.findAll();
+	@PutMapping
+	public String createUser(@RequestBody @Valid RegisterUserDto registerUserDto) {
+//		return appUserRepository.save(appUser);
+
+		return "ajndf";
 	}
 
 	@PostMapping
-	public AppUser createUser(@RequestBody @Valid AppUser appUser) {
-		return appUserRepository.save(appUser);
+	public String loginUser(@RequestBody @Valid LoginUserDto loginUserDto) {
+//		return appUserRepository.save(appUser);
+
+		return "aoisdo";
 	}
 }
