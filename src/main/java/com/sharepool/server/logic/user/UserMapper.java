@@ -17,6 +17,5 @@ public interface UserMapper {
     @Mapping(source = "lastName", target = "lastName")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "email", target = "email")
-    @Mapping(source = "password", target = "passwordHash")
     AppUser registerUserDtoToAppUser(RegisterUserDto registerUserDto);
 }

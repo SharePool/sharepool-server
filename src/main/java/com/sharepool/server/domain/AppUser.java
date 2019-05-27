@@ -1,12 +1,11 @@
 package com.sharepool.server.domain;
 
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 public class AppUser {
@@ -29,6 +28,8 @@ public class AppUser {
 
     @NotNull
     private String passwordHash;
+
+    private String userTokenHash;
 
     @ManyToMany
     private Set<AppUser> friends;
@@ -98,6 +99,14 @@ public class AppUser {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public String getUserTokenHash() {
+        return userTokenHash;
+    }
+
+    public void setUserTokenHash(String userTokenHash) {
+        this.userTokenHash = userTokenHash;
     }
 
     public Set<AppUser> getFriends() {
