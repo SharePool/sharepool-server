@@ -57,9 +57,10 @@ public class TourRestRequestHandlerTest {
 
     private AppUser createUser() {
         AppUser appUser = new AppUser();
-        appUser.setUserName("username");
+        appUser.setUsername("username");
         appUser.setFirstName("First");
         appUser.setLastName("Last");
+        appUser.setEmail("Email");
         appUser.setPasswordHash("test");
         return appUser;
     }

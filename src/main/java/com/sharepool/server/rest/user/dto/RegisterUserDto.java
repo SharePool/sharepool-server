@@ -6,12 +6,16 @@ public class RegisterUserDto {
 
     @NotNull
     private String firstName;
+
     @NotNull
     private String lastName;
+
     @NotNull
     private String username;
+    
     @NotNull
     private String email;
+
     @NotNull
     private String password;
 

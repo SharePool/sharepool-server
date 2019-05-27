@@ -61,7 +61,7 @@ public class TourRestRequestHandler {
     public void updateTour(Long tourId, TourDto tourDto) {
         Tour tour = checkTourExists(tourId);
 
-        tourMapper.updateTourFromDto(tour, tourDto);
+        tourMapper.updateTourFromDto(tourDto, tour);
 
         tourRepository.save(tour);
     }
