@@ -1,6 +1,7 @@
 package com.sharepool.server.logic.user;
 
 import com.sharepool.server.dal.AppUserRepository;
+import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
 import org.junit.Assert;
@@ -9,9 +10,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,7 +27,7 @@ public class UserRestRequestHandlerTest {
     @Autowired
     private AppUserRepository appUserRepository;
 
-    @Test(expected = HttpClientErrorException.class)
+    @Test
     public void testLoginUserWrongPassword() {
         RegisterUserDto registerUserDto = createValidRegisterUserDto();
 
@@ -36,17 +39,8 @@ public class UserRestRequestHandlerTest {
         loginUserDto.setEmail(registerUserDto.getEmail());
         loginUserDto.setPassword("wrongpassword");
 
-        userRestRequestHandler.loginUser(loginUserDto);
-    }
-
-    private RegisterUserDto createValidRegisterUserDto() {
-        RegisterUserDto registerUserDto = new RegisterUserDto();
-        registerUserDto.setFirstName("firstname");
-        registerUserDto.setLastName("lastname");
-        registerUserDto.setUserName("userName");
-        registerUserDto.setEmail("test@email.com");
-        registerUserDto.setPassword("password");
-        return registerUserDto;
+        assertThrows(ResponseStatusException.class,
+                () -> userRestRequestHandler.loginUser(loginUserDto));
     }
 
     @Test
@@ -64,5 +58,26 @@ public class UserRestRequestHandlerTest {
         String loginUserToken = userRestRequestHandler.loginUser(loginUserDto);
 
         Assert.assertNotNull(loginUserToken);
+    }
+
+    private RegisterUserDto createValidRegisterUserDto() {
+        RegisterUserDto registerUserDto = new RegisterUserDto();
+        registerUserDto.setFirstName("firstname");
+        registerUserDto.setLastName("lastname");
+        registerUserDto.setUserName("userName");
+        registerUserDto.setEmail("test@email.com");
+        registerUserDto.setPassword("password");
+        return registerUserDto;
+    }
+
+    @Test
+    public void testEmailIsUnique() {
+        RegisterUserDto registerUserDto = createValidRegisterUserDto();
+
+        userRestRequestHandler.registerUser(registerUserDto);
+
+        assertThrows(ResponseStatusException.class,
+                () -> userRestRequestHandler.registerUser(registerUserDto),
+                UserRestErrorMessages.userWithEmailAlreadyExists(registerUserDto.getEmail()));
     }
 }

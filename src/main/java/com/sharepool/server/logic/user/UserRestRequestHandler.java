@@ -9,7 +9,6 @@ import com.sharepool.server.rest.util.PasswordStorage;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -29,6 +28,12 @@ public class UserRestRequestHandler {
     }
 
     public String registerUser(RegisterUserDto registerUserDto) {
+        if (userRepository.findByEmail(registerUserDto.getEmail()).isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    UserRestErrorMessages.userWithEmailAlreadyExists(registerUserDto.getEmail()));
+        }
+
         User user = userMapper.registerUserDtoToAppUser(registerUserDto);
 
         try {
@@ -54,7 +59,7 @@ public class UserRestRequestHandler {
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 if (!PasswordStorage.verifyPassword(loginUserDto.getPassword(), user.getPasswordHash())) {
-                    throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
                 return user.getUserToken();
