@@ -11,7 +11,7 @@ public class RegisterUserDto {
     private String lastName;
 
     @NotNull
-    private String username;
+    private String userName;
     
     @NotNull
     private String email;
@@ -38,12 +38,12 @@ public class RegisterUserDto {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {

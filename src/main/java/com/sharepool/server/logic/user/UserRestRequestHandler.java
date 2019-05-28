@@ -1,7 +1,7 @@
 package com.sharepool.server.logic.user;
 
 import com.sharepool.server.dal.AppUserRepository;
-import com.sharepool.server.domain.AppUser;
+import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
@@ -29,7 +29,7 @@ public class UserRestRequestHandler {
     }
 
     public String registerUser(RegisterUserDto registerUserDto) {
-        AppUser user = userMapper.registerUserDtoToAppUser(registerUserDto);
+        User user = userMapper.registerUserDtoToAppUser(registerUserDto);
 
         try {
             String passwordHash = PasswordStorage.createHash(registerUserDto.getPassword());
@@ -42,18 +42,17 @@ public class UserRestRequestHandler {
 
             return userToken;
         } catch (PasswordStorage.CannotPerformOperationException e) {
-            logger.error("User {} could not be registered", user.getUsername(), e);
+            logger.error("User {} could not be registered", user.getUserName(), e);
             return null;
         }
     }
 
     public String loginUser(LoginUserDto loginUserDto) {
-        // todo allow login via username and only token as well
-        Optional<AppUser> userOptional = userRepository.findByEmail(loginUserDto.getEmail());
+        Optional<User> userOptional = userRepository.findByEmail(loginUserDto.getEmail());
 
         try {
             if (userOptional.isPresent()) {
-                AppUser user = userOptional.get();
+                User user = userOptional.get();
                 if (!PasswordStorage.verifyPassword(loginUserDto.getPassword(), user.getPasswordHash())) {
                     throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
                 }

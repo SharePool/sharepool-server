@@ -2,8 +2,8 @@ package com.sharepool.server.logic.tour;
 
 import com.sharepool.server.dal.AppUserRepository;
 import com.sharepool.server.dal.TourRepository;
-import com.sharepool.server.domain.AppUser;
 import com.sharepool.server.domain.Tour;
+import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.tour.TourRestErrorMessages;
 import com.sharepool.server.rest.tour.dto.TourDto;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class TourRestRequestHandler {
     }
 
     public List<TourDto> getAllToursForUser(Long userId) {
-        AppUser owner = checkUserExists(userId);
+        User owner = checkUserExists(userId);
 
         return tourRepository.findAllByOwner(owner)
                 .stream()
@@ -40,8 +40,8 @@ public class TourRestRequestHandler {
                 .collect(Collectors.toList());
     }
 
-    private AppUser checkUserExists(Long userId) {
-        Optional<AppUser> owner = userRepository.findById(userId);
+    private User checkUserExists(Long userId) {
+        Optional<User> owner = userRepository.findById(userId);
         if (!owner.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noUserFound(userId));
         }
@@ -50,7 +50,7 @@ public class TourRestRequestHandler {
     }
 
     public void createTour(TourDto tourDto) {
-        AppUser owner = checkUserExists(tourDto.getOwnerId());
+        User owner = checkUserExists(tourDto.getOwnerId());
 
         Tour tour = tourMapper.tourDtoToTour(tourDto);
         tour.setOwner(owner);

@@ -1,22 +1,21 @@
 package com.sharepool.server.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-public class AppUser {
+@Table(name = "AppUser")
+public class User {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @NotNull
-    private String username;
+    @Column(unique = true)
+    private String userName;
 
     @NotNull
     private String firstName;
@@ -34,20 +33,20 @@ public class AppUser {
     private String userToken;
 
     @ManyToMany
-    private Set<AppUser> friends;
+    private Set<User> friends;
 
-    public AppUser() {
+    public User() {
     }
 
-    public AppUser(
-            @NotNull String username,
+    public User(
+            @NotNull String userName,
             @NotNull String firstName,
             @NotNull String lastName,
             @NotNull String email,
             @NotNull String passwordHash,
-            Set<AppUser> friends
+            Set<User> friends
     ) {
-        this.username = username;
+        this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -63,12 +62,12 @@ public class AppUser {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFirstName() {
@@ -111,11 +110,11 @@ public class AppUser {
         this.userToken = userToken;
     }
 
-    public Set<AppUser> getFriends() {
+    public Set<User> getFriends() {
         return friends;
     }
 
-    public void setFriends(Set<AppUser> friends) {
+    public void setFriends(Set<User> friends) {
         this.friends = friends;
     }
 }

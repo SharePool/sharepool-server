@@ -3,7 +3,7 @@ package com.sharepool.server.rest.user;
 import com.sharepool.server.logic.user.UserRestRequestHandler;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sharepool.server.rest.user.dto.UserTokenDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,6 @@ public class UserResource {
 
     private final UserRestRequestHandler requestHandler;
 
-    @Autowired
     public UserResource(UserRestRequestHandler requestHandler) {
         this.requestHandler = requestHandler;
     }
@@ -29,11 +28,13 @@ public class UserResource {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        return ResponseEntity.ok(userToken);
+        return ResponseEntity.ok(new UserTokenDto(userToken));
     }
 
     @PostMapping
     public ResponseEntity loginUser(@RequestBody @Valid LoginUserDto loginUserDto) {
-        return ResponseEntity.ok(requestHandler.loginUser(loginUserDto));
+        String userToken = requestHandler.loginUser(loginUserDto);
+
+        return ResponseEntity.ok(new UserTokenDto(userToken));
     }
 }

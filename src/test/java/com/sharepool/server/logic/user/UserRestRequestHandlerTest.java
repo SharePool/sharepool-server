@@ -43,7 +43,7 @@ public class UserRestRequestHandlerTest {
         RegisterUserDto registerUserDto = new RegisterUserDto();
         registerUserDto.setFirstName("firstname");
         registerUserDto.setLastName("lastname");
-        registerUserDto.setUsername("userName");
+        registerUserDto.setUserName("userName");
         registerUserDto.setEmail("test@email.com");
         registerUserDto.setPassword("password");
         return registerUserDto;

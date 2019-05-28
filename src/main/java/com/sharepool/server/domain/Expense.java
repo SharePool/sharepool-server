@@ -1,13 +1,8 @@
 package com.sharepool.server.domain;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Currency;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Expense {
@@ -25,10 +20,10 @@ public class Expense {
 	private double amount;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	private AppUser payer;
+	private User payer;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	private AppUser receiver;
+	private User receiver;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Tour tour;
@@ -41,8 +36,8 @@ public class Expense {
 			LocalDate creationDate,
 			Currency currency,
 			double amount,
-			AppUser payer,
-			AppUser receiver,
+			User payer,
+			User receiver,
 			Tour tour
 	) {
 		this.description = description;
@@ -94,19 +89,19 @@ public class Expense {
 		this.amount = amount;
 	}
 
-	public AppUser getPayer() {
+	public User getPayer() {
 		return payer;
 	}
 
-	public void setPayer(AppUser payer) {
+	public void setPayer(User payer) {
 		this.payer = payer;
 	}
 
-	public AppUser getReceiver() {
+	public User getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(AppUser receiver) {
+	public void setReceiver(User receiver) {
 		this.receiver = receiver;
 	}
 
