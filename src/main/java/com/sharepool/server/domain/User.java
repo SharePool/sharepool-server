@@ -14,7 +14,6 @@ public class User {
     private Long id;
 
     @NotNull
-    @Column(unique = true)
     private String userName;
 
     @NotNull
@@ -23,6 +22,7 @@ public class User {
     @NotNull
     private String lastName;
 
+    @Column(unique = true)
     @NotNull
     @Email
     private String email;
