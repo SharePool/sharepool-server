@@ -2,8 +2,8 @@ package com.sharepool.server.logic.tour;
 
 import com.sharepool.server.dal.AppUserRepository;
 import com.sharepool.server.dal.TourRepository;
-import com.sharepool.server.domain.AppUser;
 import com.sharepool.server.domain.Tour;
+import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.tour.dto.TourDto;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class TourRestRequestHandlerTest {
 
     @Test
     public void getAllToursForUser() {
-        AppUser user = appUserRepository.save(createUser());
+        User user = appUserRepository.save(createUser());
 
         TourDto validTourDto = createValidTourCreationDto();
         validTourDto.setOwnerId(user.getId());
@@ -55,18 +55,19 @@ public class TourRestRequestHandlerTest {
         return tourDto;
     }
 
-    private AppUser createUser() {
-        AppUser appUser = new AppUser();
-        appUser.setUserName("username");
-        appUser.setFirstName("First");
-        appUser.setLastName("Last");
-        appUser.setPasswordHash("test");
-        return appUser;
+    private User createUser() {
+        User user = new User();
+        user.setUserName("username");
+        user.setFirstName("First");
+        user.setLastName("Last");
+        user.setEmail("email@test.com");
+        user.setPasswordHash("test");
+        return user;
     }
 
     @Test
     public void updateTour() {
-        AppUser user = appUserRepository.save(createUser());
+        User user = appUserRepository.save(createUser());
         Tour tour = tourRepository.save(createTour(user));
 
         TourDto validTourDto = createValidTourCreationDto();
@@ -80,9 +81,20 @@ public class TourRestRequestHandlerTest {
         Assert.assertEquals(30, optionalTour.get().getTourCost(), 0);
     }
 
+    private Tour createTour(User savedUser) {
+        Tour tour = new Tour();
+        tour.setFromLocation("Linz");
+        tour.setToLocation("Hagenberg");
+        tour.setCurrency(Currency.getInstance("EUR"));
+        tour.setTourCost(1);
+        tour.setKilometers(30);
+        tour.setOwner(savedUser);
+        return tour;
+    }
+
     @Test
     public void deleteTour() {
-        AppUser user = appUserRepository.save(createUser());
+        User user = appUserRepository.save(createUser());
         Tour tour = tourRepository.save(createTour(user));
 
         Optional<Tour> optionalTour = tourRepository.findById(tour.getId());
@@ -92,16 +104,5 @@ public class TourRestRequestHandlerTest {
 
         optionalTour = tourRepository.findById(tour.getId());
         Assert.assertFalse(optionalTour.isPresent());
-    }
-
-    private Tour createTour(AppUser savedUser) {
-        Tour tour = new Tour();
-        tour.setFromLocation("Linz");
-        tour.setToLocation("Hagenberg");
-        tour.setCurrency(Currency.getInstance("EUR"));
-        tour.setTourCost(1);
-        tour.setKilometers(30);
-        tour.setOwner(savedUser);
-        return tour;
     }
 }

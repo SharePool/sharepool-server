@@ -1,11 +1,10 @@
 package com.sharepool.server.domain;
 
-import java.util.Currency;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Currency;
 
 @Entity
 public class Tour {
@@ -25,7 +24,7 @@ public class Tour {
 	private double tourCost;
 
 	@ManyToOne
-	private AppUser owner;
+	private User owner;
 
 	public Tour() {
 	}
@@ -36,7 +35,7 @@ public class Tour {
 			double kilometers,
 			Currency currency,
 			double tourCost,
-			AppUser owner
+			User owner
 	) {
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -94,11 +93,11 @@ public class Tour {
 		this.tourCost = tourCost;
 	}
 
-	public AppUser getOwner() {
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(AppUser owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 }

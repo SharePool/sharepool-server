@@ -4,8 +4,7 @@ import com.sharepool.server.domain.Tour;
 import com.sharepool.server.rest.tour.dto.TourDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.Currency;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface TourMapper {
@@ -22,13 +21,8 @@ public interface TourMapper {
     @Mapping(source = "owner.id", target = "ownerId")
     TourDto tourToTourDto(Tour tour);
 
-    default Tour updateTourFromDto(Tour tour, TourDto tourDto) {
-        tour.setFromLocation(tourDto.getFrom());
-        tour.setToLocation(tourDto.getTo());
-        tour.setCurrency(Currency.getInstance(tourDto.getCurrency()));
-        tour.setTourCost(tourDto.getCost());
-        tour.setKilometers(tourDto.getKilometers());
-
-		return tour;
-	}
+    @Mapping(source = "from", target = "fromLocation")
+    @Mapping(source = "to", target = "toLocation")
+    @Mapping(source = "cost", target = "tourCost")
+    void updateTourFromDto(TourDto tourDto, @MappingTarget Tour tour);
 }

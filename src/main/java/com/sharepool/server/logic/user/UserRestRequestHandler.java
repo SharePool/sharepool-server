@@ -1,44 +1,76 @@
 package com.sharepool.server.logic.user;
 
 import com.sharepool.server.dal.AppUserRepository;
-import com.sharepool.server.domain.AppUser;
+import com.sharepool.server.domain.User;
+import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
+import com.sharepool.server.rest.util.PasswordStorage;
+import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class UserRestRequestHandler {
 
+    private final Logger logger;
     private final AppUserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserRestRequestHandler(AppUserRepository userRepository, UserMapper userMapper) {
+    public UserRestRequestHandler(Logger logger, AppUserRepository userRepository, UserMapper userMapper) {
+        this.logger = logger;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
     public String registerUser(RegisterUserDto registerUserDto) {
-        // TODO: hash password in "registerUserDto"
-        userRepository.save(userMapper.registerUserDtoToAppUser(registerUserDto));
+        if (userRepository.findByEmail(registerUserDto.getEmail()).isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    UserRestErrorMessages.userWithEmailAlreadyExists(registerUserDto.getEmail()));
+        }
 
-        // TODO: generate token
-        return "a8s7d9as";
+        User user = userMapper.registerUserDtoToAppUser(registerUserDto);
+
+        try {
+            String passwordHash = PasswordStorage.createHash(registerUserDto.getPassword());
+            user.setPasswordHash(passwordHash);
+
+            String userToken = UUID.randomUUID().toString();
+            user.setUserToken(UUID.randomUUID().toString());
+
+            userRepository.save(user);
+
+            return userToken;
+        } catch (PasswordStorage.CannotPerformOperationException e) {
+            logger.error("User {} could not be registered", user.getUserName(), e);
+            return null;
+        }
     }
 
     public String loginUser(LoginUserDto loginUserDto) {
-        Optional<AppUser> userOptional = userRepository.findByEmail(loginUserDto.getEmail());
+        Optional<User> userOptional = userRepository.findByEmail(loginUserDto.getEmail());
 
-        if (userOptional.isPresent()) {
-            // TODO: hash password in "loginUserDto"
-            String passwordHash = loginUserDto.getPassword();
-            if (userOptional.get().getPasswordHash().equals(passwordHash)) {
-                // TODO: generate token
-                return "iu1h23ui";
+        try {
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                if (!PasswordStorage.verifyPassword(loginUserDto.getPassword(), user.getPasswordHash())) {
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+                }
+
+                return user.getUserToken();
             }
-        }
 
-        return null;
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    UserRestErrorMessages.noUserFoundForEmail(loginUserDto.getEmail()));
+        } catch (PasswordStorage.CannotPerformOperationException | PasswordStorage.InvalidHashException e) {
+            logger.error("User with email {} could not login", loginUserDto.getEmail(), e);
+            return null;
+        }
     }
 }

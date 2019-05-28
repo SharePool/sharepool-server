@@ -1,6 +1,6 @@
 package com.sharepool.server.logic.user;
 
-import com.sharepool.server.domain.AppUser;
+import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,8 +15,7 @@ public interface UserMapper {
 
     @Mapping(source = "firstName", target = "firstName")
     @Mapping(source = "lastName", target = "lastName")
-    @Mapping(source = "username", target = "username")
+    @Mapping(source = "userName", target = "userName")
     @Mapping(source = "email", target = "email")
-    @Mapping(source = "password", target = "passwordHash")
-    AppUser registerUserDtoToAppUser(RegisterUserDto registerUserDto);
+    User registerUserDtoToAppUser(RegisterUserDto registerUserDto);
 }
