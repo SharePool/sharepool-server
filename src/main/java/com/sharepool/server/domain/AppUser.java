@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -24,12 +25,13 @@ public class AppUser {
     private String lastName;
 
     @NotNull
+    @Email
     private String email;
 
     @NotNull
     private String passwordHash;
 
-    private String userTokenHash;
+    private String userToken;
 
     @ManyToMany
     private Set<AppUser> friends;
@@ -101,12 +103,12 @@ public class AppUser {
         this.passwordHash = passwordHash;
     }
 
-    public String getUserTokenHash() {
-        return userTokenHash;
+    public String getUserToken() {
+        return userToken;
     }
 
-    public void setUserTokenHash(String userTokenHash) {
-        this.userTokenHash = userTokenHash;
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 
     public Set<AppUser> getFriends() {
