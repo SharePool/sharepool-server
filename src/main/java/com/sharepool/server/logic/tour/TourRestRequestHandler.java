@@ -1,7 +1,7 @@
 package com.sharepool.server.logic.tour;
 
-import com.sharepool.server.dal.AppUserRepository;
 import com.sharepool.server.dal.TourRepository;
+import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.tour.TourRestErrorMessages;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @Component
 public class TourRestRequestHandler {
 
-    private final AppUserRepository userRepository;
+    private final UserRepository userRepository;
     private final TourRepository tourRepository;
     private final TourMapper tourMapper;
 
     public TourRestRequestHandler(
-            AppUserRepository userRepository,
+            UserRepository userRepository,
             TourRepository tourRepository,
             TourMapper tourMapper
     ) {

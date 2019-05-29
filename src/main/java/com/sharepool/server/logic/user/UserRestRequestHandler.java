@@ -1,6 +1,6 @@
 package com.sharepool.server.logic.user;
 
-import com.sharepool.server.dal.AppUserRepository;
+import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
@@ -18,10 +18,10 @@ import java.util.UUID;
 public class UserRestRequestHandler {
 
     private final Logger logger;
-    private final AppUserRepository userRepository;
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserRestRequestHandler(Logger logger, AppUserRepository userRepository, UserMapper userMapper) {
+    public UserRestRequestHandler(Logger logger, UserRepository userRepository, UserMapper userMapper) {
         this.logger = logger;
         this.userRepository = userRepository;
         this.userMapper = userMapper;

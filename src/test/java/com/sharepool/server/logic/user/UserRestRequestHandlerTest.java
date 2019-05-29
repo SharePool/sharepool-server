@@ -1,6 +1,6 @@
 package com.sharepool.server.logic.user;
 
-import com.sharepool.server.dal.AppUserRepository;
+import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
@@ -25,7 +25,7 @@ public class UserRestRequestHandlerTest {
     private UserRestRequestHandler userRestRequestHandler;
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private UserRepository userRepository;
 
     @Test
     public void testLoginUserWrongPassword() {
