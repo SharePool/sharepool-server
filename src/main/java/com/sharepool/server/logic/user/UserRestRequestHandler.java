@@ -34,7 +34,7 @@ public class UserRestRequestHandler {
                     UserRestErrorMessages.userWithEmailAlreadyExists(registerUserDto.getEmail()));
         }
 
-        User user = userMapper.registerUserDtoToAppUser(registerUserDto);
+        User user = userMapper.registerUserDtoToUser(registerUserDto);
 
         try {
             String passwordHash = PasswordStorage.createHash(registerUserDto.getPassword());
