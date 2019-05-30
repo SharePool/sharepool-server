@@ -8,6 +8,7 @@ import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
+import com.sharepool.server.rest.tour.TourRestErrorMessages;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,18 +16,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
 public class ExpenseRestRequestHandlerTest {
 
-    Random random = new Random();
+    private static final Random RANDOM = new Random();
+
     @Autowired
     private ExpenseRestRequestHandler expenseRestRequestHandler;
     @Autowired
@@ -47,14 +52,16 @@ public class ExpenseRestRequestHandlerTest {
         Assert.assertEquals(user.getUserName(), response.getUserDto().getUserName());
     }
 
-    private User createUser() {
-        User user = new User();
-        user.setUserName("username");
-        user.setFirstName("First");
-        user.setLastName("Last");
-        user.setEmail("email" + random.nextInt(100) + "@test.com");
-        user.setPasswordHash("test");
-        return user;
+    @Test
+    public void requestInvalidExpense() {
+        User user = createUser();
+        user.setId(1L);
+        Tour tour = createTour(user);
+        tour.setId(1L);
+
+        assertThrows(ResponseStatusException.class,
+                () -> expenseRestRequestHandler.requestExpense(tour.getId()),
+                TourRestErrorMessages.noTourFound(tour.getId()));
     }
 
     private Tour createTour(User savedUser) {
@@ -68,16 +75,14 @@ public class ExpenseRestRequestHandlerTest {
         return tour;
     }
 
-    @Test
-    public void requestInvalidExpense() {
-        User user = createUser();
-        user.setId(1L);
-        Tour tour = createTour(user);
-        tour.setId(1L);
-
-        ExpenseRequestResponseDto response = expenseRestRequestHandler.requestExpense(tour.getId());
-
-        Assert.assertNull(response);
+    private User createUser() {
+        User user = new User();
+        user.setUserName("username");
+        user.setFirstName("First");
+        user.setLastName("Last");
+        user.setEmail("email" + RANDOM.nextInt(100) + "@test.com");
+        user.setPasswordHash("test");
+        return user;
     }
 
     @Test
@@ -89,7 +94,7 @@ public class ExpenseRestRequestHandlerTest {
 
         String description = "Test Drive";
 
-        Assert.assertTrue(expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId(), description)));
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId(), description));
 
         List<Expense> expensesForReceiver = expenseRepository.findAllByReceiver(receiver);
         Assert.assertEquals(1, expensesForReceiver.size());
@@ -110,6 +115,7 @@ public class ExpenseRestRequestHandlerTest {
         Tour tour = createTour(user);
         tour.setId(1L);
 
-        Assert.assertFalse(expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), user.getId(), null)));
+        assertThrows(ResponseStatusException.class,
+                () -> expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), user.getId(), null)));
     }
 }

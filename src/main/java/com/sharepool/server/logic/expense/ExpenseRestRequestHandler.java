@@ -8,14 +8,18 @@ import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
+import com.sharepool.server.rest.util.RestHelperUtil;
+import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Component
 public class ExpenseRestRequestHandler {
+
+    private final Logger logger;
 
     private final TourRepository tourRepository;
     private final UserRepository userRepository;
@@ -23,7 +27,14 @@ public class ExpenseRestRequestHandler {
 
     private final ExpenseMapper expenseMapper;
 
-    public ExpenseRestRequestHandler(TourRepository tourRepository, ExpenseMapper expenseMapper, UserRepository userRepository, ExpenseRepository expenseRepository) {
+    public ExpenseRestRequestHandler(
+            Logger logger,
+            TourRepository tourRepository,
+            ExpenseMapper expenseMapper,
+            UserRepository userRepository,
+            ExpenseRepository expenseRepository
+    ) {
+        this.logger = logger;
         this.tourRepository = tourRepository;
         this.expenseMapper = expenseMapper;
         this.userRepository = userRepository;
@@ -31,36 +42,39 @@ public class ExpenseRestRequestHandler {
     }
 
     public ExpenseRequestResponseDto requestExpense(Long tourId) {
-        Optional<Tour> tour = tourRepository.findById(tourId);
+        Tour tour = RestHelperUtil.checkTourExists(tourRepository, tourId);
 
-        if (tour.isPresent()) {
-            User owner = tour.get().getOwner();
+        User owner = tour.getOwner();
+        checkOwnerOfTourWasSet(tourId, owner);
 
-            if (owner != null) {
-                return expenseMapper.userAndTourToExpenseRequestResponseDto(owner, tour.get());
-            }
-        }
-
-        return null;
+        return expenseMapper.userAndTourToExpenseRequestResponseDto(owner, tour);
     }
 
-    public boolean confirmExpense(@Valid ExpenseConfirmationDto expenseConfirmationDto) {
-
-        Optional<Tour> tourOptional = tourRepository.findById(expenseConfirmationDto.getTourId());
-
-        if (tourOptional.isPresent()) {
-            Tour tour = tourOptional.get();
-            User receiver = tour.getOwner();
-            Optional<User> payerOptional = userRepository.findById(expenseConfirmationDto.getPayerId());
-
-            if (payerOptional.isPresent()) {
-                User payer = payerOptional.get();
-                Expense expense = new Expense(expenseConfirmationDto.getDescription(), LocalDate.now(), tour.getCurrency(), tour.getTourCost(), payer, receiver, tour);
-                expenseRepository.save(expense);
-
-                return true;
-            }
+    private void checkOwnerOfTourWasSet(Long tourId, User owner) {
+        if (owner == null) {
+            logger.error("No owner found for tour {}. " +
+                    "Something went wrong while persisting as this should always be the case", tourId);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return false;
+    }
+
+    public void confirmExpense(ExpenseConfirmationDto expenseConfirmationDto) {
+        Tour tour = RestHelperUtil.checkTourExists(tourRepository, expenseConfirmationDto.getTourId());
+
+        User receiver = tour.getOwner();
+        checkOwnerOfTourWasSet(expenseConfirmationDto.getTourId(), receiver);
+
+        User payer = RestHelperUtil.checkUserExists(userRepository, expenseConfirmationDto.getPayerId());
+
+        Expense expense = new Expense(
+                expenseConfirmationDto.getDescription(),
+                LocalDate.now(),
+                tour.getCurrency(),
+                tour.getTourCost(),
+                payer,
+                receiver,
+                tour);
+
+        expenseRepository.save(expense);
     }
 }

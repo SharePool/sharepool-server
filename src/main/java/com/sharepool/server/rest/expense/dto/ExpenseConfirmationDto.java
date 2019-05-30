@@ -6,6 +6,7 @@ public class ExpenseConfirmationDto {
 
     @NotNull
     private Long tourId;
+
     @NotNull
     private Long payerId;
 

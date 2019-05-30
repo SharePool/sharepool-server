@@ -26,11 +26,8 @@ public class ExpenseResource {
 
     @PutMapping("/confirmation")
     public ResponseEntity confirmExpense(@RequestBody @Valid ExpenseConfirmationDto expenseConfirmationDto) {
-        if (requestHandler.confirmExpense(expenseConfirmationDto)) {
-            return ResponseEntity.created(null).build();
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        requestHandler.confirmExpense(expenseConfirmationDto);
 
+        return ResponseEntity.created(null).build();
     }
 }
