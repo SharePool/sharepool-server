@@ -1,28 +1,25 @@
 package com.sharepool.server.logic.tour;
 
-import com.sharepool.server.dal.AppUserRepository;
 import com.sharepool.server.dal.TourRepository;
+import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
-import com.sharepool.server.rest.tour.TourRestErrorMessages;
 import com.sharepool.server.rest.tour.dto.TourDto;
-import org.springframework.http.HttpStatus;
+import com.sharepool.server.rest.util.RestHelperUtil;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class TourRestRequestHandler {
 
-    private final AppUserRepository userRepository;
+    private final UserRepository userRepository;
     private final TourRepository tourRepository;
     private final TourMapper tourMapper;
 
     public TourRestRequestHandler(
-            AppUserRepository userRepository,
+            UserRepository userRepository,
             TourRepository tourRepository,
             TourMapper tourMapper
     ) {
@@ -32,7 +29,7 @@ public class TourRestRequestHandler {
     }
 
     public List<TourDto> getAllToursForUser(Long userId) {
-        User owner = checkUserExists(userId);
+        User owner = RestHelperUtil.checkUserExists(userRepository, userId);
 
         return tourRepository.findAllByOwner(owner)
                 .stream()
@@ -40,17 +37,8 @@ public class TourRestRequestHandler {
                 .collect(Collectors.toList());
     }
 
-    private User checkUserExists(Long userId) {
-        Optional<User> owner = userRepository.findById(userId);
-        if (!owner.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noUserFound(userId));
-        }
-
-        return owner.get();
-    }
-
     public void createTour(TourDto tourDto) {
-        User owner = checkUserExists(tourDto.getOwnerId());
+        User owner = RestHelperUtil.checkUserExists(userRepository, tourDto.getOwnerId());
 
         Tour tour = tourMapper.tourDtoToTour(tourDto);
         tour.setOwner(owner);
@@ -59,24 +47,15 @@ public class TourRestRequestHandler {
     }
 
     public void updateTour(Long tourId, TourDto tourDto) {
-        Tour tour = checkTourExists(tourId);
+        Tour tour = RestHelperUtil.checkTourExists(tourRepository, tourId);
 
         tourMapper.updateTourFromDto(tourDto, tour);
 
         tourRepository.save(tour);
     }
 
-    private Tour checkTourExists(Long tourId) {
-        Optional<Tour> optionalTour = tourRepository.findById(tourId);
-        if (!optionalTour.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noTourFound(tourId));
-        }
-
-        return optionalTour.get();
-    }
-
     public void deleteTour(Long tourId) {
-        Tour tour = checkTourExists(tourId);
+        Tour tour = RestHelperUtil.checkTourExists(tourRepository, tourId);
 
         tourRepository.delete(tour);
     }

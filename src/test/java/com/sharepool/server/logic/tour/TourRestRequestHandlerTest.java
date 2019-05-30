@@ -1,7 +1,7 @@
 package com.sharepool.server.logic.tour;
 
-import com.sharepool.server.dal.AppUserRepository;
 import com.sharepool.server.dal.TourRepository;
+import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.tour.dto.TourDto;
@@ -29,11 +29,11 @@ public class TourRestRequestHandlerTest {
     private TourRepository tourRepository;
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private UserRepository userRepository;
 
     @Test
     public void getAllToursForUser() {
-        User user = appUserRepository.save(createUser());
+        User user = userRepository.save(createUser());
 
         TourDto validTourDto = createValidTourCreationDto();
         validTourDto.setOwnerId(user.getId());
@@ -69,7 +69,7 @@ public class TourRestRequestHandlerTest {
 
     @Test
     public void updateTour() {
-        User user = appUserRepository.save(createUser());
+        User user = userRepository.save(createUser());
         Tour tour = tourRepository.save(createTour(user));
 
         TourDto validTourDto = createValidTourCreationDto();
@@ -96,7 +96,7 @@ public class TourRestRequestHandlerTest {
 
     @Test
     public void deleteTour() {
-        User user = appUserRepository.save(createUser());
+        User user = userRepository.save(createUser());
         Tour tour = tourRepository.save(createTour(user));
 
         Optional<Tour> optionalTour = tourRepository.findById(tour.getId());
