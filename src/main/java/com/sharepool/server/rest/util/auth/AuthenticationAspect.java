@@ -17,13 +17,16 @@ public class AuthenticationAspect {
 
     private final HttpServletRequest request;
     private final UserRepository userRepository;
+    private final UserContext userContext;
 
     public AuthenticationAspect(
             HttpServletRequest request,
-            UserRepository userRepository) {
-
+            UserRepository userRepository,
+            UserContext userContext
+    ) {
         this.request = request;
         this.userRepository = userRepository;
+        this.userContext = userContext;
     }
 
     @Before("execution(public * *(..)) " +
@@ -39,6 +42,9 @@ public class AuthenticationAspect {
         if (!user.isPresent()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid authentication!");
         }
+
+        userContext.setUserToken(() -> token);
+        userContext.setUser(user::get);
 
         return true;
     }
