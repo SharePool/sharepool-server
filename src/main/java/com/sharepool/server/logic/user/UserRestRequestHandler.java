@@ -41,7 +41,7 @@ public class UserRestRequestHandler {
             user.setPasswordHash(passwordHash);
 
             String userToken = UUID.randomUUID().toString();
-            user.setUserToken(UUID.randomUUID().toString());
+            user.setUserToken(userToken);
 
             userRepository.save(user);
 
