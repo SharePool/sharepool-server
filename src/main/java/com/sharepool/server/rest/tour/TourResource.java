@@ -42,6 +42,8 @@ public class TourResource {
 	) {
         requestHandler.createTour(tourDto);
 
+        System.out.println(userContext.getUserToken());
+
 		return ResponseEntity.created(null).build();
 	}
 
