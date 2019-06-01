@@ -4,6 +4,7 @@ import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
+import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +32,7 @@ public class UserRestRequestHandlerTest {
     public void testLoginUserWrongPassword() {
         RegisterUserDto registerUserDto = createValidRegisterUserDto();
 
-        String userToken = userRestRequestHandler.registerUser(registerUserDto);
+        UserCredentialsDto userToken = userRestRequestHandler.registerUser(registerUserDto);
 
         Assert.assertNotNull(userToken);
 
@@ -47,7 +48,7 @@ public class UserRestRequestHandlerTest {
     public void testLoginUser() {
         RegisterUserDto registerUserDto = createValidRegisterUserDto();
 
-        String userToken = userRestRequestHandler.registerUser(registerUserDto);
+        UserCredentialsDto userToken = userRestRequestHandler.registerUser(registerUserDto);
 
         Assert.assertNotNull(userToken);
 
@@ -55,7 +56,7 @@ public class UserRestRequestHandlerTest {
         loginUserDto.setEmail(registerUserDto.getEmail());
         loginUserDto.setPassword("password");
 
-        String loginUserToken = userRestRequestHandler.loginUser(loginUserDto);
+        UserCredentialsDto loginUserToken = userRestRequestHandler.loginUser(loginUserDto);
 
         Assert.assertNotNull(loginUserToken);
     }

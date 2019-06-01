@@ -2,6 +2,7 @@ package com.sharepool.server.rest.tour;
 
 import com.sharepool.server.logic.tour.TourRestRequestHandler;
 import com.sharepool.server.rest.tour.dto.TourDto;
+import com.sharepool.server.rest.util.auth.UserContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,12 @@ import java.util.List;
 public class TourResource {
 
 	private final TourRestRequestHandler requestHandler;
+    private final UserContext userContext;
 
-	public TourResource(TourRestRequestHandler requestHandler) {this.requestHandler = requestHandler;}
+    public TourResource(TourRestRequestHandler requestHandler, UserContext userContext) {
+        this.requestHandler = requestHandler;
+        this.userContext = userContext;
+    }
 
 	@GetMapping("users/{userId}")
     public ResponseEntity<List<TourDto>> getAllToursForUser(
@@ -36,6 +41,8 @@ public class TourResource {
                     TourDto tourDto
 	) {
         requestHandler.createTour(tourDto);
+
+        System.out.println(userContext.getUserToken());
 
 		return ResponseEntity.created(null).build();
 	}

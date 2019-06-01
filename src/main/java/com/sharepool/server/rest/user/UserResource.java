@@ -3,7 +3,7 @@ package com.sharepool.server.rest.user;
 import com.sharepool.server.logic.user.UserRestRequestHandler;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
-import com.sharepool.server.rest.user.dto.UserTokenDto;
+import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,19 +22,19 @@ public class UserResource {
 
     @PutMapping
     public ResponseEntity registerUser(@RequestBody @Valid RegisterUserDto registerUserDto) {
-        String userToken = requestHandler.registerUser(registerUserDto);
+        UserCredentialsDto userCredentials = requestHandler.registerUser(registerUserDto);
 
-        if (userToken == null) {
+        if (userCredentials == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        return ResponseEntity.ok(new UserTokenDto(userToken));
+        return ResponseEntity.ok(userCredentials);
     }
 
     @PostMapping
     public ResponseEntity loginUser(@RequestBody @Valid LoginUserDto loginUserDto) {
-        String userToken = requestHandler.loginUser(loginUserDto);
+        UserCredentialsDto userCredentials = requestHandler.loginUser(loginUserDto);
 
-        return ResponseEntity.ok(new UserTokenDto(userToken));
+        return ResponseEntity.ok(userCredentials);
     }
 }
