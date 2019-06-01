@@ -5,6 +5,7 @@ import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
+import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import com.sharepool.server.rest.util.PasswordStorage;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class UserRestRequestHandler {
         this.userMapper = userMapper;
     }
 
-    public String registerUser(RegisterUserDto registerUserDto) {
+    public UserCredentialsDto registerUser(RegisterUserDto registerUserDto) {
         if (userRepository.findByEmail(registerUserDto.getEmail()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -45,14 +46,14 @@ public class UserRestRequestHandler {
 
             userRepository.save(user);
 
-            return userToken;
+            return new UserCredentialsDto(userToken, user.getId());
         } catch (PasswordStorage.CannotPerformOperationException e) {
             logger.error("User {} could not be registered", user.getUserName(), e);
             return null;
         }
     }
 
-    public String loginUser(LoginUserDto loginUserDto) {
+    public UserCredentialsDto loginUser(LoginUserDto loginUserDto) {
         Optional<User> userOptional = userRepository.findByEmail(loginUserDto.getEmail());
 
         try {
@@ -62,7 +63,7 @@ public class UserRestRequestHandler {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
-                return user.getUserToken();
+                return new UserCredentialsDto(user.getUserToken(), user.getId());
             }
 
             throw new ResponseStatusException(
