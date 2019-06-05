@@ -14,7 +14,7 @@ import org.mapstruct.Mapping;
 })
 public interface ExpenseMapper {
 
-    @Mapping(source = "user", target = "userDto")
-    @Mapping(source = "tour", target = "tourDto")
-    ExpenseRequestResponseDto userAndTourToExpenseRequestResponseDto(User user, Tour tour);
+    @Mapping(source = "receiver", target = "receiver")
+    @Mapping(source = "tour", target = "tour")
+    ExpenseRequestResponseDto userAndTourToExpenseRequestResponseDto(User receiver, Tour tour);
 }

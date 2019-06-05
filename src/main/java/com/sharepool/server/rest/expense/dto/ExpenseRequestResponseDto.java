@@ -5,30 +5,30 @@ import com.sharepool.server.rest.user.dto.UserDto;
 
 public class ExpenseRequestResponseDto {
 
-    private TourDto tourDto;
-    private UserDto userDto;
+    private TourDto tour;
+    private UserDto receiver;
 
     public ExpenseRequestResponseDto() {
     }
 
-    public ExpenseRequestResponseDto(TourDto tourDto, UserDto userDto) {
-        this.tourDto = tourDto;
-        this.userDto = userDto;
+    public ExpenseRequestResponseDto(TourDto tour, UserDto receiver) {
+        this.tour = tour;
+        this.receiver = receiver;
     }
 
-    public TourDto getTourDto() {
-        return tourDto;
+    public TourDto getTour() {
+        return tour;
     }
 
-    public void setTourDto(TourDto tourDto) {
-        this.tourDto = tourDto;
+    public void setTour(TourDto tour) {
+        this.tour = tour;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
+    public UserDto getReceiver() {
+        return receiver;
     }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setReceiver(UserDto receiver) {
+        this.receiver = receiver;
     }
 }
