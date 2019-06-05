@@ -1,14 +1,20 @@
 package com.sharepool.server.rest.user.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 public class LoginUserDto {
 
+    @NotNull
+    @Email
     private String email;
+    @NotNull
     private String password;
 
     public LoginUserDto() {
     }
 
-    public LoginUserDto(String email, String password) {
+    public LoginUserDto(@NotNull @Email String email, @NotNull String password) {
         this.email = email;
         this.password = password;
     }
