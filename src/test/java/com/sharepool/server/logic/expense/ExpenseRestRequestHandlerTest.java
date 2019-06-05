@@ -48,8 +48,8 @@ public class ExpenseRestRequestHandlerTest {
 
         ExpenseRequestResponseDto response = expenseRestRequestHandler.requestExpense(tour.getId());
 
-        Assert.assertEquals(tour.getId(), response.getTourDto().getTourId());
-        Assert.assertEquals(user.getUserName(), response.getUserDto().getUserName());
+        Assert.assertEquals(tour.getId(), response.getTour().getTourId());
+        Assert.assertEquals(user.getUserName(), response.getReceiver().getUserName());
     }
 
     @Test
