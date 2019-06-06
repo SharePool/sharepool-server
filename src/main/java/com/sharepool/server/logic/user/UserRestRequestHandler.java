@@ -3,9 +3,9 @@ package com.sharepool.server.logic.user;
 import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
-import com.sharepool.server.rest.user.dto.LoginUserDto;
-import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
+import com.sharepool.server.rest.user.dto.UserDto;
+import com.sharepool.server.rest.user.dto.UserLoginDto;
 import com.sharepool.server.rest.util.PasswordStorage;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -35,7 +35,7 @@ public class UserRestRequestHandler {
                     UserRestErrorMessages.userWithEmailAlreadyExists(userDto.getEmail()));
         }
 
-        User user = userMapper.registerUserDtoToUser(userDto);
+        User user = userMapper.userDtoToUser(userDto);
 
         try {
             String passwordHash = PasswordStorage.createHash(userDto.getPassword());
@@ -53,13 +53,14 @@ public class UserRestRequestHandler {
         }
     }
 
-    public UserCredentialsDto loginUser(LoginUserDto loginUserDto) {
-        Optional<User> userOptional = userRepository.findByEmail(loginUserDto.getEmail());
+    public UserCredentialsDto loginUser(UserLoginDto userLoginDto) {
+        Optional<User> userOptional = userRepository.findByUserNameOrEmail(
+                userLoginDto.getUserNameOrEmail(), userLoginDto.getUserNameOrEmail());
 
         try {
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                if (!PasswordStorage.verifyPassword(loginUserDto.getPassword(), user.getPasswordHash())) {
+                if (!PasswordStorage.verifyPassword(userLoginDto.getPassword(), user.getPasswordHash())) {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
@@ -68,9 +69,9 @@ public class UserRestRequestHandler {
 
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    UserRestErrorMessages.noUserFoundForEmail(loginUserDto.getEmail()));
+                    UserRestErrorMessages.noUserFoundForEmail(userLoginDto.getUserNameOrEmail()));
         } catch (PasswordStorage.CannotPerformOperationException | PasswordStorage.InvalidHashException e) {
-            logger.error("User with email {} could not login", loginUserDto.getEmail(), e);
+            logger.error("User with email {} could not login", userLoginDto.getUserNameOrEmail(), e);
             return null;
         }
     }
