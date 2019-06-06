@@ -4,10 +4,7 @@ import com.sharepool.server.logic.user.UserRestRequestHandler;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
 import com.sharepool.server.rest.user.dto.RegisterUserDto;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +34,12 @@ public class UserResource {
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @PutMapping
-    public ResponseEntity registerUser(@RequestBody @Valid RegisterUserDto registerUserDto) {
+    public ResponseEntity registerUser(
+            @ApiParam("The JSON body of the request. Contains parameters of user.")
+            @RequestBody
+            @Valid
+                    RegisterUserDto registerUserDto
+    ) {
         UserCredentialsDto userCredentials = requestHandler.registerUser(registerUserDto);
 
         if (userCredentials == null) {
@@ -58,7 +60,12 @@ public class UserResource {
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @PostMapping
-    public ResponseEntity loginUser(@RequestBody @Valid LoginUserDto loginUserDto) {
+    public ResponseEntity loginUser(
+            @ApiParam("The JSON body of the request. Contains parameters of the user login.")
+            @RequestBody
+            @Valid
+                    LoginUserDto loginUserDto
+    ) {
         UserCredentialsDto userCredentials = requestHandler.loginUser(loginUserDto);
 
         return ResponseEntity.ok(userCredentials);
