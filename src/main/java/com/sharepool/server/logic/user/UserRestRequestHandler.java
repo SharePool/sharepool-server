@@ -4,7 +4,7 @@ import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
-import com.sharepool.server.rest.user.dto.RegisterUserDto;
+import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import com.sharepool.server.rest.util.PasswordStorage;
 import org.slf4j.Logger;
@@ -28,17 +28,17 @@ public class UserRestRequestHandler {
         this.userMapper = userMapper;
     }
 
-    public UserCredentialsDto registerUser(RegisterUserDto registerUserDto) {
-        if (userRepository.findByEmail(registerUserDto.getEmail()).isPresent()) {
+    public UserCredentialsDto registerUser(UserDto userDto) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    UserRestErrorMessages.userWithEmailAlreadyExists(registerUserDto.getEmail()));
+                    UserRestErrorMessages.userWithEmailAlreadyExists(userDto.getEmail()));
         }
 
-        User user = userMapper.registerUserDtoToUser(registerUserDto);
+        User user = userMapper.registerUserDtoToUser(userDto);
 
         try {
-            String passwordHash = PasswordStorage.createHash(registerUserDto.getPassword());
+            String passwordHash = PasswordStorage.createHash(userDto.getPassword());
             user.setPasswordHash(passwordHash);
 
             String userToken = UUID.randomUUID().toString();

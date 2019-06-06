@@ -11,31 +11,31 @@ public class UserDtoValidationTest extends BaseDtoValidationTest {
         assertContainsViolation(loginUserDto, "email", 2);
         assertContainsViolation(loginUserDto, "password", 2);
 
-        RegisterUserDto registerUserDto = new RegisterUserDto(null, null, null, null, null);
+        UserDto userDto = new UserDto(null, null, null, null, null);
 
-        assertContainsViolation(registerUserDto, "firstName");
-        assertContainsViolation(registerUserDto, "lastName");
-        assertContainsViolation(registerUserDto, "userName");
-        assertContainsViolation(registerUserDto, "email");
-        assertContainsViolation(registerUserDto, "password");
+        assertContainsViolation(userDto, "firstName");
+        assertContainsViolation(userDto, "lastName");
+        assertContainsViolation(userDto, "userName");
+        assertContainsViolation(userDto, "email");
+        assertContainsViolation(userDto, "password");
     }
 
     @Test
     public void testFieldLengths() {
-        RegisterUserDto registerUserDto = new RegisterUserDto("f", "l", "user", "a@m.at", "1*aB");
+        UserDto userDto = new UserDto("f", "l", "user", "a@m.at", "1*aB");
 
-        assertContainsViolation(registerUserDto, "firstName");
-        assertContainsViolation(registerUserDto, "lastName");
-        assertContainsViolation(registerUserDto, "userName");
-        assertContainsViolation(registerUserDto, "password");
+        assertContainsViolation(userDto, "firstName");
+        assertContainsViolation(userDto, "lastName");
+        assertContainsViolation(userDto, "userName");
+        assertContainsViolation(userDto, "password");
     }
 
     @Test
     public void testFieldPatterns() {
-        RegisterUserDto registerUserDto = new RegisterUserDto("firstName", "lastName", "username", "a.at", "asdASD*213");
+        UserDto userDto = new UserDto("firstName", "lastName", "username", "a.at", "asdASD*213");
 
-        assertContainsViolation(registerUserDto, "email");
-        assertContainsViolation(registerUserDto, "password");
+        assertContainsViolation(userDto, "email");
+        assertContainsViolation(userDto, "password");
     }
 
 }

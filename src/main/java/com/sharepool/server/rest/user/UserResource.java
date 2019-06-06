@@ -2,7 +2,7 @@ package com.sharepool.server.rest.user;
 
 import com.sharepool.server.logic.user.UserRestRequestHandler;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
-import com.sharepool.server.rest.user.dto.RegisterUserDto;
+import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -38,9 +38,9 @@ public class UserResource {
             @ApiParam("The JSON body of the request. Contains parameters of user.")
             @RequestBody
             @Valid
-                    RegisterUserDto registerUserDto
+                    UserDto userDto
     ) {
-        UserCredentialsDto userCredentials = requestHandler.registerUser(registerUserDto);
+        UserCredentialsDto userCredentials = requestHandler.registerUser(userDto);
 
         if (userCredentials == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
