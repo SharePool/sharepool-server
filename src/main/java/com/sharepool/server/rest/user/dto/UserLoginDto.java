@@ -3,35 +3,33 @@ package com.sharepool.server.rest.user.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @ApiModel(value = "UserLogin", description = "The credential of a specific user.")
-public class LoginUserDto {
+public class UserLoginDto {
 
-    @ApiModelProperty(value = "The email of the user.", required = true)
+    @ApiModelProperty(value = "The username or email of the user.", required = true)
     @NotNull
-    @Email
-    private String email;
+    private String userNameOrEmail;
 
     @ApiModelProperty(value = "The password of the user.", required = true)
     @NotNull
     private String password;
 
-    public LoginUserDto() {
+    public UserLoginDto() {
     }
 
-    public LoginUserDto(String email, String password) {
-        this.email = email;
+    public UserLoginDto(String userNameOrEmail, String password) {
+        this.userNameOrEmail = userNameOrEmail;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserNameOrEmail() {
+        return userNameOrEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserNameOrEmail(String userNameOrEmail) {
+        this.userNameOrEmail = userNameOrEmail;
     }
 
     public String getPassword() {

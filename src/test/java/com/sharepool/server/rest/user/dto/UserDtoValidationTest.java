@@ -7,9 +7,9 @@ public class UserDtoValidationTest extends BaseDtoValidationTest {
 
     @Test
     public void testNullFields() {
-        LoginUserDto loginUserDto = new LoginUserDto(null, null);
-        assertContainsViolation(loginUserDto, "email", 2);
-        assertContainsViolation(loginUserDto, "password", 2);
+        UserLoginDto userLoginDto = new UserLoginDto(null, null);
+        assertContainsViolation(userLoginDto, "email", 2);
+        assertContainsViolation(userLoginDto, "password", 2);
 
         UserDto userDto = new UserDto(null, null, null, null, null);
 

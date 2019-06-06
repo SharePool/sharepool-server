@@ -1,9 +1,9 @@
 package com.sharepool.server.rest.user;
 
 import com.sharepool.server.logic.user.UserRestRequestHandler;
-import com.sharepool.server.rest.user.dto.LoginUserDto;
-import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
+import com.sharepool.server.rest.user.dto.UserDto;
+import com.sharepool.server.rest.user.dto.UserLoginDto;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,9 +64,9 @@ public class UserResource {
             @ApiParam("The JSON body of the request. Contains parameters of the user login.")
             @RequestBody
             @Valid
-                    LoginUserDto loginUserDto
+                    UserLoginDto userLoginDto
     ) {
-        UserCredentialsDto userCredentials = requestHandler.loginUser(loginUserDto);
+        UserCredentialsDto userCredentials = requestHandler.loginUser(userLoginDto);
 
         return ResponseEntity.ok(userCredentials);
     }
