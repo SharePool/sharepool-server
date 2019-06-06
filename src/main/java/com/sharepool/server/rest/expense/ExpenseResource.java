@@ -3,12 +3,14 @@ package com.sharepool.server.rest.expense;
 import com.sharepool.server.logic.expense.ExpenseRestRequestHandler;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
+import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+@Api(tags = "Expenses", description = "Manage expenses of tours.")
 @RestController
 @RequestMapping("expenses")
 public class ExpenseResource {
