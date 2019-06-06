@@ -2,7 +2,7 @@ package com.sharepool.server.rest.user;
 
 import com.sharepool.server.logic.user.UserRestRequestHandler;
 import com.sharepool.server.rest.user.dto.LoginUserDto;
-import com.sharepool.server.rest.user.dto.RegisterUserDto;
+import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class UserResource {
     }
 
     @PutMapping
-    public ResponseEntity registerUser(@RequestBody @Valid RegisterUserDto registerUserDto) {
-        UserCredentialsDto userCredentials = requestHandler.registerUser(registerUserDto);
+    public ResponseEntity registerUser(@RequestBody @Valid UserDto userDto) {
+        UserCredentialsDto userCredentials = requestHandler.registerUser(userDto);
 
         if (userCredentials == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
