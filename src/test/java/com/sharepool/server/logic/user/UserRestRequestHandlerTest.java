@@ -76,7 +76,7 @@ public class UserRestRequestHandlerTest extends AbstractUtilTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> userRestRequestHandler.registerUser(userDto),
-                UserRestErrorMessages.userWithEmailAlreadyExists(userDto.getEmail()));
+                UserRestErrorMessages.userWithUserNameOrEmailAlreadyExists(userDto.getUserName(), userDto.getEmail()));
     }
 
     @Test

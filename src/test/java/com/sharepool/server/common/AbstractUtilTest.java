@@ -14,7 +14,7 @@ public abstract class AbstractUtilTest {
 
     protected User createValidUser() {
         User user = new User();
-        user.setUserName("username");
+        user.setUserName("username" + RANDOM.nextInt(100));
         user.setFirstName("First");
         user.setLastName("Last");
         user.setEmail("email" + RANDOM.nextInt(100) + "@test.com");

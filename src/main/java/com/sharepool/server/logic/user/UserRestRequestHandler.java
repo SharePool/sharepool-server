@@ -29,10 +29,10 @@ public class UserRestRequestHandler {
     }
 
     public UserCredentialsDto registerUser(UserDto userDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userRepository.findByUserNameOrEmail(userDto.getUserName(), userDto.getEmail()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    UserRestErrorMessages.userWithEmailAlreadyExists(userDto.getEmail()));
+                    UserRestErrorMessages.userWithUserNameOrEmailAlreadyExists(userDto.getUserName(), userDto.getEmail()));
         }
 
         User user = userMapper.userDtoToUser(userDto);
