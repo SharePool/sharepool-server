@@ -18,28 +18,15 @@ public class TourDtoValidationTest extends BaseDtoValidationTest {
 
 	@Test
 	public void testCurrencyValidation() {
-		TourDto TourDto = createValidDto();
+		TourDto TourDto = createValidTourDto();
 		TourDto.setCurrency("X");
 
 		assertContainsViolation(TourDto, "currency", 1);
 	}
 
-	private TourDto createValidDto() {
-		TourDto TourDto = new TourDto();
-
-		TourDto.setFrom("Linz");
-		TourDto.setTo("Hagenberg");
-		TourDto.setCurrency("EUR");
-		TourDto.setCost(1);
-		TourDto.setKilometers(30);
-		TourDto.setOwnerId(1L);
-
-		return TourDto;
-	}
-
 	@Test
 	public void testLocationsNotEqualValidation() {
-		TourDto TourDto = createValidDto();
+		TourDto TourDto = createValidTourDto();
 		TourDto.setFrom("Linz");
 		TourDto.setTo("Linz");
 

@@ -10,15 +10,12 @@ public class ExpenseConfirmationDto {
     @NotNull
     private Long payerId;
 
-    private String description;
-
     public ExpenseConfirmationDto() {
     }
 
-    public ExpenseConfirmationDto(@NotNull Long tourId, @NotNull Long payerId, String description) {
+    public ExpenseConfirmationDto(Long tourId, Long payerId) {
         this.tourId = tourId;
         this.payerId = payerId;
-        this.description = description;
     }
 
     public Long getTourId() {
@@ -35,13 +32,5 @@ public class ExpenseConfirmationDto {
 
     public void setPayerId(Long payerId) {
         this.payerId = payerId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

@@ -25,7 +25,6 @@ public class ExpenseRepositoryTest {
 	@Test
 	public void testCreateExpense() {
 		Expense expense = new Expense(
-				"This is a description",
 				LocalDate.of(2012, 12, 12),
 				Currency.getInstance(Locale.GERMANY),
 				1,

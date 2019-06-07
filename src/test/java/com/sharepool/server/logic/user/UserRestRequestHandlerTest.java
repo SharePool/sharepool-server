@@ -1,5 +1,6 @@
 package com.sharepool.server.logic.user;
 
+import com.sharepool.server.common.AbstractUtilTest;
 import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.user.UserRestErrorMessages;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class UserRestRequestHandlerTest {
+public class UserRestRequestHandlerTest extends AbstractUtilTest {
 
     @Autowired
     private UserRestRequestHandler userRestRequestHandler;
@@ -49,15 +50,6 @@ public class UserRestRequestHandlerTest {
                 () -> userRestRequestHandler.loginUser(userLoginDto));
     }
 
-    private UserDto createValidUserDto() {
-        UserDto userDto = new UserDto();
-        userDto.setFirstName("firstname");
-        userDto.setLastName("lastname");
-        userDto.setUserName("userName");
-        userDto.setEmail("test@email.com");
-        userDto.setPassword("password");
-        return userDto;
-    }
 
     @Test
     public void testLoginUser() {

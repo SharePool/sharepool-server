@@ -1,5 +1,6 @@
 package com.sharepool.server.logic.expense;
 
+import com.sharepool.server.common.AbstractUtilTest;
 import com.sharepool.server.dal.ExpenseRepository;
 import com.sharepool.server.dal.TourRepository;
 import com.sharepool.server.dal.UserRepository;
@@ -19,18 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.Currency;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class ExpenseRestRequestHandlerTest {
-
-    private static final Random RANDOM = new Random();
+public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
     @Autowired
     private ExpenseRestRequestHandler expenseRestRequestHandler;
@@ -43,8 +40,8 @@ public class ExpenseRestRequestHandlerTest {
 
     @Test
     public void requestValidExpense() {
-        User user = userRepository.save(createUser());
-        Tour tour = tourRepository.save(createTour(user));
+        User user = userRepository.save(createValidUser());
+        Tour tour = tourRepository.save(createValidTour(user));
 
         ExpenseRequestResponseDto response = expenseRestRequestHandler.requestExpense(tour.getId());
 
@@ -54,9 +51,9 @@ public class ExpenseRestRequestHandlerTest {
 
     @Test
     public void requestInvalidExpense() {
-        User user = createUser();
+        User user = createValidUser();
         user.setId(1L);
-        Tour tour = createTour(user);
+        Tour tour = createValidTour(user);
         tour.setId(1L);
 
         assertThrows(ResponseStatusException.class,
@@ -64,37 +61,14 @@ public class ExpenseRestRequestHandlerTest {
                 TourRestErrorMessages.noTourFound(tour.getId()));
     }
 
-    private Tour createTour(User savedUser) {
-        Tour tour = new Tour();
-        tour.setFromLocation("Linz");
-        tour.setToLocation("Hagenberg");
-        tour.setCurrency(Currency.getInstance("EUR"));
-        tour.setTourCost(1);
-        tour.setKilometers(30);
-        tour.setOwner(savedUser);
-        return tour;
-    }
-
-    private User createUser() {
-        User user = new User();
-        user.setUserName("username");
-        user.setFirstName("First");
-        user.setLastName("Last");
-        user.setEmail("email" + RANDOM.nextInt(100) + "@test.com");
-        user.setPasswordHash("test");
-        return user;
-    }
-
     @Test
     public void confirmValidExpense() {
-        User receiver = userRepository.save(createUser());
-        Tour tour = tourRepository.save(createTour(receiver));
+        User receiver = userRepository.save(createValidUser());
+        Tour tour = tourRepository.save(createValidTour(receiver));
 
-        User payer = userRepository.save(createUser());
+        User payer = userRepository.save(createValidUser());
 
-        String description = "Test Drive";
-
-        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId(), description));
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId()));
 
         List<Expense> expensesForReceiver = expenseRepository.findAllByReceiver(receiver);
         Assert.assertEquals(1, expensesForReceiver.size());
@@ -105,17 +79,16 @@ public class ExpenseRestRequestHandlerTest {
         Assert.assertEquals(tour.getTourCost(), expense.getAmount(), 0.0);
         Assert.assertEquals(LocalDate.now(), expense.getCreationDate());
         Assert.assertEquals(tour.getCurrency(), expense.getCurrency());
-        Assert.assertEquals(description, expense.getDescription());
     }
 
     @Test
     public void confirmInvalidExpense() {
-        User user = createUser();
+        User user = createValidUser();
         user.setId(1L);
-        Tour tour = createTour(user);
+        Tour tour = createValidTour(user);
         tour.setId(1L);
 
         assertThrows(ResponseStatusException.class,
-                () -> expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), user.getId(), null)));
+                () -> expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), user.getId())));
     }
 }

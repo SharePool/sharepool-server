@@ -1,5 +1,6 @@
 package com.sharepool.server.logic.tour;
 
+import com.sharepool.server.common.AbstractUtilTest;
 import com.sharepool.server.dal.TourRepository;
 import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Tour;
@@ -13,14 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class TourRestRequestHandlerTest {
+public class TourRestRequestHandlerTest extends AbstractUtilTest {
 
     @Autowired
     private TourRestRequestHandler tourRestRequestHandler;
@@ -33,9 +33,9 @@ public class TourRestRequestHandlerTest {
 
     @Test
     public void getAllToursForUser() {
-        User user = userRepository.save(createUser());
+        User user = userRepository.save(createValidUser());
 
-        TourDto validTourDto = createValidTourCreationDto();
+        TourDto validTourDto = createValidTourDto();
         validTourDto.setOwnerId(user.getId());
 
         tourRestRequestHandler.createTour(validTourDto);
@@ -46,33 +46,14 @@ public class TourRestRequestHandlerTest {
         Assert.assertEquals(validTourDto.getFrom(), allToursForUser.get(0).getFrom());
     }
 
-    private TourDto createValidTourCreationDto() {
-        TourDto tourDto = new TourDto();
-        tourDto.setFrom("Linz");
-        tourDto.setTo("Hagenberg");
-        tourDto.setCurrency("EUR");
-        tourDto.setCost(1);
-        tourDto.setKilometers(30);
-        tourDto.setOwnerId(1L);
-        return tourDto;
-    }
 
-    private User createUser() {
-        User user = new User();
-        user.setUserName("username");
-        user.setFirstName("First");
-        user.setLastName("Last");
-        user.setEmail("email@test.com");
-        user.setPasswordHash("test");
-        return user;
-    }
 
     @Test
     public void updateTour() {
-        User user = userRepository.save(createUser());
-        Tour tour = tourRepository.save(createTour(user));
+        User user = userRepository.save(createValidUser());
+        Tour tour = tourRepository.save(createValidTour(user));
 
-        TourDto validTourDto = createValidTourCreationDto();
+        TourDto validTourDto = createValidTourDto();
         validTourDto.setCost(30);
 
         tourRestRequestHandler.updateTour(tour.getId(), validTourDto);
@@ -83,21 +64,10 @@ public class TourRestRequestHandlerTest {
         Assert.assertEquals(30, optionalTour.get().getTourCost(), 0);
     }
 
-    private Tour createTour(User savedUser) {
-        Tour tour = new Tour();
-        tour.setFromLocation("Linz");
-        tour.setToLocation("Hagenberg");
-        tour.setCurrency(Currency.getInstance("EUR"));
-        tour.setTourCost(1);
-        tour.setKilometers(30);
-        tour.setOwner(savedUser);
-        return tour;
-    }
-
     @Test
     public void deleteTour() {
-        User user = userRepository.save(createUser());
-        Tour tour = tourRepository.save(createTour(user));
+        User user = userRepository.save(createValidUser());
+        Tour tour = tourRepository.save(createValidTour(user));
 
         Optional<Tour> optionalTour = tourRepository.findById(tour.getId());
         Assert.assertTrue(optionalTour.isPresent());
