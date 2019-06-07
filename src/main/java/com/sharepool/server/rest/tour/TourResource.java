@@ -1,15 +1,20 @@
 package com.sharepool.server.rest.tour;
 
+import com.sharepool.server.domain.Tour;
 import com.sharepool.server.logic.tour.TourRestRequestHandler;
 import com.sharepool.server.rest.tour.dto.TourDto;
+import com.sharepool.server.rest.util.HATEOASPlaceholder;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.Api;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @Api(tags = "Tours", description = "Manage your tours.")
 @RestController
@@ -36,17 +41,18 @@ public class TourResource {
 	}
 
 	@PostMapping
-	public ResponseEntity createTour(
+	public ResponseEntity<Resource<HATEOASPlaceholder>> createTour(
 			@RequestBody
 			@NotNull
 			@Valid
 					TourDto tourDto
 	) {
-		requestHandler.createTour(tourDto);
+		Tour tour = requestHandler.createTour(tourDto);
 
-		System.out.println(userContext.getUserToken());
-
-		return ResponseEntity.created(null).build();
+		return ResponseEntity.created(null).body(
+				new Resource<>(
+						new HATEOASPlaceholder(),
+						linkTo(TourResource.class).slash(tour.getId()).withSelfRel()));
 	}
 
 	@PutMapping("/{tourId}")

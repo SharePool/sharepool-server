@@ -37,13 +37,13 @@ public class TourRestRequestHandler {
                 .collect(Collectors.toList());
     }
 
-    public void createTour(TourDto tourDto) {
+    public Tour createTour(TourDto tourDto) {
         User owner = RestHelperUtil.checkUserExists(userRepository, tourDto.getOwnerId());
 
         Tour tour = tourMapper.tourDtoToTour(tourDto);
         tour.setOwner(owner);
 
-        tourRepository.save(tour);
+        return tourRepository.save(tour);
     }
 
     public void updateTour(Long tourId, TourDto tourDto) {
