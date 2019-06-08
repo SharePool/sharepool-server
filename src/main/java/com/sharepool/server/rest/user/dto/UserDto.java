@@ -1,10 +1,13 @@
 package com.sharepool.server.rest.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
     @NotNull
@@ -18,7 +21,7 @@ public class UserDto {
     @NotNull
     @Size(min = 5, max = 20)
     private String userName;
-    
+
     @NotNull
     @Email
     private String email;

@@ -3,27 +3,25 @@ package com.sharepool.server.rest.util.auth;
 import com.sharepool.server.domain.User;
 import org.springframework.stereotype.Component;
 
-import java.util.function.Supplier;
-
 @Component
 public class UserContext {
 
-    private Supplier<String> userToken;
-    private Supplier<User> user;
+    private String userToken;
+    private User user;
 
     public String getUserToken() {
-        return userToken.get();
+        return userToken;
     }
 
-    public void setUserToken(Supplier<String> userToken) {
+    public void setUserToken(String userToken) {
         this.userToken = userToken;
     }
 
     public User getUser() {
-        return user.get();
+        return user;
     }
 
-    public void setUser(Supplier<User> user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

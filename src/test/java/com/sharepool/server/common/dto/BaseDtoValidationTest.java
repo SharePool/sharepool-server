@@ -1,14 +1,14 @@
 package com.sharepool.server.common.dto;
 
-import java.util.Set;
+import com.sharepool.server.common.AbstractUtilTest;
+import org.junit.Assert;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.Set;
 
-import org.junit.Assert;
-
-public class BaseDtoValidationTest {
+public class BaseDtoValidationTest extends AbstractUtilTest {
 
 	private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 

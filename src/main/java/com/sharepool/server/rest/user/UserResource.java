@@ -4,6 +4,7 @@ import com.sharepool.server.logic.user.UserRestRequestHandler;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserLoginDto;
+import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,14 @@ import javax.validation.Valid;
 public class UserResource {
 
     private final UserRestRequestHandler requestHandler;
+    private final UserContext userContext;
 
-    public UserResource(UserRestRequestHandler requestHandler) {
+    public UserResource(
+            UserRestRequestHandler requestHandler,
+            UserContext userContext
+    ) {
         this.requestHandler = requestHandler;
+        this.userContext = userContext;
     }
 
     @ApiOperation(
@@ -69,5 +75,19 @@ public class UserResource {
         UserCredentialsDto userCredentials = requestHandler.loginUser(userLoginDto);
 
         return ResponseEntity.ok(userCredentials);
+    }
+
+    @ApiOperation(
+            value = "Retrieves the information for the logged in user. " +
+                    "This information is extracted from the **Auth-Token** header."
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success. The users information will be presented.",
+                    response = UserDto.class),
+            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+    })
+    @GetMapping
+    public ResponseEntity<UserDto> getUserInfo() {
+        return ResponseEntity.ok(requestHandler.getUserInfo(userContext));
     }
 }

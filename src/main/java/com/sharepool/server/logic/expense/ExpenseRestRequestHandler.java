@@ -67,7 +67,6 @@ public class ExpenseRestRequestHandler {
         User payer = RestHelperUtil.checkUserExists(userRepository, expenseConfirmationDto.getPayerId());
 
         Expense expense = new Expense(
-                expenseConfirmationDto.getDescription(),
                 LocalDate.now(),
                 tour.getCurrency(),
                 tour.getTourCost(),

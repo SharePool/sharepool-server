@@ -7,6 +7,7 @@ import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserLoginDto;
 import com.sharepool.server.rest.util.PasswordStorage;
+import com.sharepool.server.rest.util.auth.UserContext;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -29,10 +30,10 @@ public class UserRestRequestHandler {
     }
 
     public UserCredentialsDto registerUser(UserDto userDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (userRepository.findByUserNameOrEmail(userDto.getUserName(), userDto.getEmail()).isPresent()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    UserRestErrorMessages.userWithEmailAlreadyExists(userDto.getEmail()));
+                    UserRestErrorMessages.userWithUserNameOrEmailAlreadyExists(userDto.getUserName(), userDto.getEmail()));
         }
 
         User user = userMapper.userDtoToUser(userDto);
@@ -74,5 +75,9 @@ public class UserRestRequestHandler {
             logger.error("User with email {} could not login", userLoginDto.getUserNameOrEmail(), e);
             return null;
         }
+    }
+
+    public UserDto getUserInfo(UserContext userContext) {
+        return userMapper.userToUserDto(userContext.getUser());
     }
 }

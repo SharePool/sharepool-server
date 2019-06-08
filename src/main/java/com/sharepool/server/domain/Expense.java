@@ -11,8 +11,6 @@ public class Expense {
 	@GeneratedValue
 	private Long id;
 
-	private String description;
-
 	private LocalDate creationDate;
 
 	private Currency currency;
@@ -32,7 +30,6 @@ public class Expense {
 	}
 
 	public Expense(
-			String description,
 			LocalDate creationDate,
 			Currency currency,
 			double amount,
@@ -40,7 +37,6 @@ public class Expense {
 			User receiver,
 			Tour tour
 	) {
-		this.description = description;
 		this.creationDate = creationDate;
 		this.currency = currency;
 		this.amount = amount;
@@ -55,14 +51,6 @@ public class Expense {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public LocalDate getCreationDate() {
