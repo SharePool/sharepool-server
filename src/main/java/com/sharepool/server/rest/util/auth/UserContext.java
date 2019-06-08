@@ -2,10 +2,12 @@ package com.sharepool.server.rest.util.auth;
 
 import com.sharepool.server.domain.User;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.function.Supplier;
 
 @Component
+@RequestScope
 public class UserContext {
 
     private Supplier<String> userToken;

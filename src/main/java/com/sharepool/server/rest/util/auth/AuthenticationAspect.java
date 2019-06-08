@@ -4,6 +4,7 @@ import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.User;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,9 +30,19 @@ public class AuthenticationAspect {
         this.userContext = userContext;
     }
 
-    @Before("execution(public * *(..)) " +
-            "&& within(@org.springframework.web.bind.annotation.RestController *) " +
-            "&& !within(com.sharepool.server.rest.user.UserResource)")
+    @Pointcut("execution(public * *(..)) ")
+    public void publicMethods() {
+    }
+
+    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
+    public void restControllers() {
+    }
+
+    @Pointcut("within(com.sharepool.server.rest.user.UserResource)")
+    public void userResource() {
+    }
+
+    @Before("publicMethods() && restControllers() && !userResource()")
     public boolean authenticate() {
         String token = request.getHeader("Auth-Token");
         if (token == null) {
