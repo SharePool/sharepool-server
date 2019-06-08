@@ -5,6 +5,7 @@ import com.sharepool.server.domain.User;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -42,20 +43,25 @@ public class AuthenticationAspect {
     public void userResource() {
     }
 
-    @Before("publicMethods() && restControllers() && !userResource()")
+    @Pointcut("execution(* com.sharepool.server.rest.user.UserResource.getUserInfo())")
+    public void exceptions() {
+    }
+
+    @Before("publicMethods() && restControllers() && (!userResource() || exceptions())")
     public boolean authenticate() {
-        String token = request.getHeader("Auth-Token");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No 'Auth-Token'-Header set.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    String.format("No %s-Header set.", HttpHeaders.AUTHORIZATION));
         }
 
         Optional<User> user = userRepository.findByUserToken(token);
         if (!user.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid authentication!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials!");
         }
 
-        userContext.setUserToken(() -> token);
-        userContext.setUser(user::get);
+        userContext.setUserToken(token);
+        userContext.setUser(user.get());
 
         return true;
     }
