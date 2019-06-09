@@ -90,8 +90,16 @@ public class ExpenseResource {
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @GetMapping()
-    public ResponseEntity<List<ExpenseDto>> getAllExpenses() {
-        return ResponseEntity.ok(requestHandler.getAllExpenses(userContext));
+    public ResponseEntity<List<ExpenseDto>> getAllExpenses(
+            @ApiParam("Optional filter for the receiver of the expense.")
+            @RequestParam(required = false)
+                    Long receiverId
+    ) {
+        return ResponseEntity.ok(requestHandler.getAllExpenses(
+                userContext,
+                receiverId
+                )
+        );
     }
 
 

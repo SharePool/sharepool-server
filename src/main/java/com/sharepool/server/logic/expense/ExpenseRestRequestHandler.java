@@ -81,7 +81,16 @@ public class ExpenseRestRequestHandler {
         expenseRepository.save(expense);
     }
 
-    public List<ExpenseDto> getAllExpenses(UserContext userContext) {
+    public List<ExpenseDto> getAllExpenses(UserContext userContext, Long receiverId) {
+        if (receiverId != null) {
+            User receiver = RestHelperUtil.checkUserExists(userRepository, receiverId);
+
+            return expenseRepository.findAllByPayerAndReceiver(userContext.getUser(), receiver)
+                    .stream()
+                    .map(expenseMapper::expenseToExpenseDto)
+                    .collect(Collectors.toList());
+        }
+
         return expenseRepository.findAllByPayer(userContext.getUser())
                 .stream()
                 .map(expenseMapper::expenseToExpenseDto)
