@@ -34,7 +34,7 @@ public class UserResource {
             value = "Registers a new user to the application."
     )
     @ApiResponses({
-            @ApiResponse(code = 201, message = "Success. The user has been successfully created. " +
+            @ApiResponse(code = 200, message = "Success. The user has been successfully created. " +
                     "The response contains the user token which should be used for follow up requests.",
                     response = UserCredentialsDto.class),
             @ApiResponse(code = 404, message = "Failed. The user with the email/username already exists."),
@@ -60,7 +60,7 @@ public class UserResource {
             value = "Logs in an already existing user to the application."
     )
     @ApiResponses({
-            @ApiResponse(code = 201, message = "Success. The user has been successfully logged in.",
+            @ApiResponse(code = 200, message = "Success. The user has been successfully logged in.",
                     response = UserCredentialsDto.class),
             @ApiResponse(code = 401, message = "Failed. Password was incorrect."),
             @ApiResponse(code = 404, message = "Failed. User with username/email does not exists."),

@@ -7,14 +7,18 @@ import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
+import com.sharepool.server.rest.expense.dto.ExpenseDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.util.RestHelperUtil;
+import com.sharepool.server.rest.util.auth.UserContext;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ExpenseRestRequestHandler {
@@ -75,5 +79,12 @@ public class ExpenseRestRequestHandler {
                 tour);
 
         expenseRepository.save(expense);
+    }
+
+    public List<ExpenseDto> getAllExpenses(UserContext userContext) {
+        return expenseRepository.findAllByPayer(userContext.getUser())
+                .stream()
+                .map(expenseMapper::expenseToExpenseDto)
+                .collect(Collectors.toList());
     }
 }

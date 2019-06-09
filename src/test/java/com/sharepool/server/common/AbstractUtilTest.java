@@ -6,18 +6,17 @@ import com.sharepool.server.rest.tour.dto.TourDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 
 import java.util.Currency;
-import java.util.Random;
 
 public abstract class AbstractUtilTest {
 
-    private static final Random RANDOM = new Random();
+    private static int ID = 0;
 
     protected User createValidUser() {
         User user = new User();
-        user.setUserName("username" + RANDOM.nextInt(100));
+        user.setUserName("username" + ++ID);
         user.setFirstName("First");
         user.setLastName("Last");
-        user.setEmail("email" + RANDOM.nextInt(100) + "@test.com");
+        user.setEmail("email" + ++ID + "@test.com");
         user.setPasswordHash("test");
         return user;
     }
