@@ -38,7 +38,7 @@ public class ExpenseResource {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success. The expense has been successfully requested and can be " +
                     "confirmed via the given link (HATEOAS).\n" +
-                    "The Method for this link it **PUT**.",
+                    "The Method for this link is **PUT**.",
                     response = Resource.class),
             @ApiResponse(code = 404, message = "Failed. The tour does not exist."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
