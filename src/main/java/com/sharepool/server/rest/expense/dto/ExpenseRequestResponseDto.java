@@ -2,10 +2,16 @@ package com.sharepool.server.rest.expense.dto;
 
 import com.sharepool.server.rest.tour.dto.TourDto;
 import com.sharepool.server.rest.user.dto.UserDto;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(value = "ExpenseRequest", description = "The request to make an expense for a tour.")
 public class ExpenseRequestResponseDto {
 
+    @ApiModelProperty(value = "The tours information.")
     private TourDto tour;
+
+    @ApiModelProperty(value = "The tours owners information.")
     private UserDto receiver;
 
     public ExpenseRequestResponseDto() {

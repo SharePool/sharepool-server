@@ -8,8 +8,10 @@ import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
+import com.sharepool.server.rest.expense.dto.ExpenseDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.tour.TourRestErrorMessages;
+import com.sharepool.server.rest.util.auth.UserContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -90,5 +92,50 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), user.getId())));
+    }
+
+    @Test
+    public void testGetAllExpenses() {
+        User receiver = userRepository.save(createValidUser());
+        Tour tour = tourRepository.save(createValidTour(receiver));
+        User payer = userRepository.save(createValidUser());
+
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId()));
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId()));
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId()));
+
+        UserContext userContext = new UserContext();
+        userContext.setUser(payer);
+
+        List<ExpenseDto> allExpenses = expenseRestRequestHandler.getAllExpenses(userContext, null);
+
+        Assert.assertEquals(allExpenses.size(), 3);
+        Assert.assertEquals(allExpenses.stream().mapToDouble(ExpenseDto::getAmount).sum(), 3, 0);
+    }
+
+    @Test
+    public void testGetAllExpensesForReceiver() {
+        User receiver1 = userRepository.save(createValidUser());
+        User receiver2 = userRepository.save(createValidUser());
+        Tour tour1 = tourRepository.save(createValidTour(receiver1));
+        Tour tour2 = tourRepository.save(createValidTour(receiver2));
+        User payer = userRepository.save(createValidUser());
+
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour1.getId(), payer.getId()));
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour1.getId(), payer.getId()));
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour2.getId(), payer.getId()));
+
+        UserContext userContext = new UserContext();
+        userContext.setUser(payer);
+
+        List<ExpenseDto> allExpensesForReceiver1 = expenseRestRequestHandler.getAllExpenses(userContext, receiver1.getId());
+
+        Assert.assertEquals(allExpensesForReceiver1.size(), 2);
+        Assert.assertEquals(allExpensesForReceiver1.stream().mapToDouble(ExpenseDto::getAmount).sum(), 2, 0);
+
+        List<ExpenseDto> allExpensesForReceiver2 = expenseRestRequestHandler.getAllExpenses(userContext, receiver2.getId());
+
+        Assert.assertEquals(allExpensesForReceiver2.size(), 1);
+        Assert.assertEquals(allExpensesForReceiver2.stream().mapToDouble(ExpenseDto::getAmount).sum(), 1, 0);
     }
 }
