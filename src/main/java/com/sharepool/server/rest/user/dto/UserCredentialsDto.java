@@ -1,8 +1,17 @@
 package com.sharepool.server.rest.user.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.springframework.http.HttpHeaders;
+
+@ApiModel(value = "UserCredentials", description = "The credentials for the user.")
 public class UserCredentialsDto {
 
+    @ApiModelProperty(value = "The users token which needs to be used for follow up " +
+            "requests via the " + HttpHeaders.AUTHORIZATION + " header.")
     private String userToken;
+
+    @ApiModelProperty(value = "The users unique id.")
     private Long userId;
 
     public UserCredentialsDto() {

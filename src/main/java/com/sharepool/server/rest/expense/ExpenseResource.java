@@ -4,7 +4,7 @@ import com.sharepool.server.logic.expense.ExpenseRestRequestHandler;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.util.auth.UserContext;
-import io.swagger.annotations.Api;
+import io.swagger.annotations.*;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +30,20 @@ public class ExpenseResource {
         this.userContext = userContext;
     }
 
+    @ApiOperation(
+            value = "Requests a expense for the given tour."
+    )
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Success. The expense has been successfully requested and can be " +
+                    "confirmed via the given link (HATEOAS).\n" +
+                    "The Method for this link it **PUT**.",
+                    response = Resource.class),
+            @ApiResponse(code = 404, message = "Failed. The tour does not exist."),
+            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+    })
     @PostMapping("{tourId}")
     public ResponseEntity<Resource<ExpenseRequestResponseDto>> requestExpense(
+            @ApiParam("The tours id for the requested expense.")
             @PathVariable("tourId")
             @NotNull
                     Long tourId
@@ -45,8 +57,20 @@ public class ExpenseResource {
         );
     }
 
+    @ApiOperation(
+            value = "Requests a expense for the given tour."
+    )
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Success. The expense has been successfully confirmed and persisted."),
+            @ApiResponse(code = 404, message = "Failed. The tour does not exist."),
+            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+    })
     @PutMapping("confirmations/{tourId}")
-    public ResponseEntity confirmExpense(@PathVariable Long tourId) {
+    public ResponseEntity confirmExpense(
+            @ApiParam("The tours id for the requested expense.")
+            @PathVariable
+                    Long tourId
+    ) {
         requestHandler.confirmExpense(
                 new ExpenseConfirmationDto(
                         tourId,

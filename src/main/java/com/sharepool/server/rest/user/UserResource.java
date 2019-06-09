@@ -6,6 +6,7 @@ import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserLoginDto;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class UserResource {
     }
 
     @ApiOperation(
-            value = "Registers a new user to the application"
+            value = "Registers a new user to the application."
     )
     @ApiResponses({
             @ApiResponse(code = 201, message = "Success. The user has been successfully created. " +
@@ -40,7 +41,7 @@ public class UserResource {
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @PutMapping
-    public ResponseEntity registerUser(
+    public ResponseEntity<UserCredentialsDto> registerUser(
             @ApiParam("The JSON body of the request. Contains parameters of user.")
             @RequestBody
             @Valid
@@ -56,7 +57,7 @@ public class UserResource {
     }
 
     @ApiOperation(
-            value = "Logs in an already existing user to the application"
+            value = "Logs in an already existing user to the application."
     )
     @ApiResponses({
             @ApiResponse(code = 201, message = "Success. The user has been successfully logged in.",
@@ -66,7 +67,7 @@ public class UserResource {
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @PostMapping
-    public ResponseEntity loginUser(
+    public ResponseEntity<UserCredentialsDto> loginUser(
             @ApiParam("The JSON body of the request. Contains parameters of the user login.")
             @RequestBody
             @Valid
@@ -79,7 +80,7 @@ public class UserResource {
 
     @ApiOperation(
             value = "Retrieves the information for the logged in user. " +
-                    "This information is extracted from the **Auth-Token** header."
+                    "This information is extracted from the " + HttpHeaders.AUTHORIZATION + " header."
     )
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success. The users information will be presented.",
