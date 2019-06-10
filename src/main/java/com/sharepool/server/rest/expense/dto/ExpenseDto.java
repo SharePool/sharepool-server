@@ -16,6 +16,8 @@ public class ExpenseDto {
 
     private double amount;
 
+    private UserDto payer;
+
     private UserDto receiver;
 
     private TourDto tour;
@@ -50,6 +52,14 @@ public class ExpenseDto {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public UserDto getPayer() {
+        return payer;
+    }
+
+    public void setPayer(UserDto payer) {
+        this.payer = payer;
     }
 
     public UserDto getReceiver() {
