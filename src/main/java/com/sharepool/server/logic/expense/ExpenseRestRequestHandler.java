@@ -118,4 +118,18 @@ public class ExpenseRestRequestHandler {
             receivingExpenses.add(expenseDto);
         }
     }
+
+    public Double getTotalBalance(UserContext userContext) {
+        ExpensesWrapper allExpenses = getAllExpenses(userContext, null);
+
+        double receivedSum = allExpenses.receivingExpenses.stream()
+                .mapToDouble(ExpenseDto::getAmount)
+                .sum();
+
+        double payedSum = allExpenses.payedExpenses.stream()
+                .mapToDouble(ExpenseDto::getAmount)
+                .sum();
+
+        return receivedSum - payedSum;
+    }
 }
