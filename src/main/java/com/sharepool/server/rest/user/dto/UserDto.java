@@ -1,13 +1,15 @@
 package com.sharepool.server.rest.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sharepool.server.rest.user.validation.FirstName;
+import com.sharepool.server.rest.user.validation.LastName;
+import com.sharepool.server.rest.user.validation.Password;
+import com.sharepool.server.rest.user.validation.UserName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @ApiModel(value = "User", description = "The detailed information of the user.")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,17 +17,17 @@ public class UserDto {
 
     @ApiModelProperty(value = "The users first name.", required = true)
     @NotNull
-    @Size(min = 3, max = 20)
+    @FirstName
     private String firstName;
 
     @ApiModelProperty(value = "The users last name.", required = true)
     @NotNull
-    @Size(min = 3, max = 20)
+    @LastName
     private String lastName;
 
     @ApiModelProperty(value = "The users unique username.", required = true)
     @NotNull
-    @Size(min = 5, max = 20)
+    @UserName
     private String userName;
 
     @ApiModelProperty(value = "The users unique email.", required = true)
@@ -35,8 +37,7 @@ public class UserDto {
 
     @ApiModelProperty(value = "The users password.", required = true)
     @NotNull
-    @Size(min = 8, max = 25)
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).*$")
+    @Password
     private String password;
 
     public UserDto() {
