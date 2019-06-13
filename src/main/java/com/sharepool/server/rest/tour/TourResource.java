@@ -7,6 +7,7 @@ import com.sharepool.server.rest.util.HATEOASPlaceholder;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.Api;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class TourResource {
 		this.userContext = userContext;
 	}
 
-	@GetMapping("users/{userId}")
+    @GetMapping(value = "users/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TourDto>> getAllToursForUser(
 			@PathVariable("userId")
 			@NotNull
@@ -40,7 +41,7 @@ public class TourResource {
 		return ResponseEntity.ok(userTours);
 	}
 
-	@PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Resource<HATEOASPlaceholder>> createTour(
 			@RequestBody
 			@NotNull
@@ -55,7 +56,7 @@ public class TourResource {
 						linkTo(TourResource.class).slash(tour.getId()).withSelfRel()));
 	}
 
-	@PutMapping("/{tourId}")
+    @PutMapping(value = "/{tourId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity updateTour(
 			@PathVariable("tourId")
 			@NotNull
@@ -71,7 +72,7 @@ public class TourResource {
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping("/{tourId}")
+    @DeleteMapping(value = "/{tourId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity deleteTour(
 			@PathVariable("tourId")
 			@NotNull
