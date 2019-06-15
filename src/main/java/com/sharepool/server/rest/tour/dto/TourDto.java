@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 @ApiModel(value = "Tour", description = "The detailed information of the tour.")
 @LocationsNotEqual
@@ -35,9 +36,15 @@ public class TourDto {
 	@ApiModelProperty(value = "The kilometers between the 2 locations.", required = true)
 	private double kilometers;
 
-	@ApiModelProperty(value = "The tours owners unique id.", required = true)
-	@NotNull
+    @ApiModelProperty(value = "The tours owners unique id.\n" +
+            "This parameter may not be set when creating/updating a tour.", required = true)
+    @Null
 	private Long ownerId;
+
+    @ApiModelProperty("Specifies whether this tour has been deactivated by the owner.\n" +
+            "This parameter may not be set when creating/updating a tour.")
+    @Null
+    private Boolean active;
 
 	public Long getTourId() {
 		return tourId;
@@ -94,4 +101,12 @@ public class TourDto {
 	public void setOwnerId(Long ownerId) {
 		this.ownerId = ownerId;
 	}
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

@@ -6,6 +6,7 @@ import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.tour.dto.TourDto;
+import com.sharepool.server.rest.util.auth.UserContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,15 +39,15 @@ public class TourRestRequestHandlerTest extends AbstractUtilTest {
         TourDto validTourDto = createValidTourDto();
         validTourDto.setOwnerId(user.getId());
 
-        tourRestRequestHandler.createTour(validTourDto);
+        UserContext userContext = new UserContext();
+        userContext.setUser(user);
+        tourRestRequestHandler.createTour(validTourDto, userContext);
 
         List<TourDto> allToursForUser = tourRestRequestHandler.getAllToursForUser(user.getId());
 
         Assert.assertEquals(1, allToursForUser.size());
         Assert.assertEquals(validTourDto.getFrom(), allToursForUser.get(0).getFrom());
     }
-
-
 
     @Test
     public void updateTour() {
@@ -56,7 +57,9 @@ public class TourRestRequestHandlerTest extends AbstractUtilTest {
         TourDto validTourDto = createValidTourDto();
         validTourDto.setCost(30);
 
-        tourRestRequestHandler.updateTour(tour.getId(), validTourDto);
+        UserContext userContext = new UserContext();
+        userContext.setUser(user);
+        tourRestRequestHandler.updateTour(tour.getId(), validTourDto, userContext);
 
         Optional<Tour> optionalTour = tourRepository.findById(tour.getId());
 
@@ -72,7 +75,9 @@ public class TourRestRequestHandlerTest extends AbstractUtilTest {
         Optional<Tour> optionalTour = tourRepository.findById(tour.getId());
         Assert.assertTrue(optionalTour.isPresent());
 
-        tourRestRequestHandler.deleteTour(tour.getId());
+        UserContext userContext = new UserContext();
+        userContext.setUser(user);
+        tourRestRequestHandler.deleteTour(tour.getId(), userContext);
 
         optionalTour = tourRepository.findById(tour.getId());
         Assert.assertFalse(optionalTour.isPresent());

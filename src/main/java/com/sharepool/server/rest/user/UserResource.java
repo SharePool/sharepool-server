@@ -40,7 +40,7 @@ public class UserResource {
             @ApiResponse(code = 404, message = "Failed. The user with the email/username already exists."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @PutMapping
+    @PostMapping
     public ResponseEntity<UserCredentialsDto> registerUser(
             @ApiParam("The JSON body of the request. Contains parameters of user.")
             @RequestBody
@@ -66,7 +66,7 @@ public class UserResource {
             @ApiResponse(code = 404, message = "Failed. User with username/email does not exists."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @PostMapping
+    @PutMapping
     public ResponseEntity<UserCredentialsDto> loginUser(
             @ApiParam("The JSON body of the request. Contains parameters of the user login.")
             @RequestBody

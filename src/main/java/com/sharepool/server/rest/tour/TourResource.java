@@ -29,13 +29,9 @@ public class TourResource {
 		this.userContext = userContext;
 	}
 
-	@GetMapping("users/{userId}")
-	public ResponseEntity<List<TourDto>> getAllToursForUser(
-			@PathVariable("userId")
-			@NotNull
-					Long userId
-	) {
-		List<TourDto> userTours = requestHandler.getAllToursForUser(userId);
+    @GetMapping
+    public ResponseEntity<List<TourDto>> getAllToursForUser() {
+        List<TourDto> userTours = requestHandler.getAllToursForUser(userContext.getUser().getId());
 
 		return ResponseEntity.ok(userTours);
 	}
@@ -47,7 +43,7 @@ public class TourResource {
 			@Valid
 					TourDto tourDto
 	) {
-		Tour tour = requestHandler.createTour(tourDto);
+        Tour tour = requestHandler.createTour(tourDto, userContext);
 
 		return ResponseEntity.created(null).body(
 				new Resource<>(
@@ -66,7 +62,7 @@ public class TourResource {
 			@NotNull
 					TourDto tourDto
 	) {
-		requestHandler.updateTour(tourId, tourDto);
+        requestHandler.updateTour(tourId, tourDto, userContext);
 
 		return ResponseEntity.ok().build();
 	}
@@ -77,7 +73,7 @@ public class TourResource {
 			@NotNull
 					Long tourId
 	) {
-		requestHandler.deleteTour(tourId);
+        requestHandler.deleteTour(tourId, userContext);
 
 		return ResponseEntity.ok().build();
 	}

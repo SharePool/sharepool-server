@@ -23,6 +23,8 @@ public class Tour {
 
 	private double tourCost;
 
+    private boolean active = true;
+
 	@ManyToOne
 	private User owner;
 
@@ -100,4 +102,12 @@ public class Tour {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
