@@ -44,7 +44,7 @@ public class TourResource {
 	@Cacheable(TOURS_CACHE_NAME)
 	public ResponseEntity<List<TourDto>> getAllToursForUser(
 			@ApiParam("Whether inactive tours should be included or not")
-			@RequestParam("includeInactive")
+            @RequestParam(value = "includeInactive", required = false)
 					boolean includeInactive
 	) {
 		List<TourDto> userTours = requestHandler.getAllToursForUser(userContext, includeInactive);
