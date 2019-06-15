@@ -65,6 +65,9 @@ public class UserRestRequestHandler {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
+                user.setUserToken(UUID.randomUUID().toString());
+                userRepository.save(user);
+
                 return new UserCredentialsDto(user.getUserToken(), user.getId());
             }
 
