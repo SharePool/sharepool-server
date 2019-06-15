@@ -6,9 +6,11 @@ import com.sharepool.server.rest.tour.dto.TourDto;
 import com.sharepool.server.rest.util.HATEOASPlaceholder;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.Api;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.Cacheable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -21,6 +23,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 @RequestMapping("tours")
 public class TourResource {
 
+	private static final String TOURS_CACHE_NAME = "tours";
+
 	private final TourRestRequestHandler requestHandler;
 	private final UserContext userContext;
 
@@ -30,6 +34,7 @@ public class TourResource {
 	}
 
     @GetMapping
+	@Cacheable(TOURS_CACHE_NAME)
     public ResponseEntity<List<TourDto>> getAllToursForUser() {
         List<TourDto> userTours = requestHandler.getAllToursForUser(userContext.getUser().getId());
 
@@ -52,6 +57,7 @@ public class TourResource {
 	}
 
 	@PutMapping("/{tourId}")
+	@CachePut("tours")
 	public ResponseEntity updateTour(
 			@PathVariable("tourId")
 			@NotNull
@@ -68,6 +74,7 @@ public class TourResource {
 	}
 
 	@DeleteMapping("/{tourId}")
+	@CachePut("tours")
 	public ResponseEntity deleteTour(
 			@PathVariable("tourId")
 			@NotNull
