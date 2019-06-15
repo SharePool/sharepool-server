@@ -80,6 +80,7 @@ public class TourRestRequestHandlerTest extends AbstractUtilTest {
         tourRestRequestHandler.deleteTour(tour.getId(), userContext);
 
         optionalTour = tourRepository.findById(tour.getId());
-        Assert.assertFalse(optionalTour.isPresent());
+        Assert.assertTrue(optionalTour.isPresent());
+        Assert.assertFalse(optionalTour.get().isActive());
     }
 }
