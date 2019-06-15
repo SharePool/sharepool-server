@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface TourRepository extends CrudRepository<Tour, Long> {
 	List<Tour> findAllByOwner(User owner);
 
+	List<Tour> findAllByOwnerAndActiveIsTrue(User owner);
+
 	Optional<Tour> findByIdAndOwner(Long tourId, User owner);
 }

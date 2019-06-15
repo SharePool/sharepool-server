@@ -23,7 +23,7 @@ public class Tour {
 
 	private double tourCost;
 
-    private boolean active = true;
+	private boolean active;
 
 	@ManyToOne
 	private User owner;

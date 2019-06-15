@@ -3,7 +3,6 @@ package com.sharepool.server.logic.tour;
 import com.sharepool.server.dal.TourRepository;
 import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Tour;
-import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.tour.dto.TourDto;
 import com.sharepool.server.rest.util.RestHelperUtil;
 import com.sharepool.server.rest.util.auth.UserContext;
@@ -29,20 +28,23 @@ public class TourRestRequestHandler {
         this.tourMapper = tourMapper;
     }
 
-    public List<TourDto> getAllToursForUser(Long userId) {
-        User owner = RestHelperUtil.checkExists(userRepository, userId, User.class);
+    public List<TourDto> getAllToursForUser(UserContext userContext, boolean includeInactive) {
+        if (includeInactive) {
+            return tourRepository.findAllByOwner(userContext.getUser())
+                    .stream()
+                    .map(tourMapper::tourToTourDto)
+                    .collect(Collectors.toList());
+        }
 
-        return tourRepository.findAllByOwner(owner)
+        return tourRepository.findAllByOwnerAndActiveIsTrue(userContext.getUser())
                 .stream()
                 .map(tourMapper::tourToTourDto)
                 .collect(Collectors.toList());
     }
 
     public Tour createTour(TourDto tourDto, UserContext userContext) {
-        User owner = RestHelperUtil.checkExists(userRepository, userContext.getUser().getId(), User.class);
-
         Tour tour = tourMapper.tourDtoToTour(tourDto);
-        tour.setOwner(owner);
+        tour.setOwner(userContext.getUser());
         tour.setActive(true);
 
         return tourRepository.save(tour);
@@ -62,5 +64,6 @@ public class TourRestRequestHandler {
                 () -> tourRepository.findByIdAndOwner(tourId, userContext.getUser()), tourId, Tour.class);
 
         tour.setActive(false);
+        tourRepository.save(tour);
     }
 }

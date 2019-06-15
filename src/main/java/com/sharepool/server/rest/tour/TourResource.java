@@ -5,7 +5,7 @@ import com.sharepool.server.logic.tour.TourRestRequestHandler;
 import com.sharepool.server.rest.tour.dto.TourDto;
 import com.sharepool.server.rest.util.HATEOASPlaceholder;
 import com.sharepool.server.rest.util.auth.UserContext;
-import io.swagger.annotations.Api;
+import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
@@ -33,22 +33,41 @@ public class TourResource {
 		this.userContext = userContext;
 	}
 
-    @GetMapping
+	@ApiOperation(
+			value = "Lists all tours for the logged in user."
+	)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success. The response contains the users tours."),
+			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+	})
+	@GetMapping
 	@Cacheable(TOURS_CACHE_NAME)
-    public ResponseEntity<List<TourDto>> getAllToursForUser() {
-        List<TourDto> userTours = requestHandler.getAllToursForUser(userContext.getUser().getId());
+	public ResponseEntity<List<TourDto>> getAllToursForUser(
+			@ApiParam("Whether inactive tours should be included or not")
+			@RequestParam("includeInactive")
+					boolean includeInactive
+	) {
+		List<TourDto> userTours = requestHandler.getAllToursForUser(userContext, includeInactive);
 
 		return ResponseEntity.ok(userTours);
 	}
 
+	@ApiOperation(
+			value = "Creates a new tour."
+	)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success. The tour has been successfully created."),
+			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+	})
 	@PostMapping
 	public ResponseEntity<Resource<HATEOASPlaceholder>> createTour(
+			@ApiParam("The JSON body of the request. Contains parameters of the tour.")
 			@RequestBody
 			@NotNull
 			@Valid
 					TourDto tourDto
 	) {
-        Tour tour = requestHandler.createTour(tourDto, userContext);
+		Tour tour = requestHandler.createTour(tourDto, userContext);
 
 		return ResponseEntity.created(null).body(
 				new Resource<>(
@@ -56,23 +75,42 @@ public class TourResource {
 						linkTo(TourResource.class).slash(tour.getId()).withSelfRel()));
 	}
 
+	@ApiOperation(
+			value = "Updates an existing tour."
+	)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success. The tour has been successfully updated."),
+			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
+			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+	})
 	@PutMapping("/{tourId}")
 	@CachePut("tours")
 	public ResponseEntity updateTour(
+			@ApiParam("The id of the tour to update.")
 			@PathVariable("tourId")
 			@NotNull
 					Long tourId,
 
+			@ApiParam("The JSON body of the request. Contains parameters of the tour.")
 			@RequestBody
 			@Valid
 			@NotNull
 					TourDto tourDto
 	) {
-        requestHandler.updateTour(tourId, tourDto, userContext);
+		requestHandler.updateTour(tourId, tourDto, userContext);
 
 		return ResponseEntity.ok().build();
 	}
 
+	@ApiOperation(
+			value = "Deactivates an existing tour.\n" +
+					"Tours can't be deleted as **Expenses** would then lose their tour."
+	)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success. The tour has been successfully deactivated."),
+			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
+			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+	})
 	@DeleteMapping("/{tourId}")
 	@CachePut("tours")
 	public ResponseEntity deleteTour(
@@ -80,7 +118,7 @@ public class TourResource {
 			@NotNull
 					Long tourId
 	) {
-        requestHandler.deleteTour(tourId, userContext);
+		requestHandler.deleteTour(tourId, userContext);
 
 		return ResponseEntity.ok().build();
 	}

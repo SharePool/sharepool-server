@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class TourRestRequestHandlerTest extends AbstractUtilTest {
         userContext.setUser(user);
         tourRestRequestHandler.createTour(validTourDto, userContext);
 
-        List<TourDto> allToursForUser = tourRestRequestHandler.getAllToursForUser(user.getId());
+        List<TourDto> allToursForUser = tourRestRequestHandler.getAllToursForUser(userContext, false);
 
         Assert.assertEquals(1, allToursForUser.size());
         Assert.assertEquals(validTourDto.getFrom(), allToursForUser.get(0).getFrom());
@@ -105,5 +106,29 @@ public class TourRestRequestHandlerTest extends AbstractUtilTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> tourRestRequestHandler.deleteTour(tour.getId(), userContext));
+    }
+
+    @Test
+    public void testGetAllToursForUserActiveFilter() {
+        User user = createValidUser();
+
+        user = userRepository.save(user);
+
+        Tour activeTour = createValidTour(user);
+        Tour inactiveTour = createValidTour(user);
+
+        activeTour.setActive(true);
+        inactiveTour.setActive(false);
+
+        tourRepository.saveAll(Arrays.asList(activeTour, inactiveTour));
+
+        UserContext userContext = new UserContext();
+        userContext.setUser(user);
+
+        List<TourDto> allToursForUser = tourRestRequestHandler.getAllToursForUser(userContext, false);
+        Assert.assertEquals(1, allToursForUser.size());
+
+        allToursForUser = tourRestRequestHandler.getAllToursForUser(userContext, true);
+        Assert.assertEquals(2, allToursForUser.size());
     }
 }
