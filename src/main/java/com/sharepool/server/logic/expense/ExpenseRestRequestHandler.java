@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,7 +71,7 @@ public class ExpenseRestRequestHandler {
         User payer = RestHelperUtil.checkExists(userRepository, expenseConfirmationDto.getPayerId(), User.class);
 
         Expense expense = new Expense(
-                LocalDate.now(),
+                LocalDateTime.now(),
                 tour.getCurrency(),
                 tour.getTourCost(),
                 payer,
