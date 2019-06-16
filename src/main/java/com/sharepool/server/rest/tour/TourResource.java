@@ -84,7 +84,7 @@ public class TourResource {
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
 	@PutMapping("/{tourId}")
-	@CachePut("tours")
+	@CachePut(TOURS_CACHE_NAME)
 	public ResponseEntity updateTour(
 			@ApiParam("The id of the tour to update.")
 			@PathVariable("tourId")
@@ -112,13 +112,33 @@ public class TourResource {
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
 	@DeleteMapping("/{tourId}")
-	@CachePut("tours")
+	@CachePut(TOURS_CACHE_NAME)
 	public ResponseEntity deleteTour(
 			@PathVariable("tourId")
 			@NotNull
 					Long tourId
 	) {
 		requestHandler.deleteTour(tourId, userContext);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@ApiOperation(
+			value = "Activates an existing tour."
+	)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success. The tour has been successfully activated."),
+			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
+			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+	})
+	@PutMapping("{tourId}/activate")
+	@CachePut(TOURS_CACHE_NAME)
+	public ResponseEntity activateTour(
+			@PathVariable("tourId")
+			@NotNull
+					Long tourId
+	) {
+		requestHandler.activateTour(tourId, userContext);
 
 		return ResponseEntity.ok().build();
 	}

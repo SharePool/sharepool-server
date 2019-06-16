@@ -66,4 +66,12 @@ public class TourRestRequestHandler {
         tour.setActive(false);
         tourRepository.save(tour);
     }
+
+    public void activateTour(Long tourId, UserContext userContext) {
+        Tour tour = RestHelperUtil.checkExists(
+                () -> tourRepository.findByIdAndOwner(tourId, userContext.getUser()), tourId, Tour.class);
+
+        tour.setActive(true);
+        tourRepository.save(tour);
+    }
 }
