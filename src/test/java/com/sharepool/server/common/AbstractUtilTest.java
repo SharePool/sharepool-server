@@ -39,7 +39,6 @@ public abstract class AbstractUtilTest {
         tourDto.setCurrency("EUR");
         tourDto.setCost(1);
         tourDto.setKilometers(30);
-        tourDto.setOwnerId(1L);
         return tourDto;
     }
 

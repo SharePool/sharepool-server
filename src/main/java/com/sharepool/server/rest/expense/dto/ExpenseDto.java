@@ -3,14 +3,14 @@ package com.sharepool.server.rest.expense.dto;
 import com.sharepool.server.rest.tour.dto.TourDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Currency;
 
 public class ExpenseDto {
 
     private Long id;
 
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     private Currency currency;
 
@@ -28,11 +28,11 @@ public class ExpenseDto {
         this.id = id;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

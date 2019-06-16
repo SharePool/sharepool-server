@@ -1,7 +1,7 @@
 package com.sharepool.server.domain;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Currency;
 
 @Entity
@@ -11,7 +11,7 @@ public class Expense {
 	@GeneratedValue
 	private Long id;
 
-	private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
 	private Currency currency;
 
@@ -30,12 +30,12 @@ public class Expense {
 	}
 
 	public Expense(
-			LocalDate creationDate,
-			Currency currency,
-			double amount,
-			User payer,
-			User receiver,
-			Tour tour
+            LocalDateTime creationDate,
+            Currency currency,
+            double amount,
+            User payer,
+            User receiver,
+            Tour tour
 	) {
 		this.creationDate = creationDate;
 		this.currency = currency;
@@ -53,11 +53,11 @@ public class Expense {
 		this.id = id;
 	}
 
-	public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 

@@ -6,9 +6,11 @@ import com.sharepool.server.rest.expense.dto.ExpenseDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.Cacheable;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -20,6 +22,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 @RequestMapping("expenses")
 public class ExpenseResource {
+
+    private static final String EXPENSE_CACHE_NAME = "expenses";
 
     private final ExpenseRestRequestHandler requestHandler;
     private final UserContext userContext;
@@ -68,6 +72,7 @@ public class ExpenseResource {
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @PutMapping("confirmations/{tourId}")
+    @CachePut(EXPENSE_CACHE_NAME)
     public ResponseEntity confirmExpense(
             @ApiParam("The tours id for the requested expense.")
             @PathVariable
@@ -89,7 +94,8 @@ public class ExpenseResource {
             @ApiResponse(code = 200, message = "Success. The list contains all expenses for all tours."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @GetMapping()
+    @GetMapping
+    @Cacheable("expenses")
     public ResponseEntity<List<ExpenseDto>> getAllExpenses(
             @ApiParam("Optional filter for the receiver of the expense.")
             @RequestParam(required = false)
