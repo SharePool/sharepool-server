@@ -8,6 +8,7 @@ import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class UserResource {
             @ApiResponse(code = 404, message = "Failed. The user with the email/username already exists."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserCredentialsDto> registerUser(
             @ApiParam("The JSON body of the request. Contains parameters of user.")
             @RequestBody
@@ -66,7 +67,7 @@ public class UserResource {
             @ApiResponse(code = 404, message = "Failed. User with username/email does not exists."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @PutMapping
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserCredentialsDto> loginUser(
             @ApiParam("The JSON body of the request. Contains parameters of the user login.")
             @RequestBody
@@ -87,7 +88,7 @@ public class UserResource {
                     response = UserDto.class),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @GetMapping
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> getUserInfo() {
         return ResponseEntity.ok(requestHandler.getUserInfo(userContext));
     }

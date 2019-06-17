@@ -8,6 +8,7 @@ import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.Cacheable;
@@ -40,11 +41,11 @@ public class TourResource {
 			@ApiResponse(code = 200, message = "Success. The response contains the users tours."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@GetMapping
+	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Cacheable(TOURS_CACHE_NAME)
 	public ResponseEntity<List<TourDto>> getAllToursForUser(
 			@ApiParam("Whether inactive tours should be included or not")
-            @RequestParam(value = "includeInactive", required = false)
+			@RequestParam(value = "includeInactive", required = false)
 					boolean includeInactive
 	) {
 		List<TourDto> userTours = requestHandler.getAllToursForUser(userContext, includeInactive);
@@ -59,7 +60,7 @@ public class TourResource {
 			@ApiResponse(code = 200, message = "Success. The tour has been successfully created."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Resource<HATEOASPlaceholder>> createTour(
 			@ApiParam("The JSON body of the request. Contains parameters of the tour.")
 			@RequestBody
@@ -83,7 +84,7 @@ public class TourResource {
 			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@PutMapping("/{tourId}")
+	@PutMapping(value = "/{tourId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CachePut(TOURS_CACHE_NAME)
 	public ResponseEntity updateTour(
 			@ApiParam("The id of the tour to update.")
@@ -111,7 +112,7 @@ public class TourResource {
 			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@DeleteMapping("/{tourId}")
+	@DeleteMapping(value = "/{tourId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CachePut(TOURS_CACHE_NAME)
 	public ResponseEntity deleteTour(
 			@PathVariable("tourId")
@@ -131,7 +132,7 @@ public class TourResource {
 			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@PutMapping("{tourId}/activate")
+	@PutMapping(value = "{tourId}/activate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CachePut(TOURS_CACHE_NAME)
 	public ResponseEntity activateTour(
 			@PathVariable("tourId")

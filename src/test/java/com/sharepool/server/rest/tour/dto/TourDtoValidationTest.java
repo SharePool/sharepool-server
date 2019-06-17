@@ -10,7 +10,7 @@ public class TourDtoValidationTest extends BaseDtoValidationTest {
 		TourDto TourDto = new TourDto();
 		TourDto.setCost(1);
 
-		assertContainsViolation(TourDto, "from", 3);
+        assertContainsViolation(TourDto, "from", 3);
 		assertContainsViolation(TourDto, "to");
 		assertContainsViolation(TourDto, "currency");
 	}
