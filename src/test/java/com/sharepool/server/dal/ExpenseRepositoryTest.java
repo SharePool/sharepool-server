@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.Locale;
@@ -25,7 +25,7 @@ public class ExpenseRepositoryTest {
 	@Test
 	public void testCreateExpense() {
 		Expense expense = new Expense(
-				LocalDate.of(2012, 12, 12),
+				LocalDateTime.of(2012, 12, 12, 12, 0),
 				Currency.getInstance(Locale.GERMANY),
 				1,
 				new User("user1", "Tobias", "Kaderle", "tobias.k@mail.at", "somehash", Collections.emptySet()),

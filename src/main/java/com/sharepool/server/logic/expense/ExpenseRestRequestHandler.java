@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +46,7 @@ public class ExpenseRestRequestHandler {
     }
 
     public ExpenseRequestResponseDto requestExpense(Long tourId) {
-        Tour tour = RestHelperUtil.checkTourExists(tourRepository, tourId);
+        Tour tour = RestHelperUtil.checkExists(tourRepository, tourId, Tour.class);
 
         User owner = tour.getOwner();
         checkOwnerOfTourWasSet(tourId, owner);
@@ -63,15 +63,15 @@ public class ExpenseRestRequestHandler {
     }
 
     public void confirmExpense(ExpenseConfirmationDto expenseConfirmationDto) {
-        Tour tour = RestHelperUtil.checkTourExists(tourRepository, expenseConfirmationDto.getTourId());
+        Tour tour = RestHelperUtil.checkExists(tourRepository, expenseConfirmationDto.getTourId(), Tour.class);
 
         User receiver = tour.getOwner();
         checkOwnerOfTourWasSet(expenseConfirmationDto.getTourId(), receiver);
 
-        User payer = RestHelperUtil.checkUserExists(userRepository, expenseConfirmationDto.getPayerId());
+        User payer = RestHelperUtil.checkExists(userRepository, expenseConfirmationDto.getPayerId(), User.class);
 
         Expense expense = new Expense(
-                LocalDate.now(),
+                LocalDateTime.now(),
                 tour.getCurrency(),
                 tour.getTourCost(),
                 payer,
@@ -83,7 +83,7 @@ public class ExpenseRestRequestHandler {
 
     public List<ExpenseDto> getAllExpenses(UserContext userContext, Long receiverId) {
         if (receiverId != null) {
-            User receiver = RestHelperUtil.checkUserExists(userRepository, receiverId);
+            User receiver = RestHelperUtil.checkExists(userRepository, receiverId, User.class);
 
             return expenseRepository.findAllByPayerAndReceiver(userContext.getUser(), receiver)
                     .stream()

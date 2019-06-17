@@ -1,35 +1,31 @@
 package com.sharepool.server.rest.util;
 
-import com.sharepool.server.dal.TourRepository;
-import com.sharepool.server.dal.UserRepository;
-import com.sharepool.server.domain.Tour;
-import com.sharepool.server.domain.User;
-import com.sharepool.server.rest.tour.TourRestErrorMessages;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class RestHelperUtil {
 
     private RestHelperUtil() {
     }
 
-    public static Tour checkTourExists(TourRepository tourRepository, Long tourId) {
-        Optional<Tour> optionalTour = tourRepository.findById(tourId);
-        if (!optionalTour.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noTourFound(tourId));
-        }
-
-        return optionalTour.get();
+    public static <T, K> T checkExists(CrudRepository<T, K> repository, K id, Class<T> tClass) {
+        return checkExists(() -> repository.findById(id), id, tClass);
     }
 
-    public static User checkUserExists(UserRepository userRepository, Long userId) {
-        Optional<User> owner = userRepository.findById(userId);
-        if (!owner.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, TourRestErrorMessages.noUserFound(userId));
+    public static <T, K> T checkExists(Supplier<Optional<T>> supplier, K id, Class<T> tClass) {
+        Optional<T> obj = supplier.get();
+        if (!obj.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    String.format("No %s found for id %s",
+                            tClass.getSimpleName(),
+                            id.toString()));
         }
 
-        return owner.get();
+        return obj.get();
     }
 }
