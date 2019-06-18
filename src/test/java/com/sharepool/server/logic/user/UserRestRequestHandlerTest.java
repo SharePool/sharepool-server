@@ -105,6 +105,5 @@ public class UserRestRequestHandlerTest extends AbstractUtilTest {
         assertEquals(userUpdateDto.getUserName(), updatedUser.getUserName());
         assertEquals(userUpdateDto.getEmail(), updatedUser.getEmail());
         assertEquals(userUpdateDto.getGasConsumption(), updatedUser.getGasConsumption());
-        assertEquals(userUpdateDto.getProfileImg(), updatedUser.getProfileImg());
     }
 }
