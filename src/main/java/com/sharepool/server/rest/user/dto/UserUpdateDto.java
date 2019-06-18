@@ -19,11 +19,12 @@ public class UserUpdateDto {
     @Email
     private String email;
 
-    // l per 100 km
+    @ApiModelProperty(value = "The user's car's average gas consumption over 100 km in liters.", required = true)
     @NotNull
     @PositiveOrZero
     private Double gasConsumption;
 
+    @ApiModelProperty(value = "The user's profile image as base64 encoded byte-array.")
     private byte[] profileImg;
 
     public UserUpdateDto() {

@@ -10,35 +10,36 @@ import javax.validation.constraints.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
-    @ApiModelProperty(value = "The users first name.", required = true)
+    @ApiModelProperty(value = "The user's first name.", required = true)
     @NotNull
     @Size(min = 3, max = 20)
     private String firstName;
 
-    @ApiModelProperty(value = "The users last name.", required = true)
+    @ApiModelProperty(value = "The user's last name.", required = true)
     @NotNull
     @Size(min = 3, max = 20)
     private String lastName;
 
-    @ApiModelProperty(value = "The users unique username.", required = true)
+    @ApiModelProperty(value = "The user's unique username.", required = true)
     @NotNull
     @Size(min = 5, max = 20)
     private String userName;
 
-    @ApiModelProperty(value = "The users unique email.", required = true)
+    @ApiModelProperty(value = "The user's unique email.", required = true)
     @NotNull
     @Email
     private String email;
 
-    @ApiModelProperty(value = "The users password.", required = true)
+    @ApiModelProperty(value = "The user's password.", required = true)
     @NotNull
     @Size(min = 8, max = 25)
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).*$")
     private String password;
 
+    @ApiModelProperty(value = "The user's profile image as base64 encoded byte-array.")
     private byte[] profileImg;
 
-    // l per 100 km
+    @ApiModelProperty(value = "The user's car's average gas consumption over 100 km in liters.", required = true)
     @NotNull
     @PositiveOrZero
     private Double gasConsumption;
