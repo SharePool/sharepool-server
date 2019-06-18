@@ -64,7 +64,6 @@ public class UserResource {
     )
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success. The user info has been successfully updated. "),
-            @ApiResponse(code = 404, message = "Failed."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
