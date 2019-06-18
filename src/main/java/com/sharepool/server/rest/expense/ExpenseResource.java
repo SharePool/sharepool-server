@@ -8,6 +8,7 @@ import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.Cacheable;
@@ -47,7 +48,7 @@ public class ExpenseResource {
             @ApiResponse(code = 404, message = "Failed. The tour does not exist."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @PostMapping("{tourId}")
+    @PostMapping(value = "{tourId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resource<ExpenseRequestResponseDto>> requestExpense(
             @ApiParam("The tours id for the requested expense.")
             @PathVariable("tourId")
@@ -71,7 +72,7 @@ public class ExpenseResource {
             @ApiResponse(code = 404, message = "Failed. The tour does not exist."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @PutMapping("confirmations/{tourId}")
+    @PutMapping(value = "confirmations/{tourId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CachePut(EXPENSE_CACHE_NAME)
     public ResponseEntity confirmExpense(
             @ApiParam("The tours id for the requested expense.")
@@ -94,8 +95,8 @@ public class ExpenseResource {
             @ApiResponse(code = 200, message = "Success. The list contains all expenses for all tours."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @GetMapping
-    @Cacheable("expenses")
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Cacheable(EXPENSE_CACHE_NAME)
     public ResponseEntity<List<ExpenseDto>> getAllExpenses(
             @ApiParam("Optional filter for the receiver of the expense.")
             @RequestParam(required = false)

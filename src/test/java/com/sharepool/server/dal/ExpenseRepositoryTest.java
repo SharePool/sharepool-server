@@ -25,7 +25,7 @@ public class ExpenseRepositoryTest {
 	@Test
 	public void testCreateExpense() {
 		Expense expense = new Expense(
-                LocalDateTime.of(2012, 12, 12, 12, 0),
+				LocalDateTime.of(2012, 12, 12, 12, 0),
 				Currency.getInstance(Locale.GERMANY),
 				1,
 				new User("user1", "Tobias", "Kaderle", "tobias.k@mail.at", "somehash", "asd".getBytes(), 1.0, Collections.emptySet()),
