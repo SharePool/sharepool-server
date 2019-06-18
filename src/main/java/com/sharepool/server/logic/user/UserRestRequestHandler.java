@@ -86,11 +86,7 @@ public class UserRestRequestHandler {
     }
 
     public void updateUserInfo(User oldUser, UserUpdateDto userDto) {
-        oldUser.setEmail(userDto.getEmail());
-        oldUser.setUserName(userDto.getUserName());
-        oldUser.setProfileImg(userDto.getProfileImg());
-        oldUser.setGasConsumption(userDto.getGasConsumption());
-
+        userMapper.updateUserFromUserUpdateDto(userDto, oldUser);
         userRepository.save(oldUser);
     }
 }
