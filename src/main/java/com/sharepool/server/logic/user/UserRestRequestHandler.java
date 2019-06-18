@@ -6,6 +6,7 @@ import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserLoginDto;
+import com.sharepool.server.rest.user.dto.UserUpdateDto;
 import com.sharepool.server.rest.util.PasswordStorage;
 import com.sharepool.server.rest.util.auth.UserContext;
 import org.slf4j.Logger;
@@ -82,5 +83,14 @@ public class UserRestRequestHandler {
 
     public UserDto getUserInfo(UserContext userContext) {
         return userMapper.userToUserDto(userContext.getUser());
+    }
+
+    public void updateUserInfo(User oldUser, UserUpdateDto userDto) {
+        oldUser.setEmail(userDto.getEmail());
+        oldUser.setUserName(userDto.getUserName());
+        oldUser.setProfileImg(userDto.getProfileImg());
+        oldUser.setGasConsumption(userDto.getGasConsumption());
+
+        userRepository.save(oldUser);
     }
 }

@@ -1,9 +1,11 @@
 package com.sharepool.server.rest.user;
 
+import com.sharepool.server.domain.User;
 import com.sharepool.server.logic.user.UserRestRequestHandler;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserLoginDto;
+import com.sharepool.server.rest.user.dto.UserUpdateDto;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpHeaders;
@@ -57,6 +59,26 @@ public class UserResource {
     }
 
     @ApiOperation(
+            value = "Update user's data."
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success. The user info has been successfully updated. "),
+            @ApiResponse(code = 404, message = "Failed."),
+            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+    })
+    @PutMapping
+    public ResponseEntity updateUser(
+            @ApiParam("The JSON body of the request. Contains parameters of user.")
+            @RequestBody
+            @Valid
+                    UserUpdateDto userDto
+    ) {
+        User oldUser = userContext.getUser();
+        requestHandler.updateUserInfo(oldUser, userDto);
+        return ResponseEntity.ok(null);
+    }
+
+    @ApiOperation(
             value = "Logs in an already existing user to the application."
     )
     @ApiResponses({
@@ -66,7 +88,7 @@ public class UserResource {
             @ApiResponse(code = 404, message = "Failed. User with username/email does not exists."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @PutMapping
+    @PutMapping(path = "logins")
     public ResponseEntity<UserCredentialsDto> loginUser(
             @ApiParam("The JSON body of the request. Contains parameters of the user login.")
             @RequestBody

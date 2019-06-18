@@ -33,6 +33,11 @@ public class User {
 
     private String userToken;
 
+    private byte[] profileImg;
+
+    // l per 100 km
+    private Double gasConsumption;
+
     @ManyToMany
     private Set<User> friends;
 
@@ -45,13 +50,16 @@ public class User {
             @NotNull String lastName,
             @NotNull String email,
             @NotNull String passwordHash,
-            Set<User> friends
+            byte[] profileImg,
+            Double gasConsumption, Set<User> friends
     ) {
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.profileImg = profileImg;
+        this.gasConsumption = gasConsumption;
         this.friends = friends;
     }
 
@@ -117,5 +125,21 @@ public class User {
 
     public void setFriends(Set<User> friends) {
         this.friends = friends;
+    }
+
+    public byte[] getProfileImg() {
+        return profileImg;
+    }
+
+    public void setProfileImg(byte[] profileImg) {
+        this.profileImg = profileImg;
+    }
+
+    public Double getGasConsumption() {
+        return gasConsumption;
+    }
+
+    public void setGasConsumption(Double gasConsumption) {
+        this.gasConsumption = gasConsumption;
     }
 }

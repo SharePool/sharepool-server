@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @ApiModel(value = "User", description = "The detailed information of the user.")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,15 +36,24 @@ public class UserDto {
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).*$")
     private String password;
 
+    private byte[] profileImg;
+
+    // l per 100 km
+    @NotNull
+    @PositiveOrZero
+    private Double gasConsumption;
+
     public UserDto() {
     }
 
-    public UserDto(@NotNull String firstName, @NotNull String lastName, @NotNull String userName, @NotNull @Email String email, @NotNull String password) {
+    public UserDto(@NotNull String firstName, @NotNull String lastName, @NotNull String userName, @NotNull @Email String email, @NotNull String password, byte[] profileImg, Double gasConsumption) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.profileImg = profileImg;
+        this.gasConsumption = gasConsumption;
     }
 
     public String getFirstName() {
@@ -88,5 +94,21 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public byte[] getProfileImg() {
+        return profileImg;
+    }
+
+    public void setProfileImg(byte[] profileImg) {
+        this.profileImg = profileImg;
+    }
+
+    public Double getGasConsumption() {
+        return gasConsumption;
+    }
+
+    public void setGasConsumption(Double gasConsumption) {
+        this.gasConsumption = gasConsumption;
     }
 }

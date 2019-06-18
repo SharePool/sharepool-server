@@ -11,18 +11,19 @@ public class UserDtoValidationTest extends BaseDtoValidationTest {
         assertContainsViolation(userLoginDto, "userNameOrEmail", 2);
         assertContainsViolation(userLoginDto, "password", 2);
 
-        UserDto userDto = new UserDto(null, null, null, null, null);
+        UserDto userDto = new UserDto(null, null, null, null, null, null, null);
 
         assertContainsViolation(userDto, "firstName");
         assertContainsViolation(userDto, "lastName");
         assertContainsViolation(userDto, "userName");
         assertContainsViolation(userDto, "email");
         assertContainsViolation(userDto, "password");
+        assertContainsViolation(userDto, "gasConsumption");
     }
 
     @Test
     public void testFieldLengths() {
-        UserDto userDto = new UserDto("f", "l", "user", "a@m.at", "1*aB");
+        UserDto userDto = new UserDto("f", "l", "user", "a@m.at", "1*aB", null, 1.0);
 
         assertContainsViolation(userDto, "firstName");
         assertContainsViolation(userDto, "lastName");
@@ -32,10 +33,11 @@ public class UserDtoValidationTest extends BaseDtoValidationTest {
 
     @Test
     public void testFieldPatterns() {
-        UserDto userDto = new UserDto("firstName", "lastName", "username", "a.at", "asdASD*213");
+        UserDto userDto = new UserDto("firstName", "lastName", "username", "a.at", "asdASD*213", null, -1.0);
 
         assertContainsViolation(userDto, "email");
         assertContainsViolation(userDto, "password");
+        assertContainsViolation(userDto, "gasConsumption");
     }
 
 }
