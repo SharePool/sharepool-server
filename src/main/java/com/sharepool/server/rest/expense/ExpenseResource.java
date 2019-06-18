@@ -2,8 +2,8 @@ package com.sharepool.server.rest.expense;
 
 import com.sharepool.server.logic.expense.ExpenseRestRequestHandler;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
-import com.sharepool.server.rest.expense.dto.ExpenseDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
+import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CachePut;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.Cacheable;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -97,7 +96,7 @@ public class ExpenseResource {
     })
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Cacheable(EXPENSE_CACHE_NAME)
-    public ResponseEntity<List<ExpenseDto>> getAllExpenses(
+    public ResponseEntity<ExpensesWrapper> getAllExpenses(
             @ApiParam("Optional filter for the receiver of the expense.")
             @RequestParam(required = false)
                     Long receiverId
@@ -109,5 +108,15 @@ public class ExpenseResource {
         );
     }
 
-
+    @ApiOperation(
+            value = "Retrieves the total balance logged in user."
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success. This is the total balance of the user."),
+            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+    })
+    @GetMapping("balance")
+    public ResponseEntity<Double> getTotalBalance() {
+        return ResponseEntity.ok(requestHandler.getTotalBalance(userContext));
+    }
 }

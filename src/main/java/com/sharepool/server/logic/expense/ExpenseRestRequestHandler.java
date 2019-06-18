@@ -9,6 +9,7 @@ import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
+import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
 import com.sharepool.server.rest.util.RestHelperUtil;
 import com.sharepool.server.rest.util.auth.UserContext;
 import org.slf4j.Logger;
@@ -17,8 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ExpenseRestRequestHandler {
@@ -81,19 +82,54 @@ public class ExpenseRestRequestHandler {
         expenseRepository.save(expense);
     }
 
-    public List<ExpenseDto> getAllExpenses(UserContext userContext, Long receiverId) {
+    public Double getTotalBalance(UserContext userContext) {
+        ExpensesWrapper allExpenses = getAllExpenses(userContext, null);
+
+        double receivedSum = allExpenses.receivingExpenses.stream()
+                .mapToDouble(ExpenseDto::getAmount)
+                .sum();
+
+        double payedSum = allExpenses.payedExpenses.stream()
+                .mapToDouble(ExpenseDto::getAmount)
+                .sum();
+
+        return receivedSum - payedSum;
+    }
+
+    public ExpensesWrapper getAllExpenses(UserContext userContext, Long receiverId) {
+        List<ExpenseDto> receivingExpenses = new ArrayList<>();
+        List<ExpenseDto> payedExpenses = new ArrayList<>();
+
+        User user = userContext.getUser();
         if (receiverId != null) {
             User receiver = RestHelperUtil.checkExists(userRepository, receiverId, User.class);
 
-            return expenseRepository.findAllByPayerAndReceiver(userContext.getUser(), receiver)
+            expenseRepository.findAllByPayerAndReceiver(user, receiver)
                     .stream()
                     .map(expenseMapper::expenseToExpenseDto)
-                    .collect(Collectors.toList());
+                    .forEach(e -> fillListsBasedOnLoggedInUser(receivingExpenses, payedExpenses, user, e));
+
+            return new ExpensesWrapper(receivingExpenses, payedExpenses);
         }
 
-        return expenseRepository.findAllByPayer(userContext.getUser())
+        expenseRepository.findAllByPayerOrReceiver(user, user)
                 .stream()
                 .map(expenseMapper::expenseToExpenseDto)
-                .collect(Collectors.toList());
+                .forEach(e -> fillListsBasedOnLoggedInUser(receivingExpenses, payedExpenses, user, e));
+
+        return new ExpensesWrapper(receivingExpenses, payedExpenses);
+    }
+
+    private void fillListsBasedOnLoggedInUser(
+            List<ExpenseDto> receivingExpenses,
+            List<ExpenseDto> payedExpenses,
+            User user,
+            ExpenseDto expenseDto) {
+
+        if (expenseDto.getPayer().getUserName().equals(user.getUserName())) {
+            payedExpenses.add(expenseDto);
+        } else if (expenseDto.getReceiver().getUserName().equals(user.getUserName())) {
+            receivingExpenses.add(expenseDto);
+        }
     }
 }
