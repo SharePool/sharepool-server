@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -79,7 +80,7 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
         Assert.assertEquals(payer, expense.getPayer());
         Assert.assertEquals(receiver, expense.getReceiver());
         Assert.assertEquals(tour.getTourCost(), expense.getAmount(), 0.0);
-        Assert.assertEquals(LocalDate.now(), expense.getCreationDate());
+        Assert.assertEquals(LocalDate.now(), expense.getCreationDate().toLocalDate());
         Assert.assertEquals(tour.getCurrency(), expense.getCurrency());
     }
 

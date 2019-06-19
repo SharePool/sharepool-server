@@ -18,6 +18,8 @@ public abstract class AbstractUtilTest {
         user.setLastName("Last");
         user.setEmail("email" + ++ID + "@test.com");
         user.setPasswordHash("test");
+        user.setProfileImg("asd".getBytes());
+        user.setGasConsumption(4.0);
         return user;
     }
 
