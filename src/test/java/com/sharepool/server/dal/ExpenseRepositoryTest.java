@@ -28,8 +28,8 @@ public class ExpenseRepositoryTest {
 				LocalDateTime.of(2012, 12, 12, 12, 0),
 				Currency.getInstance(Locale.GERMANY),
 				1,
-				new User("user1", "Tobias", "Kaderle", "tobias.k@mail.at", "somehash", Collections.emptySet()),
-				new User("user2", "Jan", "Wiesbauer", "jan.w@mail.com", "somehash", Collections.emptySet()),
+				new User("user1", "Tobias", "Kaderle", "tobias.k@mail.at", "somehash", "asd".getBytes(), 1.0, Collections.emptySet()),
+				new User("user2", "Jan", "Wiesbauer", "jan.w@mail.com", "somehash", "bcd".getBytes(), 2.3, Collections.emptySet()),
 				new Tour()
 		);
 

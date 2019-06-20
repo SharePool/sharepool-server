@@ -7,6 +7,7 @@ import com.sharepool.server.rest.user.UserRestErrorMessages;
 import com.sharepool.server.rest.user.dto.UserCredentialsDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.user.dto.UserLoginDto;
+import com.sharepool.server.rest.user.dto.UserUpdateDto;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -82,15 +82,28 @@ public class UserRestRequestHandlerTest extends AbstractUtilTest {
     @Test
     public void testLoginWorksWithEmailOrUsername() {
         UserDto userDto = createValidUserDto();
-        User user = userMapper.userDtoToUser(userDto);
+        userRestRequestHandler.registerUser(userDto);
 
-        userRepository.save(user);
+        UserLoginDto loginWithEmail = new UserLoginDto(userDto.getEmail(), userDto.getPassword());
+        UserCredentialsDto userCredentialsDto = userRestRequestHandler.loginUser(loginWithEmail);
+        assertNotNull(userCredentialsDto);
 
-        UserLoginDto foundUser = new UserLoginDto(userDto.getEmail(), userDto.getPassword());
-        assertNotNull(foundUser);
+        UserLoginDto loginWithUserName = new UserLoginDto(userDto.getUserName(), userDto.getPassword());
+        userCredentialsDto = userRestRequestHandler.loginUser(loginWithUserName);
+        assertNotNull(userCredentialsDto);
+    }
 
-        foundUser = new UserLoginDto(userDto.getUserName(), userDto.getPassword());
-        assertNotNull(foundUser);
+    @Test
+    public void testUpdateUserInfo() {
+        User oldUser = createValidUser();
+        userRepository.save(oldUser);
 
+        UserUpdateDto userUpdateDto = new UserUpdateDto("newUserName", "ne@mail.com", 1.0, "newImg".getBytes());
+        userRestRequestHandler.updateUserInfo(oldUser, userUpdateDto);
+
+        User updatedUser = userRepository.findById(oldUser.getId()).get();
+        assertEquals(userUpdateDto.getUserName(), updatedUser.getUserName());
+        assertEquals(userUpdateDto.getEmail(), updatedUser.getEmail());
+        assertEquals(userUpdateDto.getGasConsumption(), updatedUser.getGasConsumption());
     }
 }

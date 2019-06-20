@@ -8,11 +8,11 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "UserLogin", description = "The credential of a specific user.")
 public class UserLoginDto {
 
-    @ApiModelProperty(value = "The username or email of the user.", required = true)
+    @ApiModelProperty(value = "The user's username or email.", required = true)
     @NotNull
     private String userNameOrEmail;
 
-    @ApiModelProperty(value = "The password of the user.", required = true)
+    @ApiModelProperty(value = "The user's password.", required = true)
     @NotNull
     private String password;
 
