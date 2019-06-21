@@ -1,6 +1,2 @@
-pluginManagement {
-	repositories {
-		gradlePluginPortal()
-	}
-}
-rootProject.name = 'sharepool-server'
+include 'sharepool-server'
+include 'shareppol-analytics'
