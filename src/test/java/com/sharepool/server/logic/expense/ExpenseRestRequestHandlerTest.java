@@ -8,7 +8,6 @@ import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
-import com.sharepool.server.rest.expense.dto.ExpensePerUserDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
 import com.sharepool.server.rest.tour.TourRestErrorMessages;
@@ -115,12 +114,12 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
         ExpensesWrapper allExpenses = expenseRestRequestHandler.getAllExpenses(userContext, null);
 
-        Assert.assertEquals(allExpenses.getExpenses().size(), 1);
-        Assert.assertEquals(allExpenses.getExpenses().get(0).getExpenses().size(), 3);
-        Assert.assertEquals(allExpenses.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 3, 0);
-        Assert.assertEquals(allExpenses.getExpenses().size(), 1);
-        Assert.assertEquals(allExpenses.getExpenses().get(0).getExpenses().size(), 3);
-        Assert.assertEquals(allExpenses.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 3, 0);
+        Assert.assertEquals(2, allExpenses.getExpenses().size());
+        Assert.assertEquals(3, allExpenses.getExpenses().get(0).getExpenses().size());
+        Assert.assertEquals(0, allExpenses.getTotalBalance(), 0);
+        Assert.assertEquals(-3, allExpenses.getExpenses().get(0).getSumOfExpenses(), -3);
+        Assert.assertEquals(3, allExpenses.getExpenses().get(1).getExpenses().size());
+        Assert.assertEquals(0, allExpenses.getExpenses().get(1).getSumOfExpenses(), 3);
     }
 
     @Test
@@ -140,12 +139,12 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
         ExpensesWrapper allExpensesForReceiver1 = expenseRestRequestHandler.getAllExpenses(userContext, receiver1.getId());
 
-        Assert.assertEquals(allExpensesForReceiver1.getExpenses().size(), 2);
-        Assert.assertEquals(allExpensesForReceiver1.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 2, 0);
+        Assert.assertEquals(1, allExpensesForReceiver1.getExpenses().size());
+        Assert.assertEquals(-2, allExpensesForReceiver1.getTotalBalance(), 0);
 
         ExpensesWrapper allExpensesForReceiver2 = expenseRestRequestHandler.getAllExpenses(userContext, receiver2.getId());
 
-        Assert.assertEquals(allExpensesForReceiver2.getExpenses().size(), 1);
-        Assert.assertEquals(allExpensesForReceiver2.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 1, 0);
+        Assert.assertEquals(1, allExpensesForReceiver2.getExpenses().size());
+        Assert.assertEquals(-1, allExpensesForReceiver2.getTotalBalance(), 0);
     }
 }
