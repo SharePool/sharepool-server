@@ -1,7 +1,7 @@
-package com.shareppol.shareppolanalytics.logic;
+package com.shareppol.sharepoolanalytics.logic;
 
-import com.shareppol.shareppolanalytics.dal.TestObjectRepository;
-import com.shareppol.shareppolanalytics.domain.TestObject;
+import com.shareppol.sharepoolanalytics.dal.TestObjectRepository;
+import com.shareppol.sharepoolanalytics.domain.TestObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

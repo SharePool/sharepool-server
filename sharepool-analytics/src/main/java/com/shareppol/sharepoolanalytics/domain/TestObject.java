@@ -1,4 +1,4 @@
-package com.shareppol.shareppolanalytics.domain;
+package com.shareppol.sharepoolanalytics.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

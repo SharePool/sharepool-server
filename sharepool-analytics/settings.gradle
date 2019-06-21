@@ -3,4 +3,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'shareppol-analytics'
+rootProject.name = 'sharepool-analytics'

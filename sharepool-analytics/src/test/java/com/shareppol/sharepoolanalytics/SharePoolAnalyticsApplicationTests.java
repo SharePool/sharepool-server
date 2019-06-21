@@ -1,4 +1,4 @@
-package com.shareppol.shareppolanalytics;
+package com.shareppol.sharepoolanalytics;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ShareppolAnalyticsApplicationTests {
+public class SharePoolAnalyticsApplicationTests {
 
     @Test
     public void contextLoads() {

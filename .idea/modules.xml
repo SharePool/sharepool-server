@@ -3,12 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/sharepool-server.iml" filepath="$PROJECT_DIR$/.idea/sharepool-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.sharepool-analytics.iml" filepath="$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.sharepool-analytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-analytics/sharepool-server.sharepool-analytics.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-analytics/sharepool-server.sharepool-analytics.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-analytics/sharepool-server.sharepool-analytics.test.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-analytics/sharepool-server.sharepool-analytics.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-server/sharepool-server.sharepool-server.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-server/sharepool-server.sharepool-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-server/sharepool-server.sharepool-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-server/sharepool-server.sharepool-server.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sharepool-server/sharepool-server.sharepool-server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/sharepool-server/sharepool-server.sharepool-server.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.shareppol-analytics.iml" filepath="$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.shareppol-analytics.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.shareppol-analytics.main.iml" filepath="$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.shareppol-analytics.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.shareppol-analytics.test.iml" filepath="$PROJECT_DIR$/.idea/modules/shareppol-analytics/sharepool-server.shareppol-analytics.test.iml" />
     </modules>
   </component>
 </project>

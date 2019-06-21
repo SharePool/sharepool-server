@@ -1,2 +1,2 @@
 include 'sharepool-server'
-include 'shareppol-analytics'
+include 'sharepool-analytics'
