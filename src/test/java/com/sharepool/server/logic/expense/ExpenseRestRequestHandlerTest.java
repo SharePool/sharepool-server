@@ -114,12 +114,9 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
         ExpensesWrapper allExpenses = expenseRestRequestHandler.getAllExpenses(userContext, null);
 
-        Assert.assertEquals(2, allExpenses.getExpenses().size());
-        Assert.assertEquals(3, allExpenses.getExpenses().get(0).getExpenses().size());
+        Assert.assertEquals(1, allExpenses.getExpenses().size());
+        Assert.assertEquals(6, allExpenses.getExpenses().get(0).getExpenses().size());
         Assert.assertEquals(0, allExpenses.getTotalBalance(), 0);
-        Assert.assertEquals(-3, allExpenses.getExpenses().get(0).getSumOfExpenses(), -3);
-        Assert.assertEquals(3, allExpenses.getExpenses().get(1).getExpenses().size());
-        Assert.assertEquals(0, allExpenses.getExpenses().get(1).getSumOfExpenses(), 3);
     }
 
     @Test
