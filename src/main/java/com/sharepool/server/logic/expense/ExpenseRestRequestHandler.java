@@ -105,12 +105,13 @@ public class ExpenseRestRequestHandler {
 
     private void createOrAddToUser(User user, List<ExpensePerUserDto> expenses, ExpenseDto expense) {
         // don't track for ourselves, rather update the value for the other user
-        UserDto receiver = expense.getReceiver().getUserName().equals(user.getUserName())
-                ? expense.getPayer() : expense.getReceiver();
+        boolean userIsReceiver = expense.getReceiver().getUserName().equals(user.getUserName());
+
+        UserDto receiver = userIsReceiver ? expense.getPayer() : expense.getReceiver();
 
         // but still book from user point of view
-        double amount = expense.getReceiver().getUserName().equals(user.getUserName())
-                ? expense.getAmount() : expense.getAmount() * -1;
+        double amount = userIsReceiver ? expense.getAmount() : expense.getAmount() * -1;
+        expense.setAmount(userIsReceiver ? expense.getAmount() : expense.getAmount() * -1);
 
         // if the mapping already holds a field update the value
         for (ExpensePerUserDto expensePerUser : expenses) {
