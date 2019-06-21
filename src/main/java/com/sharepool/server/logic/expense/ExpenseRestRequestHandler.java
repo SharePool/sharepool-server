@@ -6,10 +6,8 @@ import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
-import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
-import com.sharepool.server.rest.expense.dto.ExpenseDto;
-import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
-import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
+import com.sharepool.server.rest.expense.dto.*;
+import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.util.RestHelperUtil;
 import com.sharepool.server.rest.util.auth.UserContext;
 import org.slf4j.Logger;
@@ -85,20 +83,20 @@ public class ExpenseRestRequestHandler {
     public Double getTotalBalance(UserContext userContext) {
         ExpensesWrapper allExpenses = getAllExpenses(userContext, null);
 
-        double receivedSum = allExpenses.receivingExpenses.stream()
-                .mapToDouble(ExpenseDto::getAmount)
+        double receivedSum = allExpenses.getReceivingExpenses().stream()
+                .mapToDouble(ExpensePerUserDto::getSumOfExpenses)
                 .sum();
 
-        double payedSum = allExpenses.payedExpenses.stream()
-                .mapToDouble(ExpenseDto::getAmount)
+        double payedSum = allExpenses.getPayedExpenses().stream()
+                .mapToDouble(ExpensePerUserDto::getSumOfExpenses)
                 .sum();
 
         return receivedSum - payedSum;
     }
 
     public ExpensesWrapper getAllExpenses(UserContext userContext, Long receiverId) {
-        List<ExpenseDto> receivingExpenses = new ArrayList<>();
-        List<ExpenseDto> payedExpenses = new ArrayList<>();
+        List<ExpensePerUserDto> receivingExpenses = new ArrayList<>();
+        List<ExpensePerUserDto> payedExpenses = new ArrayList<>();
 
         User user = userContext.getUser();
         if (receiverId != null) {
@@ -121,15 +119,46 @@ public class ExpenseRestRequestHandler {
     }
 
     private void fillListsBasedOnLoggedInUser(
-            List<ExpenseDto> receivingExpenses,
-            List<ExpenseDto> payedExpenses,
+            List<ExpensePerUserDto> receivingExpenses,
+            List<ExpensePerUserDto> payedExpenses,
             User user,
-            ExpenseDto expenseDto) {
-
-        if (expenseDto.getPayer().getUserName().equals(user.getUserName())) {
-            payedExpenses.add(expenseDto);
-        } else if (expenseDto.getReceiver().getUserName().equals(user.getUserName())) {
-            receivingExpenses.add(expenseDto);
+            ExpenseDto expense
+    ) {
+        if (expense.getPayer().getUserName().equals(user.getUserName())) {
+            createOrAddToUser(payedExpenses, expense);
+        } else if (expense.getReceiver().getUserName().equals(user.getUserName())) {
+            createOrAddToUser(receivingExpenses, expense);
         }
+    }
+
+    private void createOrAddToUser(List<ExpensePerUserDto> expenses, ExpenseDto expense) {
+        UserDto receiver = expense.getReceiver();
+        double amount = expense.getAmount();
+
+        filterDuplicateInformation(expense);
+
+        for (ExpensePerUserDto expensePerUser : expenses) {
+            if (expensePerUser.getReceiver().getUserName().equals(receiver.getUserName())) {
+                expensePerUser.setSumOfExpenses(expensePerUser.getSumOfExpenses() + amount);
+
+                filterDuplicateInformation(expense);
+
+                expensePerUser.getExpenses().add(expense);
+                return;
+            }
+        }
+
+        List<ExpenseDto> expensesForUser = new ArrayList<>();
+        expensesForUser.add(expense);
+        expenses.add(new ExpensePerUserDto(
+                receiver,
+                amount,
+                expensesForUser)
+        );
+    }
+
+    private void filterDuplicateInformation(ExpenseDto expense) {
+        expense.setPayer(null);
+        expense.setReceiver(null);
     }
 }

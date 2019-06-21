@@ -1,11 +1,13 @@
 package com.sharepool.server.rest.expense.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sharepool.server.rest.tour.dto.TourDto;
 import com.sharepool.server.rest.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.Currency;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExpenseDto {
 
     private Long id;
