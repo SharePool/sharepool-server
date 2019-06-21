@@ -87,7 +87,7 @@ public class ExpenseRestRequestHandler {
         if (receiverId != null) {
             User receiver = RestHelperUtil.checkExists(userRepository, receiverId, User.class);
 
-            expenseRepository.findAllByPayerAndReceiver(user, receiver)
+            expenseRepository.findAllByPayerAndReceiverOrderByCreationDateDesc(user, receiver)
                     .stream()
                     .map(expenseMapper::expenseToExpenseDto)
                     .forEach(e -> createOrAddToUser(user, expenses, e));
@@ -95,7 +95,7 @@ public class ExpenseRestRequestHandler {
             return new ExpensesWrapper(expenses, expenses.stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum());
         }
 
-        expenseRepository.findAllByPayerOrReceiver(user, user)
+        expenseRepository.findAllByPayerOrReceiverOrderByCreationDateDesc(user, user)
                 .stream()
                 .map(expenseMapper::expenseToExpenseDto)
                 .forEach(e -> createOrAddToUser(user, expenses, e));
@@ -104,11 +104,15 @@ public class ExpenseRestRequestHandler {
     }
 
     private void createOrAddToUser(User user, List<ExpensePerUserDto> expenses, ExpenseDto expense) {
-        UserDto receiver = expense.getReceiver();
-        double amount = receiver.getUserName().equals(user.getUserName()) ? expense.getAmount() : expense.getAmount() * -1;
+        // don't track for ourselves, rather update the value for the other user
+        UserDto receiver = expense.getReceiver().getUserName().equals(user.getUserName())
+                ? expense.getPayer() : expense.getReceiver();
 
-        expense.setReceiver(null);
+        // but still book from user point of view
+        double amount = expense.getReceiver().getUserName().equals(user.getUserName())
+                ? expense.getAmount() : expense.getAmount() * -1;
 
+        // if the mapping already holds a field update the value
         for (ExpensePerUserDto expensePerUser : expenses) {
             if (expensePerUser.getReceiver().getUserName().equals(receiver.getUserName())) {
                 expensePerUser.setSumOfExpenses(expensePerUser.getSumOfExpenses() + amount);
@@ -120,6 +124,7 @@ public class ExpenseRestRequestHandler {
 
         List<ExpenseDto> expensesForUser = new ArrayList<>();
         expensesForUser.add(expense);
+
         expenses.add(new ExpensePerUserDto(
                 receiver,
                 amount,
