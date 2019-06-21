@@ -80,23 +80,8 @@ public class ExpenseRestRequestHandler {
         expenseRepository.save(expense);
     }
 
-    public Double getTotalBalance(UserContext userContext) {
-        ExpensesWrapper allExpenses = getAllExpenses(userContext, null);
-
-        double receivedSum = allExpenses.getReceivingExpenses().stream()
-                .mapToDouble(ExpensePerUserDto::getSumOfExpenses)
-                .sum();
-
-        double payedSum = allExpenses.getPayedExpenses().stream()
-                .mapToDouble(ExpensePerUserDto::getSumOfExpenses)
-                .sum();
-
-        return receivedSum - payedSum;
-    }
-
     public ExpensesWrapper getAllExpenses(UserContext userContext, Long receiverId) {
-        List<ExpensePerUserDto> receivingExpenses = new ArrayList<>();
-        List<ExpensePerUserDto> payedExpenses = new ArrayList<>();
+        List<ExpensePerUserDto> expenses = new ArrayList<>();
 
         User user = userContext.getUser();
         if (receiverId != null) {
@@ -105,43 +90,28 @@ public class ExpenseRestRequestHandler {
             expenseRepository.findAllByPayerAndReceiver(user, receiver)
                     .stream()
                     .map(expenseMapper::expenseToExpenseDto)
-                    .forEach(e -> fillListsBasedOnLoggedInUser(receivingExpenses, payedExpenses, user, e));
+                    .forEach(e -> createOrAddToUser(user, expenses, e));
 
-            return new ExpensesWrapper(receivingExpenses, payedExpenses);
+            return new ExpensesWrapper(expenses, expenses.stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum());
         }
 
         expenseRepository.findAllByPayerOrReceiver(user, user)
                 .stream()
                 .map(expenseMapper::expenseToExpenseDto)
-                .forEach(e -> fillListsBasedOnLoggedInUser(receivingExpenses, payedExpenses, user, e));
+                .forEach(e -> createOrAddToUser(user, expenses, e));
 
-        return new ExpensesWrapper(receivingExpenses, payedExpenses);
+        return new ExpensesWrapper(expenses, expenses.stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum());
     }
 
-    private void fillListsBasedOnLoggedInUser(
-            List<ExpensePerUserDto> receivingExpenses,
-            List<ExpensePerUserDto> payedExpenses,
-            User user,
-            ExpenseDto expense
-    ) {
-        if (expense.getPayer().getUserName().equals(user.getUserName())) {
-            createOrAddToUser(payedExpenses, expense);
-        } else if (expense.getReceiver().getUserName().equals(user.getUserName())) {
-            createOrAddToUser(receivingExpenses, expense);
-        }
-    }
-
-    private void createOrAddToUser(List<ExpensePerUserDto> expenses, ExpenseDto expense) {
+    private void createOrAddToUser(User user, List<ExpensePerUserDto> expenses, ExpenseDto expense) {
         UserDto receiver = expense.getReceiver();
-        double amount = expense.getAmount();
+        double amount = receiver.getUserName().equals(user.getUserName()) ? expense.getAmount() : expense.getAmount() * -1;
 
-        filterDuplicateInformation(expense);
+        expense.setReceiver(null);
 
         for (ExpensePerUserDto expensePerUser : expenses) {
             if (expensePerUser.getReceiver().getUserName().equals(receiver.getUserName())) {
                 expensePerUser.setSumOfExpenses(expensePerUser.getSumOfExpenses() + amount);
-
-                filterDuplicateInformation(expense);
 
                 expensePerUser.getExpenses().add(expense);
                 return;
@@ -155,10 +125,5 @@ public class ExpenseRestRequestHandler {
                 amount,
                 expensesForUser)
         );
-    }
-
-    private void filterDuplicateInformation(ExpenseDto expense) {
-        expense.setPayer(null);
-        expense.setReceiver(null);
     }
 }

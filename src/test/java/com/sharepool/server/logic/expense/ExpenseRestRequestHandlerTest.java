@@ -8,7 +8,7 @@ import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
-import com.sharepool.server.rest.expense.dto.ExpenseDto;
+import com.sharepool.server.rest.expense.dto.ExpensePerUserDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
 import com.sharepool.server.rest.tour.TourRestErrorMessages;
@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -116,10 +115,12 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
         ExpensesWrapper allExpenses = expenseRestRequestHandler.getAllExpenses(userContext, null);
 
-        Assert.assertEquals(allExpenses.getPayedExpenses().size(), 3);
-        Assert.assertEquals(allExpenses.getPayedExpenses().stream().mapToDouble(ExpenseDto::getAmount).sum(), 3, 0);
-        Assert.assertEquals(allExpenses.getReceivingExpenses().size(), 3);
-        Assert.assertEquals(allExpenses.getReceivingExpenses().stream().mapToDouble(ExpenseDto::getAmount).sum(), 3, 0);
+        Assert.assertEquals(allExpenses.getExpenses().size(), 1);
+        Assert.assertEquals(allExpenses.getExpenses().get(0).getExpenses().size(), 3);
+        Assert.assertEquals(allExpenses.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 3, 0);
+        Assert.assertEquals(allExpenses.getExpenses().size(), 1);
+        Assert.assertEquals(allExpenses.getExpenses().get(0).getExpenses().size(), 3);
+        Assert.assertEquals(allExpenses.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 3, 0);
     }
 
     @Test
@@ -139,12 +140,12 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
         ExpensesWrapper allExpensesForReceiver1 = expenseRestRequestHandler.getAllExpenses(userContext, receiver1.getId());
 
-        Assert.assertEquals(allExpensesForReceiver1.getPayedExpenses().size(), 2);
-        Assert.assertEquals(allExpensesForReceiver1.getPayedExpenses().stream().mapToDouble(ExpenseDto::getAmount).sum(), 2, 0);
+        Assert.assertEquals(allExpensesForReceiver1.getExpenses().size(), 2);
+        Assert.assertEquals(allExpensesForReceiver1.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 2, 0);
 
         ExpensesWrapper allExpensesForReceiver2 = expenseRestRequestHandler.getAllExpenses(userContext, receiver2.getId());
 
-        Assert.assertEquals(allExpensesForReceiver2.getPayedExpenses().size(), 1);
-        Assert.assertEquals(allExpensesForReceiver2.getPayedExpenses().stream().mapToDouble(ExpenseDto::getAmount).sum(), 1, 0);
+        Assert.assertEquals(allExpensesForReceiver2.getExpenses().size(), 1);
+        Assert.assertEquals(allExpensesForReceiver2.getExpenses().stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum(), 1, 0);
     }
 }

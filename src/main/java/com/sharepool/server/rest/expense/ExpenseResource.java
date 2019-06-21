@@ -107,16 +107,4 @@ public class ExpenseResource {
                 )
         );
     }
-
-    @ApiOperation(
-            value = "Retrieves the total balance logged in user."
-    )
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Success. This is the total balance of the user."),
-            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
-    })
-    @GetMapping("balance")
-    public ResponseEntity<Double> getTotalBalance() {
-        return ResponseEntity.ok(requestHandler.getTotalBalance(userContext));
-    }
 }

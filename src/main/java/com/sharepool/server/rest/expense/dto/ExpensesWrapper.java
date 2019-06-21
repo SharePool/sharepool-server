@@ -8,30 +8,30 @@ import java.util.List;
 @ApiModel(value = "ExpenseWrapper", description = "A wrapper for all the users received/payed expenses.")
 public class ExpensesWrapper {
 
-    @ApiModelProperty("The users received expenses.")
-    private List<ExpensePerUserDto> receivingExpenses;
+    @ApiModelProperty("The users total balance (for the current query if filtered).")
+    private double totalBalance;
 
-    @ApiModelProperty("The users payed expenses, grouped by its receiving user.")
-    private List<ExpensePerUserDto> payedExpenses;
+    @ApiModelProperty("The users expenses.")
+    private List<ExpensePerUserDto> expenses;
 
-    public ExpensesWrapper(List<ExpensePerUserDto> receivingExpenses, List<ExpensePerUserDto> payedExpenses) {
-        this.receivingExpenses = receivingExpenses;
-        this.payedExpenses = payedExpenses;
+    public ExpensesWrapper(List<ExpensePerUserDto> expenses, double totalBalance) {
+        this.expenses = expenses;
+        this.totalBalance = totalBalance;
     }
 
-    public List<ExpensePerUserDto> getReceivingExpenses() {
-        return receivingExpenses;
+    public List<ExpensePerUserDto> getExpenses() {
+        return expenses;
     }
 
-    public void setReceivingExpenses(List<ExpensePerUserDto> receivingExpenses) {
-        this.receivingExpenses = receivingExpenses;
+    public void setExpenses(List<ExpensePerUserDto> expenses) {
+        this.expenses = expenses;
     }
 
-    public List<ExpensePerUserDto> getPayedExpenses() {
-        return payedExpenses;
+    public double getTotalBalance() {
+        return totalBalance;
     }
 
-    public void setPayedExpenses(List<ExpensePerUserDto> payedExpenses) {
-        this.payedExpenses = payedExpenses;
+    public void setTotalBalance(double totalBalance) {
+        this.totalBalance = totalBalance;
     }
 }
