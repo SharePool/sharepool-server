@@ -4,6 +4,7 @@ import com.sharepool.server.logic.expense.ExpenseRestRequestHandler;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
+import com.sharepool.server.rest.expense.dto.PaybackDto;
 import com.sharepool.server.rest.util.auth.UserContext;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CachePut;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.Cacheable;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -86,7 +88,6 @@ public class ExpenseResource {
         return ResponseEntity.created(null).build();
     }
 
-
     @ApiOperation(
             value = "Retrieves all expenses for the logged in user."
     )
@@ -106,5 +107,26 @@ public class ExpenseResource {
                 receiverId
                 )
         );
+    }
+
+    @ApiOperation(
+            value = "Sends a payback to the specified user."
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success. The list contains all expenses for all tours."),
+            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+    })
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CachePut(EXPENSE_CACHE_NAME)
+    public ResponseEntity createPayback(
+            @ApiParam("The JSON body of the request. Contains parameters of the payback.")
+            @RequestBody
+            @NotNull
+            @Valid
+                    PaybackDto paybackDto
+    ) {
+        requestHandler.createPayback(userContext, paybackDto);
+
+        return ResponseEntity.ok().build();
     }
 }

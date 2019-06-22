@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 @Component
@@ -131,5 +132,21 @@ public class ExpenseRestRequestHandler {
                 amount,
                 expensesForUser)
         );
+    }
+
+    public void createPayback(UserContext userContext, PaybackDto paybackDto) {
+        User receiver = userRepository.findByUserNameOrEmail(
+                paybackDto.getUserNameOrEmail(),
+                paybackDto.getUserNameOrEmail()
+        ).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Receiving user not found."));
+
+        Expense expense = new Expense();
+        expense.setPayer(userContext.getUser());
+        expense.setCreationDate(LocalDateTime.now());
+        expense.setReceiver(receiver);
+        expense.setCurrency(Currency.getInstance("EUR"));
+        expense.setAmount(paybackDto.getAmount() * -1);
+
+        expenseRepository.save(expense);
     }
 }
