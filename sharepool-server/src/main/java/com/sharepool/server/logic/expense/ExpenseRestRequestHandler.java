@@ -7,9 +7,8 @@ import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
 import com.sharepool.server.rabbitmq.AnalyticsCommunicator;
-import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
-import com.sharepool.server.rest.expense.dto.ExpenseDto;
-import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
+import com.sharepool.server.rest.expense.dto.*;
+import com.sharepool.server.rest.user.dto.UserDto;
 import com.sharepool.server.rest.util.RestHelperUtil;
 import com.sharepool.server.rest.util.auth.UserContext;
 import org.slf4j.Logger;
@@ -18,8 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ExpenseRestRequestHandler {
@@ -86,19 +86,72 @@ public class ExpenseRestRequestHandler {
         analyticsCommunicator.sendAnalyticsData(expense);
     }
 
-    public List<ExpenseDto> getAllExpenses(UserContext userContext, Long receiverId) {
+    public ExpensesWrapper getAllExpenses(UserContext userContext, Long receiverId) {
+        List<ExpensePerUserDto> expenses = new ArrayList<>();
+
+        User user = userContext.getUser();
         if (receiverId != null) {
             User receiver = RestHelperUtil.checkExists(userRepository, receiverId, User.class);
 
-            return expenseRepository.findAllByPayerAndReceiver(userContext.getUser(), receiver)
+            expenseRepository.findAllByPayerAndReceiverOrderByCreationDateDesc(user, receiver)
                     .stream()
                     .map(expenseMapper::expenseToExpenseDto)
-                    .collect(Collectors.toList());
+                    .forEach(e -> createOrAddToUser(user, expenses, e));
+
+            return new ExpensesWrapper(expenses, expenses.stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum());
         }
 
-        return expenseRepository.findAllByPayer(userContext.getUser())
+        expenseRepository.findAllByPayerOrReceiverOrderByCreationDateDesc(user, user)
                 .stream()
                 .map(expenseMapper::expenseToExpenseDto)
-                .collect(Collectors.toList());
+                .forEach(e -> createOrAddToUser(user, expenses, e));
+
+        return new ExpensesWrapper(expenses, expenses.stream().mapToDouble(ExpensePerUserDto::getSumOfExpenses).sum());
+    }
+
+    private void createOrAddToUser(User user, List<ExpensePerUserDto> expenses, ExpenseDto expense) {
+        // don't track for ourselves, rather update the value for the other user
+        boolean userIsReceiver = expense.getReceiver().getUserName().equals(user.getUserName());
+
+        UserDto receiver = userIsReceiver ? expense.getPayer() : expense.getReceiver();
+
+        // but still book from user point of view
+        double amount = userIsReceiver ? expense.getAmount() : expense.getAmount() * -1;
+        expense.setAmount(userIsReceiver ? expense.getAmount() : expense.getAmount() * -1);
+
+        // if the mapping already holds a field update the value
+        for (ExpensePerUserDto expensePerUser : expenses) {
+            if (expensePerUser.getReceiver().getUserName().equals(receiver.getUserName())) {
+                expensePerUser.setSumOfExpenses(expensePerUser.getSumOfExpenses() + amount);
+
+                expensePerUser.getExpenses().add(expense);
+                return;
+            }
+        }
+
+        List<ExpenseDto> expensesForUser = new ArrayList<>();
+        expensesForUser.add(expense);
+
+        expenses.add(new ExpensePerUserDto(
+                receiver,
+                amount,
+                expensesForUser)
+        );
+    }
+
+    public void createPayback(UserContext userContext, PaybackDto paybackDto) {
+        User receiver = userRepository.findByUserNameOrEmail(
+                paybackDto.getUserNameOrEmail(),
+                paybackDto.getUserNameOrEmail()
+        ).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Receiving user not found."));
+
+        Expense expense = new Expense();
+        expense.setPayer(userContext.getUser());
+        expense.setCreationDate(LocalDateTime.now());
+        expense.setReceiver(receiver);
+        expense.setCurrency(Currency.getInstance("EUR"));
+        expense.setAmount(paybackDto.getAmount() * -1);
+
+        expenseRepository.save(expense);
     }
 }

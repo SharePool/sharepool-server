@@ -12,5 +12,7 @@ public interface ExpenseRepository extends CrudRepository<Expense, Long> {
 
     List<Expense> findAllByPayer(User payer);
 
-    List<Expense> findAllByPayerAndReceiver(User payer, User receiver);
+    List<Expense> findAllByPayerAndReceiverOrderByCreationDateDesc(User payer, User receiver);
+
+    List<Expense> findAllByPayerOrReceiverOrderByCreationDateDesc(User payer, User receiver);
 }

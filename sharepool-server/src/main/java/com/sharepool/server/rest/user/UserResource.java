@@ -109,7 +109,7 @@ public class UserResource {
                     response = UserDto.class),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> getUserInfo() {
         return ResponseEntity.ok(requestHandler.getUserInfo(userContext));
     }

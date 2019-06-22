@@ -41,7 +41,7 @@ public class TourResource {
 			@ApiResponse(code = 200, message = "Success. The response contains the users tours."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Cacheable(TOURS_CACHE_NAME)
 	public ResponseEntity<List<TourDto>> getAllToursForUser(
 			@ApiParam("Whether inactive tours should be included or not")
@@ -112,7 +112,7 @@ public class TourResource {
 			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@DeleteMapping(value = "/{tourId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{tourId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@CachePut(TOURS_CACHE_NAME)
 	public ResponseEntity deleteTour(
 			@PathVariable("tourId")
@@ -132,7 +132,7 @@ public class TourResource {
 			@ApiResponse(code = 404, message = "Failed. The tour does not exist yet."),
 			@ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
 	})
-	@PutMapping(value = "{tourId}/activate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "{tourId}/activate", produces = MediaType.APPLICATION_JSON_VALUE)
 	@CachePut(TOURS_CACHE_NAME)
 	public ResponseEntity activateTour(
 			@PathVariable("tourId")
