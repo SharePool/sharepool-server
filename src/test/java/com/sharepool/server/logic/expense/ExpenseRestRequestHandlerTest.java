@@ -10,6 +10,7 @@ import com.sharepool.server.domain.User;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
+import com.sharepool.server.rest.expense.dto.PaybackDto;
 import com.sharepool.server.rest.tour.TourRestErrorMessages;
 import com.sharepool.server.rest.util.auth.UserContext;
 import org.junit.Assert;
@@ -143,5 +144,27 @@ public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
         Assert.assertEquals(1, allExpensesForReceiver2.getExpenses().size());
         Assert.assertEquals(-1, allExpensesForReceiver2.getTotalBalance(), 0);
+    }
+
+    @Test
+    public void testPayback() {
+        User receiver = userRepository.save(createValidUser());
+        Tour tour = tourRepository.save(createValidTour(receiver));
+        User payer = userRepository.save(createValidUser());
+
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId()));
+        expenseRestRequestHandler.confirmExpense(new ExpenseConfirmationDto(tour.getId(), payer.getId()));
+
+        UserContext userContext = new UserContext();
+        userContext.setUser(payer);
+
+        Assert.assertEquals(tour.getTourCost() * -2, expenseRestRequestHandler.getAllExpenses(userContext, null).getTotalBalance(), 0);
+
+        PaybackDto paybackDto = new PaybackDto();
+        paybackDto.setAmount(2);
+        paybackDto.setUserNameOrEmail(receiver.getEmail());
+
+        expenseRestRequestHandler.createPayback(userContext, paybackDto);
+        Assert.assertEquals(0, expenseRestRequestHandler.getAllExpenses(userContext, null).getTotalBalance(), 0);
     }
 }
