@@ -19,6 +19,7 @@ public class AnalyticsRestRequestHandler {
         this.analyticsMessageRepository = analyticsMessageRepository;
     }
 
+    // TODO: return map with date as key
     public List<AnalyticsEntry> getAnalyticsForTimeSpan(LocalDate from, LocalDate to) {
         List<AnalyticsMessage> analyticsMessages = analyticsMessageRepository.getAllByDateIsBetween(from.atStartOfDay(), to.atStartOfDay().plusDays(1));
         List<AnalyticsEntry> analyticsEntries = new ArrayList<>();
