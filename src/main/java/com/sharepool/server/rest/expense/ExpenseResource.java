@@ -113,7 +113,7 @@ public class ExpenseResource {
             value = "Sends a payback to the specified user."
     )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Success. The list contains all expenses for all tours."),
+            @ApiResponse(code = 200, message = "Success. The payback has been successfully created."),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
