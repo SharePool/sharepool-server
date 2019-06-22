@@ -6,6 +6,7 @@ import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
+import com.sharepool.server.rabbitmq.AnalyticsCommunicator;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
@@ -31,18 +32,21 @@ public class ExpenseRestRequestHandler {
 
     private final ExpenseMapper expenseMapper;
 
+    private final AnalyticsCommunicator analyticsCommunicator;
+
     public ExpenseRestRequestHandler(
             Logger logger,
             TourRepository tourRepository,
             ExpenseMapper expenseMapper,
             UserRepository userRepository,
-            ExpenseRepository expenseRepository
-    ) {
+            ExpenseRepository expenseRepository,
+            AnalyticsCommunicator analyticsCommunicator) {
         this.logger = logger;
         this.tourRepository = tourRepository;
         this.expenseMapper = expenseMapper;
         this.userRepository = userRepository;
         this.expenseRepository = expenseRepository;
+        this.analyticsCommunicator = analyticsCommunicator;
     }
 
     public ExpenseRequestResponseDto requestExpense(Long tourId) {
@@ -79,6 +83,7 @@ public class ExpenseRestRequestHandler {
                 tour);
 
         expenseRepository.save(expense);
+        analyticsCommunicator.sendAnalyticsData(expense);
     }
 
     public List<ExpenseDto> getAllExpenses(UserContext userContext, Long receiverId) {
