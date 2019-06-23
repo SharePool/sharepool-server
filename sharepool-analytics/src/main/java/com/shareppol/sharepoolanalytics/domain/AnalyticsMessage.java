@@ -13,17 +13,17 @@ public class AnalyticsMessage implements Serializable {
     private Long tourId;
     private Double kilometers;
     private Double sumGasConsumption;
-    private LocalDateTime date;
+    private LocalDateTime creationTime;
 
     public AnalyticsMessage() {
     }
 
-    public AnalyticsMessage(Long expenseId, Long tourId, Double kilometers, Double sumGasConsumption, LocalDateTime date) {
+    public AnalyticsMessage(Long expenseId, Long tourId, Double kilometers, Double sumGasConsumption, LocalDateTime creationTime) {
         this.expenseId = expenseId;
         this.tourId = tourId;
         this.kilometers = kilometers;
         this.sumGasConsumption = sumGasConsumption;
-        this.date = date;
+        this.creationTime = creationTime;
     }
 
     public Long getExpenseId() {
@@ -58,12 +58,12 @@ public class AnalyticsMessage implements Serializable {
         this.sumGasConsumption = sumGasConsumption;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AnalyticsMessage implements Serializable {
                 ", tourId=" + tourId +
                 ", kilometers=" + kilometers +
                 ", sumGasConsumption=" + sumGasConsumption +
-                ", date=" + date +
+                ", creationTime=" + creationTime +
                 '}';
     }
 }

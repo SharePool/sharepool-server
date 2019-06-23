@@ -19,7 +19,7 @@ public class AnalyticsCommunicator {
 
         analyticsMessage.setExpenseId(expense.getId());
         analyticsMessage.setKilometers(expense.getTour().getKilometers());
-        analyticsMessage.setDate(expense.getCreationDate());
+        analyticsMessage.setCreationTime(expense.getCreationDate());
         analyticsMessage.setTourId(expense.getTour().getId());
 
         Double sumGasConsumption = (expense.getReceiver().getGasConsumption() / 100) * analyticsMessage.getKilometers();

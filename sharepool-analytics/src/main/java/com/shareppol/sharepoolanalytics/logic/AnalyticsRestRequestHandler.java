@@ -24,7 +24,7 @@ public class AnalyticsRestRequestHandler {
         List<AnalyticsMessage> analyticsMessages = analyticsMessageRepository.getAllByDateIsBetween(from.atStartOfDay(), to.atStartOfDay().plusDays(1));
         List<AnalyticsEntry> analyticsEntries = new ArrayList<>();
 
-        analyticsMessages.stream().collect(Collectors.groupingBy(analyticsMessage -> analyticsMessage.getDate().toLocalDate())).forEach((date, messages) -> {
+        analyticsMessages.stream().collect(Collectors.groupingBy(analyticsMessage -> analyticsMessage.getCreationTime().toLocalDate())).forEach((date, messages) -> {
             AnalyticsEntry entry = new AnalyticsEntry();
 
             entry.setDate(date);
