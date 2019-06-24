@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Map;
 
 @Api(tags = "Analytics", description = "Get analytics data")
 @RestController
@@ -23,9 +23,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping(path = "/{from}/{to}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AnalyticsEntry> getAnalyticsForTimeSpan(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-                                                        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
-                                                        @RequestHeader(HttpHeaders.AUTHORIZATION) String userToken) {
+    public Map<LocalDate, AnalyticsEntry> getAnalyticsForTimeSpan(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                                                  @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+                                                                  @RequestHeader(HttpHeaders.AUTHORIZATION) String userToken) {
         return requestHandler.getAnalyticsForTimeSpan(userToken, from, to);
     }
 }
