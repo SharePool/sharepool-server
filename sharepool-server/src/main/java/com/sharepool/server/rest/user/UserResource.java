@@ -113,4 +113,18 @@ public class UserResource {
     public ResponseEntity<UserDto> getUserInfo() {
         return ResponseEntity.ok(requestHandler.getUserInfo(userContext));
     }
+
+    @ApiOperation(
+            value = "Get the users context. Is used by the analytics service for authentication " +
+                    "This information is extracted from the " + HttpHeaders.AUTHORIZATION + " header."
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success. The users context presented.",
+                    response = UserDto.class),
+            @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
+    })
+    @GetMapping(path = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> getUserId() {
+        return ResponseEntity.ok(userContext.getUser().getId());
+    }
 }

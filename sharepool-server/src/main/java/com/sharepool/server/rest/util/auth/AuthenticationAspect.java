@@ -47,6 +47,10 @@ public class AuthenticationAspect {
     public void exceptions() {
     }
 
+    @Pointcut("execution(* com.sharepool.server.rest.user.UserResource.getUserId())")
+    public void analyticsAuthentication() {
+    }
+
     @Before("publicMethods() && restControllers() && (!userResource() || exceptions())")
     public boolean authenticate() {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -64,5 +68,18 @@ public class AuthenticationAspect {
         userContext.setUser(user.get());
 
         return true;
+    }
+
+    @Before("analyticsAuthentication()")
+    public boolean authenticateAnalytics() {
+        String ipAddress = request.getRemoteAddr();
+
+        // check if request comes from localhost
+        if (ipAddress.equals(request.getLocalAddr())) {
+            return authenticate();
+        } else {
+            // throw a 404 to keep this endpoint secret
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }

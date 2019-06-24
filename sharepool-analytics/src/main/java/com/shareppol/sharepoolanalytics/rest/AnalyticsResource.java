@@ -4,11 +4,9 @@ import com.shareppol.sharepoolanalytics.domain.AnalyticsEntry;
 import com.shareppol.sharepoolanalytics.logic.AnalyticsRestRequestHandler;
 import io.swagger.annotations.Api;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,7 +23,9 @@ public class AnalyticsResource {
     }
 
     @GetMapping(path = "/{from}/{to}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AnalyticsEntry> getAnalyticsForTimeSpan(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        return requestHandler.getAnalyticsForTimeSpan(from, to);
+    public List<AnalyticsEntry> getAnalyticsForTimeSpan(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                                        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+                                                        @RequestHeader(HttpHeaders.AUTHORIZATION) String userToken) {
+        return requestHandler.getAnalyticsForTimeSpan(userToken, from, to);
     }
 }

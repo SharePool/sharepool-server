@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface AnalyticsMessageRepository extends CrudRepository<AnalyticsMessage, Long> {
 
-    List<AnalyticsMessage> getAllByDateIsBetween(LocalDateTime from, LocalDateTime to);
+    List<AnalyticsMessage> getAllByPayerIdAndCreationTimeIsBetween(Long payerId, LocalDateTime from, LocalDateTime to);
 
 }

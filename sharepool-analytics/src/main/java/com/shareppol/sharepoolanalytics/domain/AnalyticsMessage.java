@@ -11,6 +11,7 @@ public class AnalyticsMessage implements Serializable {
     @Id
     private Long expenseId;
     private Long tourId;
+    private Long payerId;
     private Double kilometers;
     private Double sumGasConsumption;
     private LocalDateTime creationTime;
@@ -18,9 +19,10 @@ public class AnalyticsMessage implements Serializable {
     public AnalyticsMessage() {
     }
 
-    public AnalyticsMessage(Long expenseId, Long tourId, Double kilometers, Double sumGasConsumption, LocalDateTime creationTime) {
+    public AnalyticsMessage(Long expenseId, Long tourId, Long payerId, Double kilometers, Double sumGasConsumption, LocalDateTime creationTime) {
         this.expenseId = expenseId;
         this.tourId = tourId;
+        this.payerId = payerId;
         this.kilometers = kilometers;
         this.sumGasConsumption = sumGasConsumption;
         this.creationTime = creationTime;
@@ -40,6 +42,14 @@ public class AnalyticsMessage implements Serializable {
 
     public void setTourId(Long tourId) {
         this.tourId = tourId;
+    }
+
+    public Long getPayerId() {
+        return payerId;
+    }
+
+    public void setPayerId(Long payerId) {
+        this.payerId = payerId;
     }
 
     public Double getKilometers() {
@@ -71,6 +81,7 @@ public class AnalyticsMessage implements Serializable {
         return "AnalyticsMessage{" +
                 "expenseId=" + expenseId +
                 ", tourId=" + tourId +
+                ", payerId=" + payerId +
                 ", kilometers=" + kilometers +
                 ", sumGasConsumption=" + sumGasConsumption +
                 ", creationTime=" + creationTime +
