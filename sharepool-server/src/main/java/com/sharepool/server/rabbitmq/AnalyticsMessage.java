@@ -1,7 +1,10 @@
-package com.sharepool.sharepoolanalytics.domain;
+package com.sharepool.server.rabbitmq;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,6 +28,10 @@ public class AnalyticsMessage {
         this.kilometers = kilometers;
         this.sumGasConsumption = sumGasConsumption;
         this.creationTime = creationTime;
+    }
+
+    public static void main(String[] args) throws IOException {
+        LocalDateTime localDateTime = new ObjectMapper().readValue(new ObjectMapper().writeValueAsString(LocalDateTime.now()), LocalDateTime.class);
     }
 
     public Long getExpenseId() {

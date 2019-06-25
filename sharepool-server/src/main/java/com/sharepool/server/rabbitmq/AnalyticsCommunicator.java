@@ -1,7 +1,6 @@
 package com.sharepool.server.rabbitmq;
 
 import com.sharepool.server.domain.Expense;
-import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
