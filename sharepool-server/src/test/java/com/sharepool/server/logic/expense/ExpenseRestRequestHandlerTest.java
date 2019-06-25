@@ -7,6 +7,7 @@ import com.sharepool.server.dal.UserRepository;
 import com.sharepool.server.domain.Expense;
 import com.sharepool.server.domain.Tour;
 import com.sharepool.server.domain.User;
+import com.sharepool.server.rabbitmq.AnalyticsCommunicator;
 import com.sharepool.server.rest.expense.dto.ExpenseConfirmationDto;
 import com.sharepool.server.rest.expense.dto.ExpenseRequestResponseDto;
 import com.sharepool.server.rest.expense.dto.ExpensesWrapper;
@@ -18,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,12 +34,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 public class ExpenseRestRequestHandlerTest extends AbstractUtilTest {
 
+    @MockBean
+    private AnalyticsCommunicator analyticsCommunicator;
+
     @Autowired
     private ExpenseRestRequestHandler expenseRestRequestHandler;
+
     @Autowired
     private TourRepository tourRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ExpenseRepository expenseRepository;
 
