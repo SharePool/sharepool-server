@@ -2,6 +2,7 @@ package com.sharepool.server.rabbitmq;
 
 import com.sharepool.server.domain.Expense;
 import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Component;
 public class AnalyticsCommunicator {
 
     private final RabbitTemplate rabbitTemplate;
+    private final Queue queue;
 
-    public AnalyticsCommunicator(RabbitTemplate rabbitTemplate) {
+    public AnalyticsCommunicator(RabbitTemplate rabbitTemplate, Queue queue) {
         this.rabbitTemplate = rabbitTemplate;
+        this.queue = queue;
     }
 
     public void sendAnalyticsData(Expense expense) {
@@ -26,7 +29,7 @@ public class AnalyticsCommunicator {
         Double sumGasConsumption = (expense.getReceiver().getGasConsumption() / 100) * analyticsMessage.getKilometers();
         analyticsMessage.setSumGasConsumption(sumGasConsumption);
 
-        rabbitTemplate.convertAndSend("sharepool-exchange", "sharepool-analytics", analyticsMessage);
+        rabbitTemplate.convertAndSend(queue.getName(), analyticsMessage);
     }
 
 }
