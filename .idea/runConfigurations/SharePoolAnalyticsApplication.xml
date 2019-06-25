@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="SharePoolAnalyticsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <module name="sharepool-server.sharepool-analytics.main" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.shareppol.sharepoolanalytics.SharePoolAnalyticsApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.sharepool.sharepoolanalytics.SharePoolAnalyticsApplication" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
       <option name="Make" enabled="true" />
