@@ -1,9 +1,9 @@
-package com.shareppol.sharepoolanalytics.logic;
+package com.sharepool.sharepoolanalytics.logic;
 
-import com.shareppol.sharepoolanalytics.dal.AnalyticsMessageRepository;
-import com.shareppol.sharepoolanalytics.domain.AnalyticsEntry;
-import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
-import com.shareppol.sharepoolanalytics.rest.ServerClient;
+import com.sharepool.sharepoolanalytics.dal.AnalyticsMessageRepository;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsEntry;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsMessage;
+import com.sharepool.sharepoolanalytics.rest.ServerClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;

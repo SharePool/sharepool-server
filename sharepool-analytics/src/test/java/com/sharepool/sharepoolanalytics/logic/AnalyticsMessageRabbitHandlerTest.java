@@ -1,7 +1,7 @@
-package com.shareppol.sharepoolanalytics.logic;
+package com.sharepool.sharepoolanalytics.logic;
 
-import com.shareppol.sharepoolanalytics.dal.AnalyticsMessageRepository;
-import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
+import com.sharepool.sharepoolanalytics.dal.AnalyticsMessageRepository;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

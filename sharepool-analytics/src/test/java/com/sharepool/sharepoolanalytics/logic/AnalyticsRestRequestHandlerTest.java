@@ -1,13 +1,12 @@
-package com.shareppol.sharepoolanalytics.logic;
+package com.sharepool.sharepoolanalytics.logic;
 
-import com.shareppol.sharepoolanalytics.dal.AnalyticsMessageRepository;
-import com.shareppol.sharepoolanalytics.domain.AnalyticsEntry;
-import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
-import com.shareppol.sharepoolanalytics.rest.ServerClient;
+import com.sharepool.sharepoolanalytics.dal.AnalyticsMessageRepository;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsEntry;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsMessage;
+import com.sharepool.sharepoolanalytics.rest.ServerClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;

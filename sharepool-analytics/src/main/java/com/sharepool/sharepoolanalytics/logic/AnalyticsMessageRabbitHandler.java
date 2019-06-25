@@ -1,7 +1,7 @@
-package com.shareppol.sharepoolanalytics.logic;
+package com.sharepool.sharepoolanalytics.logic;
 
-import com.shareppol.sharepoolanalytics.dal.AnalyticsMessageRepository;
-import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
+import com.sharepool.sharepoolanalytics.dal.AnalyticsMessageRepository;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsMessage;
 import org.springframework.stereotype.Component;
 
 @Component

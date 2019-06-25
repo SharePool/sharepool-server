@@ -1,4 +1,4 @@
-package com.shareppol.sharepoolanalytics.domain;
+package com.sharepool.sharepoolanalytics.domain;
 
 import java.time.LocalDate;
 

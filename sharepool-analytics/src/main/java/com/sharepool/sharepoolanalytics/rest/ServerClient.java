@@ -1,4 +1,4 @@
-package com.shareppol.sharepoolanalytics.rest;
+package com.sharepool.sharepoolanalytics.rest;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;

@@ -1,7 +1,7 @@
-package com.shareppol.sharepoolanalytics.rest;
+package com.sharepool.sharepoolanalytics.rest;
 
-import com.shareppol.sharepoolanalytics.domain.AnalyticsEntry;
-import com.shareppol.sharepoolanalytics.logic.AnalyticsRestRequestHandler;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsEntry;
+import com.sharepool.sharepoolanalytics.logic.AnalyticsRestRequestHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

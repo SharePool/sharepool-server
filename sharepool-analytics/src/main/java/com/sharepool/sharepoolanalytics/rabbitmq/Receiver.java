@@ -1,7 +1,7 @@
-package com.shareppol.sharepoolanalytics.rabbitmq;
+package com.sharepool.sharepoolanalytics.rabbitmq;
 
-import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
-import com.shareppol.sharepoolanalytics.logic.AnalyticsMessageRabbitHandler;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsMessage;
+import com.sharepool.sharepoolanalytics.logic.AnalyticsMessageRabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 

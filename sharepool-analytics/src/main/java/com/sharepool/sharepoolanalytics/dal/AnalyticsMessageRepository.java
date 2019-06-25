@@ -1,6 +1,6 @@
-package com.shareppol.sharepoolanalytics.dal;
+package com.sharepool.sharepoolanalytics.dal;
 
-import com.shareppol.sharepoolanalytics.domain.AnalyticsMessage;
+import com.sharepool.sharepoolanalytics.domain.AnalyticsMessage;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDateTime;
