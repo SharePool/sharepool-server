@@ -10,4 +10,5 @@ public interface AnalyticsMessageRepository extends CrudRepository<AnalyticsMess
 
     List<AnalyticsMessage> getAllByPayerIdAndCreationTimeIsBetween(Long payerId, LocalDateTime from, LocalDateTime to);
 
+    List<AnalyticsMessage> getAllByPayerId(Long payerId);
 }

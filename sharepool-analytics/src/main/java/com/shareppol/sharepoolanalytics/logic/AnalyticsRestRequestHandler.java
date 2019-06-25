@@ -49,6 +49,5 @@ public class AnalyticsRestRequestHandler {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing user-token!");
         }
 
-
     }
 }
