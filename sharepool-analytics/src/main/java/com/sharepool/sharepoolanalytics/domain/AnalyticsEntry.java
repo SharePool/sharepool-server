@@ -4,25 +4,19 @@ import java.time.LocalDate;
 
 public class AnalyticsEntry {
 
-    private LocalDate date;
+    private LocalDate creationDate;
     private Double kmSum;
     private Double litersGasSaved;
 
     public AnalyticsEntry() {
     }
 
-    public AnalyticsEntry(LocalDate date, Double kmSum, Double litersGasSaved) {
-        this.date = date;
-        this.kmSum = kmSum;
-        this.litersGasSaved = litersGasSaved;
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Double getKmSum() {

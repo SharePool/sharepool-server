@@ -1,4 +1,4 @@
-package com.sharepool.sharepoolanalytics.domain;
+package com.sharepool.server.rabbitmq;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,22 +15,6 @@ public class AnalyticsMessage {
     private Long creationTimestamp;
 
     public AnalyticsMessage() {
-    }
-
-    public AnalyticsMessage(
-            Long expenseId,
-            Long tourId,
-            Long payerId,
-            Double kilometers,
-            Double sumGasConsumption,
-            Long creationTimestamp
-    ) {
-        this.expenseId = expenseId;
-        this.tourId = tourId;
-        this.payerId = payerId;
-        this.kilometers = kilometers;
-        this.sumGasConsumption = sumGasConsumption;
-        this.creationTimestamp = creationTimestamp;
     }
 
     public Long getExpenseId() {

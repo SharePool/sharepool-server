@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,24 +28,44 @@ public class AnalyticsRestRequestHandler {
         this.serverClient = serverClient;
     }
 
-    public Map<LocalDate, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, LocalDate from, LocalDate to) {
+    public Map<LocalDate, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, Long startTimestamp, Long endTimestamp) {
+        if (startTimestamp == null && endTimestamp == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You must at least set a start timestamp.");
+        }
+
+        if (startTimestamp != null && endTimestamp == null) {
+            endTimestamp = System.currentTimeMillis();
+        }
 
         if (userToken != null) {
-
             Long userId = serverClient.getUserIdByToken(userToken);
 
-            List<AnalyticsMessage> analyticsMessages = analyticsMessageRepository.getAllByPayerIdAndCreationTimeIsBetween(userId, from.atStartOfDay(), to.atStartOfDay().plusDays(1));
+            List<AnalyticsMessage> analyticsMessages = analyticsMessageRepository
+                    .getAllByPayerIdAndCreationTimestampIsBetween(
+                            userId,
+                            startTimestamp,
+                            endTimestamp
+                    );
+
             Map<LocalDate, AnalyticsEntry> analyticsEntries = new HashMap<>();
+            analyticsMessages.stream()
+                    .collect(Collectors.groupingBy(message -> {
+                        Instant instant = Instant.ofEpochSecond(message.getCreationTimestamp());
+                        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                        return localDateTime.toLocalDate();
+                    }))
+                    .forEach((date, message) -> {
+                        AnalyticsEntry entry = new AnalyticsEntry();
 
-            analyticsMessages.stream().collect(Collectors.groupingBy(analyticsMessage -> analyticsMessage.getCreationTime().toLocalDate())).forEach((date, messages) -> {
-                AnalyticsEntry entry = new AnalyticsEntry();
+                        entry.setCreationDate(date);
+                        entry.setKmSum(message.stream().mapToDouble(AnalyticsMessage::getKilometers).sum());
 
-                entry.setDate(date);
-                entry.setKmSum(messages.stream().mapToDouble(AnalyticsMessage::getKilometers).sum());
-                entry.setLitersGasSaved(messages.stream().mapToDouble(AnalyticsMessage::getSumGasConsumption).sum());
+                        entry.setLitersGasSaved(message.stream()
+                                .mapToDouble(AnalyticsMessage::getSumGasConsumption)
+                                .sum());
 
-                analyticsEntries.put(date, entry);
-            });
+                        analyticsEntries.put(date, entry);
+                    });
 
             return analyticsEntries;
         } else {
