@@ -28,7 +28,7 @@ public class AnalyticsResource {
                     "The timestamps must be an epoch timestamp."
     )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Success. The users analytics data fro the requested time-frame.",
+            @ApiResponse(code = 200, message = "Success. The users analytics data for the requested time-frame.",
                     response = Map.class),
             @ApiResponse(code = 500, message = "Failed. Something went wrong on our side."),
     })

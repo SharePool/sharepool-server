@@ -8,6 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +28,7 @@ public class AnalyticsRestRequestHandler {
         this.serverClient = serverClient;
     }
 
-    public Map<Long, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, Long startTimestamp, Long endTimestamp) {
+    public Map<LocalDate, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, Long startTimestamp, Long endTimestamp) {
         if (startTimestamp == null && endTimestamp == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You must at least set a start timestamp.");
         }
@@ -42,16 +46,21 @@ public class AnalyticsRestRequestHandler {
                             startTimestamp,
                             endTimestamp
                     );
-            Map<Long, AnalyticsEntry> analyticsEntries = new HashMap<>();
 
+            Map<LocalDate, AnalyticsEntry> analyticsEntries = new HashMap<>();
             analyticsMessages.stream()
-                    .collect(Collectors.groupingBy(AnalyticsMessage::getCreationTimestamp))
-                    .forEach((date, messages) -> {
+                    .collect(Collectors.groupingBy(message -> {
+                        Instant instant = Instant.ofEpochSecond(message.getCreationTimestamp());
+                        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                        return localDateTime.toLocalDate();
+                    }))
+                    .forEach((date, message) -> {
                         AnalyticsEntry entry = new AnalyticsEntry();
 
-                        entry.setCreationTimestamp(date);
-                        entry.setKmSum(messages.stream().mapToDouble(AnalyticsMessage::getKilometers).sum());
-                        entry.setLitersGasSaved(messages.stream()
+                        entry.setCreationDate(date);
+                        entry.setKmSum(message.stream().mapToDouble(AnalyticsMessage::getKilometers).sum());
+
+                        entry.setLitersGasSaved(message.stream()
                                 .mapToDouble(AnalyticsMessage::getSumGasConsumption)
                                 .sum());
 
