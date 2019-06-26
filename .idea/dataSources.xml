@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="PostgreSQL - SharePool@localhost" uuid="f3c4f2a8-3520-469b-bbd6-b5603157d6f3">
+    <data-source source="LOCAL" name="SharePool@server" uuid="bf23c1dc-f8b0-45ca-9346-074a1b4c36d6">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/SharePool</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="SharePool@analytics" uuid="1bba35df-e104-4161-a704-c017bbad6042">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5433/SharePool</jdbc-url>
     </data-source>
   </component>
 </project>
