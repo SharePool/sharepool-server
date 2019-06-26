@@ -1,28 +1,20 @@
 package com.sharepool.sharepoolanalytics.domain;
 
-import java.time.LocalDate;
-
 public class AnalyticsEntry {
 
-    private LocalDate date;
+    private Long creationTimestamp;
     private Double kmSum;
     private Double litersGasSaved;
 
     public AnalyticsEntry() {
     }
 
-    public AnalyticsEntry(LocalDate date, Double kmSum, Double litersGasSaved) {
-        this.date = date;
-        this.kmSum = kmSum;
-        this.litersGasSaved = litersGasSaved;
+    public Long getCreationTimestamp() {
+        return creationTimestamp;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setCreationTimestamp(Long creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
 
     public Double getKmSum() {

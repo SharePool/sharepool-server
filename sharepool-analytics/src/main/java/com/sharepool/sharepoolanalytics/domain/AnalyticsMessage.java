@@ -2,7 +2,6 @@ package com.sharepool.sharepoolanalytics.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 @Entity
 public class AnalyticsMessage {
@@ -13,18 +12,25 @@ public class AnalyticsMessage {
     private Long payerId;
     private Double kilometers;
     private Double sumGasConsumption;
-    private LocalDateTime creationTime;
+    private Long creationTimestamp;
 
     public AnalyticsMessage() {
     }
 
-    public AnalyticsMessage(Long expenseId, Long tourId, Long payerId, Double kilometers, Double sumGasConsumption, LocalDateTime creationTime) {
+    public AnalyticsMessage(
+            Long expenseId,
+            Long tourId,
+            Long payerId,
+            Double kilometers,
+            Double sumGasConsumption,
+            Long creationTimestamp
+    ) {
         this.expenseId = expenseId;
         this.tourId = tourId;
         this.payerId = payerId;
         this.kilometers = kilometers;
         this.sumGasConsumption = sumGasConsumption;
-        this.creationTime = creationTime;
+        this.creationTimestamp = creationTimestamp;
     }
 
     public Long getExpenseId() {
@@ -67,12 +73,12 @@ public class AnalyticsMessage {
         this.sumGasConsumption = sumGasConsumption;
     }
 
-    public LocalDateTime getCreationTime() {
-        return creationTime;
+    public Long getCreationTimestamp() {
+        return creationTimestamp;
     }
 
-    public void setCreationTime(LocalDateTime creationTime) {
-        this.creationTime = creationTime;
+    public void setCreationTimestamp(Long creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
 
     @Override
@@ -83,7 +89,7 @@ public class AnalyticsMessage {
                 ", payerId=" + payerId +
                 ", kilometers=" + kilometers +
                 ", sumGasConsumption=" + sumGasConsumption +
-                ", creationTime=" + creationTime +
+                ", creationTime=" + creationTimestamp +
                 '}';
     }
 }

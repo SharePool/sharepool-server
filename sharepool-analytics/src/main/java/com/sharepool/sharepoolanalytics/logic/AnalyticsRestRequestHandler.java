@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,24 +24,39 @@ public class AnalyticsRestRequestHandler {
         this.serverClient = serverClient;
     }
 
-    public Map<LocalDate, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, LocalDate from, LocalDate to) {
+    public Map<Long, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, Long startTimestamp, Long endTimestamp) {
+        if (startTimestamp == null && endTimestamp == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You must at least set a start timestamp.");
+        }
+
+        if (startTimestamp != null && endTimestamp == null) {
+            endTimestamp = System.currentTimeMillis();
+        }
 
         if (userToken != null) {
-
             Long userId = serverClient.getUserIdByToken(userToken);
 
-            List<AnalyticsMessage> analyticsMessages = analyticsMessageRepository.getAllByPayerIdAndCreationTimeIsBetween(userId, from.atStartOfDay(), to.atStartOfDay().plusDays(1));
-            Map<LocalDate, AnalyticsEntry> analyticsEntries = new HashMap<>();
+            List<AnalyticsMessage> analyticsMessages = analyticsMessageRepository
+                    .getAllByPayerIdAndCreationTimestampIsBetween(
+                            userId,
+                            startTimestamp,
+                            endTimestamp
+                    );
+            Map<Long, AnalyticsEntry> analyticsEntries = new HashMap<>();
 
-            analyticsMessages.stream().collect(Collectors.groupingBy(analyticsMessage -> analyticsMessage.getCreationTime().toLocalDate())).forEach((date, messages) -> {
-                AnalyticsEntry entry = new AnalyticsEntry();
+            analyticsMessages.stream()
+                    .collect(Collectors.groupingBy(AnalyticsMessage::getCreationTimestamp))
+                    .forEach((date, messages) -> {
+                        AnalyticsEntry entry = new AnalyticsEntry();
 
-                entry.setDate(date);
-                entry.setKmSum(messages.stream().mapToDouble(AnalyticsMessage::getKilometers).sum());
-                entry.setLitersGasSaved(messages.stream().mapToDouble(AnalyticsMessage::getSumGasConsumption).sum());
+                        entry.setCreationTimestamp(date);
+                        entry.setKmSum(messages.stream().mapToDouble(AnalyticsMessage::getKilometers).sum());
+                        entry.setLitersGasSaved(messages.stream()
+                                .mapToDouble(AnalyticsMessage::getSumGasConsumption)
+                                .sum());
 
-                analyticsEntries.put(date, entry);
-            });
+                        analyticsEntries.put(date, entry);
+                    });
 
             return analyticsEntries;
         } else {

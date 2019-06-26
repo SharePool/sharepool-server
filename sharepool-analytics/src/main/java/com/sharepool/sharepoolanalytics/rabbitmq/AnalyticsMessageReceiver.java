@@ -6,13 +6,13 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Receiver {
+public class AnalyticsMessageReceiver {
 
     private static final String queueName = "sharepool-analytics";
 
     private final AnalyticsMessageRabbitHandler requestHandler;
 
-    public Receiver(AnalyticsMessageRabbitHandler requestHandler) {
+    public AnalyticsMessageReceiver(AnalyticsMessageRabbitHandler requestHandler) {
         this.requestHandler = requestHandler;
     }
 
