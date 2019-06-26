@@ -2,7 +2,9 @@ package com.sharepool.sharepoolanalytics.rabbitmq;
 
 import com.sharepool.sharepoolanalytics.domain.AnalyticsMessage;
 import com.sharepool.sharepoolanalytics.logic.AnalyticsMessageRabbitHandler;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,4 +25,8 @@ public class AnalyticsMessageReceiver {
         requestHandler.resolveAnalyticsMessage(analyticsMessage);
     }
 
+    @Bean
+    public Queue queue() {
+        return new Queue(queueName);
+    }
 }
