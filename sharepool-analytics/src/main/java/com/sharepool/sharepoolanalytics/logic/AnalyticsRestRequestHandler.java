@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,23 +25,25 @@ public class AnalyticsRestRequestHandler {
         this.serverClient = serverClient;
     }
 
-    public Map<LocalDate, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, Long startTimestamp, Long endTimestamp) {
-        if (startTimestamp == null && endTimestamp == null) {
+    public Map<LocalDate, AnalyticsEntry> getAnalyticsForTimeSpan(String userToken, LocalDate from, LocalDate to) {
+        if (from == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You must at least set a start timestamp.");
         }
 
-        if (startTimestamp != null && endTimestamp == null) {
-            endTimestamp = System.currentTimeMillis();
+        if (to == null) {
+            to = LocalDate.now();
         }
 
         if (userToken != null) {
             Long userId = serverClient.getUserIdByToken(userToken);
 
+            Long fromTimeStamp = from.atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+            Long toTimeStamp = to.plusDays(1).atStartOfDay().toEpochSecond(ZoneOffset.UTC);
             List<AnalyticsMessage> analyticsMessages = analyticsMessageRepository
                     .getAllByPayerIdAndCreationTimestampIsBetween(
                             userId,
-                            startTimestamp,
-                            endTimestamp
+                            fromTimeStamp,
+                            toTimeStamp
                     );
 
             Map<LocalDate, AnalyticsEntry> analyticsEntries = new HashMap<>();

@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
@@ -51,10 +52,10 @@ public class AnalyticsRestRequestHandlerTest {
 
         Iterable<AnalyticsMessage> allAnalyticsMessages = analyticsMessageRepository.findAll();
 
-        Map<Long, AnalyticsEntry> analyticsData = requestHandler.getAnalyticsForTimeSpan(
+        Map<LocalDate, AnalyticsEntry> analyticsData = requestHandler.getAnalyticsForTimeSpan(
                 "",
-                LocalDateTime.now().minusDays(4).toEpochSecond(ZoneOffset.UTC),
-                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+                LocalDate.now().minusDays(4),
+                LocalDate.now());
 
         assertEquals(3, analyticsData.size());
     }
