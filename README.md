@@ -1,3 +1,5 @@
+![SharePool Logo](SharePool_logo.svg "SharePool Logo")
+
 # SharePool Server
 &copy; Tobias Kaderle & Jan Wiesbauer
 
