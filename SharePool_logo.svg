@@ -7,6 +7,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="138.69759mm"
@@ -15,9 +16,115 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="SharePool_logo.svg">
+   sodipodi:docname="SharePool_logo_colored.svg">
   <defs
-     id="defs2" />
+     id="defs2">
+    <linearGradient
+       id="linearGradient916"
+       inkscape:collect="always">
+      <stop
+         id="stop912"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop914"
+         offset="1"
+         style="stop-color:#00c4c4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient906">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop902" />
+      <stop
+         style="stop-color:#00c4c4;stop-opacity:1"
+         offset="1"
+         id="stop904" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient900"
+       inkscape:collect="always">
+      <stop
+         id="stop896"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop898"
+         offset="1"
+         style="stop-color:#00c4c4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient890">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop886" />
+      <stop
+         style="stop-color:#00c4c4;stop-opacity:1"
+         offset="1"
+         id="stop888" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient842">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop838" />
+      <stop
+         style="stop-color:#00c4c4;stop-opacity:0.99047619"
+         offset="1"
+         id="stop840" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient842"
+       id="linearGradient844"
+       x1="910.49451"
+       y1="506.68027"
+       x2="11.7"
+       y2="501.39999"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient890"
+       id="linearGradient892"
+       x1="51.900272"
+       y1="61.430473"
+       x2="4.4835315"
+       y2="61.158741"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient900"
+       id="linearGradient894"
+       x1="58.815968"
+       y1="54.207359"
+       x2="5.0809608"
+       y2="53.967579"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient906"
+       id="linearGradient908"
+       x1="119.90991"
+       y1="60.230125"
+       x2="83.457306"
+       y2="60.230125"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient916"
+       id="linearGradient910"
+       x1="138.94563"
+       y1="51.978527"
+       x2="96.706161"
+       y2="51.978527"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -25,9 +132,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.9737023"
-     inkscape:cx="167.82762"
-     inkscape:cy="-213.54329"
+     inkscape:zoom="1.9474046"
+     inkscape:cx="221.42537"
+     inkscape:cy="172.87571"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -48,7 +155,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -59,7 +166,7 @@
      transform="translate(1.5052684e-8,-0.89330237)">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:47.23403931px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.18085098"
+       style="font-style:normal;font-weight:normal;font-size:47.23403931px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient894);fill-opacity:1;stroke:none;stroke-width:1.18085098"
        x="9.4627352"
        y="65.703796"
        id="text5227"
@@ -68,10 +175,10 @@
          id="tspan5225"
          x="9.4627352"
          y="65.703796"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';stroke-width:1.18085098">S</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';stroke-width:1.18085098;fill-opacity:1;fill:url(#linearGradient894)">S</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24.53488731px;line-height:1.25;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.61337215"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24.53488731px;line-height:1.25;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient892);fill-opacity:1;stroke:none;stroke-width:0.61337215"
        x="31.541607"
        y="76.037865"
        id="text5231"><tspan
@@ -79,10 +186,10 @@
          id="tspan5229"
          x="31.541607"
          y="76.037865"
-         style="stroke-width:0.61337215">hare</tspan></text>
+         style="stroke-width:0.61337215;fill-opacity:1;fill:url(#linearGradient892)">hare</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:46.74001694px;line-height:1.25;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.16850042"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:46.74001694px;line-height:1.25;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient910);fill-opacity:1;stroke:none;stroke-width:1.16850042"
        x="99.620094"
        y="64.2145"
        id="text5235"
@@ -91,10 +198,10 @@
          id="tspan5233"
          x="99.620094"
          y="64.2145"
-         style="stroke-width:1.16850042">P</tspan></text>
+         style="stroke-width:1.16850042;fill-opacity:1;fill:url(#linearGradient910)">P</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.64249992px;line-height:1.25;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.69106245"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.64249992px;line-height:1.25;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient908);fill-opacity:1;stroke:none;stroke-width:0.69106245"
        x="100.89334"
        y="75.008316"
        id="text5239"
@@ -103,15 +210,17 @@
          id="tspan5237"
          x="100.89334"
          y="75.008316"
-         style="stroke-width:0.69106245">ool</tspan></text>
+         style="stroke-width:0.69106245;fill-opacity:1;fill:url(#linearGradient908)">ool</tspan></text>
     <g
        id="g5259"
-       transform="matrix(0.13330795,0,0,0.10109263,-1.2718636,-23.621451)">
+       transform="matrix(0.13330795,0,0,0.10109263,-1.2718636,-23.621451)"
+       style="fill-opacity:1;fill:url(#linearGradient844)">
       <path
          id="path5257"
          d="m 776.1,575.3 c -355.11386,603.7047 -177.55693,301.85237 0,0 z m -0.1,29.8 c -355.0472,583.8381 -177.5236,291.91903 0,0 z M 182.5,575.3 c 40.61947,603.7047 20.30974,301.85237 0,0 z m 0,29.8 c 40.61947,583.8381 20.30974,291.91903 0,0 z M 11.7,501.4 c -2.5,36.1 -1.6,85.5 -1.4,114.6 3.7,39.2 15.6,50.4 60.4,62.7 6.8,-124.4 110,-137.6 158.2,-116 71.8,32.1 68.9,115.2 68.9,115.2 h 363.1 c 0,0 -5.6,-66.3 51.9,-106.5 56.6,-39.6 173.7,-10.3 170.2,106.5 33.5,14.7 140.4,-2.3 96.7,-165.9 -18.3,-51.6 -53.9,-32.4 -198,-75.3 C 717.1,417.5 704.1,347.5 598.1,262.8 573.4,243.1 524.5,242.6 496.5,242.5 288.8,242 166.7,332.1 84.3,425.4 c -40,18.5 -61.8,45.9 -72.6,76 z m 897.4,54.8 c -3.5,-5.2 -2.7,-13.1 0,-20.8 h 60 c 0,0 10.3,19.3 -0.8,50.3 -13.5,0.5 -34.1,7.4 -59.2,-29.5 z M 437.6,435.9 V 284.1 c 0,0 106.7,-24.5 130.4,-0.8 23.6,23.6 128.4,127 130,130.5 1.6,3.5 7.9,14.7 0,22.1 H 437.6 Z M 177.9,406.4 C 275.5,308.6 373.8,295.1 373.8,295.1 v 132.4 l -5.9,8.4 c 0,0 -167.4,-1.7 -180.7,-1.7 -13.3,0 -16.6,-20.5 -9.3,-27.8 z M 19.2,507.6 h 53.2 c -7.3,38.8 -35.5,46.1 -35.5,46.1 H 19.2 Z"
          inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccccccccccccccccccccccccccccsscccccccscccccc" />
+         sodipodi:nodetypes="cccccccccccccccccccccccccccccsscccccccscccccc"
+         style="fill-opacity:1;fill:url(#linearGradient844)" />
     </g>
     <text
        xml:space="preserve"
