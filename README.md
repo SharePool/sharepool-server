@@ -1,5 +1,8 @@
-[![CircleCI](https://circleci.com/gh/HatboyWonder/sharepool-server.svg?style=shield)](https://circleci.com/gh/HatboyWonder/sharepool-server)
+![SharePool Logo](SharePool_logo.svg "SharePool Logo")
+
 # SharePool Server
+[![CircleCI](https://circleci.com/gh/HatboyWonder/sharepool-server.svg?style=shield)](https://circleci.com/gh/HatboyWonder/sharepool-server)
+
 &copy; Tobias Kaderle & Jan Wiesbauer
 
 ## Description
