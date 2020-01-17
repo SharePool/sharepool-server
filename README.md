@@ -1,3 +1,5 @@
+*Other languages: [German](Readme.de.md).*
+
 ![SharePool Logo](SharePool_logo.svg "SharePool Logo")
 
 # SharePool Server
